@@ -1,0 +1,58 @@
+bmr11026.str   _Citation.Title                       'Bergerac-SH3: "frustation" induced by stabilizing the folding nucleus.'
+bmr11038.str   _Entity.Polymer_author_seq_details       'First G and S and "VDSSGRIVTL" in C-terminal were from cloining artifacts.'
+bmr15178.str   _Entity.Polymer_author_seq_details       "The N terminal SM residues are an artefact from the vector. The next 8 residues 'DLSWLDLE' are a non-natural, inserted sequence, engineered into the construct as an interaction site for 14-3-3 proteins (included for use in later studies)."
+bmr15442.str   _Entity.Polymer_strand_ID                "'A' and 'B'"
+bmr15511.str   _Entity.Polymer_strand_ID                "'A' and 'B'"
+bmr15757.str   _Entity.Polymer_author_defined_seq       'The sequence should have a Met residue at position "0".'
+bmr15965.str   _Entry.Details                       'The conformational changes in the N-terminal domain of tropomyosin upon binding to the C-terminal domain to form an "overlap" complex.'
+bmr16021.str   _Assigned_chem_shift_list.Details                      'The error value of "." indicates that there's only one assignment for that chemical shift.'
+bmr16373.str   _Entity.Polymer_author_seq_details       'S105 is a "strain variation" and should be noted as such.'
+bmr16622.str   _Citation.Title                       'Bergerac-SH3: "frustation" induced by stabilizing the folding nucleus.'
+bmr16895.str   _Entity.Polymer_author_seq_details       'Sequences "GSLVPRGS" were expressed from pGEX 4T-1 vector.'
+bmr17054.str   _Citation.Title                       "Determination of the modified 'affinity index' of small ligands and macromolecular receptors from NMR spin-lattice relaxation data"
+bmr17089.str   _Citation.Title                       'Chimeric SHA-D domain ("SH3-Bergerac"): 3D-structure and dynamics studies in solution'
+bmr17445.str   _Entry.Details                       "The 'M' domain of Akap79 is an inherently unstructured region shown to bind Sap97."
+bmr17645.str   _Entity.Polymer_author_seq_details       'Residues "QGPGS" are from the non-native tag'
+bmr17647.str   _Entry.Details                       'Thermostable mutant "6B" of a Lipase from Bacillus Subtilis.'
+bmr17685.str   _Entity.Polymer_author_seq_details       "The N-terminal residues 'MRGSHHHHHHHHGSENLYFQGS' are a cloning artifact."
+bmr17973.str   _NMR_spectrometer.Details         'Bruker AV-600 spectrometer equipped with cryoprobe TXI (1H, 13C, 15N) with Z gradients (on the left side of the figure). Additionally, we have probes "standard " TXI (1H, 13C, 15N), TBI (1H, 13C, BB) with gradients of 5 mm and 8 mm probe TXI (1H, 13C, 15N) with Z gradients and a 10 mm probe (1H-BB reverse) without gradient.'
+bmr18159.str   _Citation.Title                       'Conservation of Dark Recovery Kinetic Parameters and Structural Features in the Pseudomonadaceae "Short" Light, Oxygen, Voltage (LOV) Protein Family: Implications for the Design of LOV-Based Optogenetic Tools'
+bmr18160.str   _Citation.Title                       'Conservation of Dark Recovery Kinetic Parameters and Structural Features in the Pseudomonadaceae "Short" Light, Oxygen, Voltage (LOV) Protein Family: Implications for the Design of LOV-Based Optogenetic Tools'
+bmr18380.str   _Heteronucl_NOE_list.NOE_ref_description          'HetNOEs computed from the ratio of H-N peak intensities for "ON" to "OFF" spectra'
+bmr18731.str   _Entity.Polymer_author_seq_details       "The sequence starts with the number minus 8 and the position '0' is skipped"
+bmr18873.str  _Entity.Fragment                         'The Molecule Type is an "oligomer" rather then a polymer, more specific it is a oligosaccharide/ carbohydrate'
+bmr19220.str   _Entity.Polymer_author_defined_seq       'The first three residues "GSH" represent a non-native cloning artifact.'
+bmr19315.str   _Entity.Polymer_author_seq_details       'Residues 323-324 (N-terminal "GS") results from cloning and remains in the intact protein after TEV cleavage.'
+bmr19505.str   _Entry.Details                       'A "dumbell" or strand-swapped homodimeric WW domain; essentially a disulfide/beta-sheet hub with entire WW domains as end-caps. Designed using a stand-alone version of Foldit.'
+bmr19752.str   _Citation.Title                       'Structural and Biochemical Characterization Reveals LysGH15 as an Unprecedented "EF-Hand-Like" Calcium-Binding Phage Lysin'
+bmr19844.str   _Citation.Title
+bmr19878.str   _Citation.Title
+bmr21041.str   _Entity.Polymer_author_seq_details
+bmr21042.str   _Entity.Polymer_author_seq_details
+bmr25066.str   _Entity.Polymer_author_seq_details
+bmr25070.str   _Entity.Polymer_author_seq_details
+bmr25278.str   _Citation.Title
+bmr25459.str   _Entity.Polymer_author_seq_details
+bmr25460.str   _Entity.Polymer_author_seq_details
+bmr4397.str   _Citation.Full_citation               'Mizoue, L. S., Bazan, J. F., Johnson, E. C., and Handel, T. M., "Solution Structure and Dynamics of the CX3C Chemokine Domain of Fractalkine and Its Interaction with an N-Terminal Fragment of CX3CR1," Biochemistry 38, 1402-1414 (1999).'
+bmr4418.str   _Citation.Full_citation
+bmr4428.str   _Citation.Title
+bmr4429.str   _Citation.Full_citation
+bmr4802.str   _Entity.Name
+bmr5042.str   _Citation.Title
+bmr5156.str   _Citation.Title
+bmr5183.str   _Citation.Title
+bmr5770.str   _Entity.Details
+bmr6018.str   _Entity.Details
+bmr6123.str   _Citation.Title
+bmr6591.str   _Citation.Title
+bmr6637.str   _Citation.Title
+bmr6639.str   _Citation.Title
+bmr6647.str   _Citation.Title
+bmr6656.str   _Citation.Title
+bmr6657.str   _Citation.Title
+bmr6890.str   _Software.Details
+bmr7126.str   _Chem_shift_reference.Details       "'setref' macro from VNMR software. Solvent is 'D2O'"
+bmr7139.str   _Chem_shift_reference.Details       "'setref' macro from VNMR software. Solvent is 'D2O'"
+bmr7191.str   _Sample.Details
+bmr7194.str   _Citation.Title
