@@ -1,37 +1,21 @@
 #!/usr/bin/env python3
-#
-# Copyright 2011 Patrick Mullaney (pajmullaney@gmail.com)
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# -*- coding: utf-8 -*-
+
+"""
+nmrstarlib.nmrstarlib
+~~~~~~~~~~~~~~~~~~~~~
+
+"""
 
 import sys
-import re
-import bmrblexx as shlex
-import logging
-
-import itertools as it
-import functools as ft
-
-from copy import copy
-#from collections import dict
+# import bmrblex
 
 class StarFile(dict):
-    """The StarFile class stores the data from a single NMR-Star file in the
+    """The StarFile class stores the data from a single NMR-STAR file in the
     form of an dict. Data can be accessed directly from the
-    StarFile instance using bracket accessors.
+    `StarFile` instance using bracket accessors.
 
-    The NMR-Star format is a hierachical dictionary containing data on
+    The NMR-STAR format is a hierachical dictionary containing data on
     NMR experiments.  The data is divided into a series of "saveframes"
     which each contain a number of key-value pairs and/or "loops" or
     lists of value records associated with a given set of keys.
@@ -49,31 +33,32 @@ class StarFile(dict):
         self._frame_categories = frame_categories
         self.read(filename)
 
-#    def __str__(self):
-#        s = 'data_%s\n'%(self.datanum)
-#        for sf in self:
-#            s + (self._print_sf(sf)+'\n')
-#
-#        return s
-
     def read(self, filename):
+        """Read BMRB NMR-STAR file into `StarFile` dict object
+
+        :param filename: path to input BMRB NMR-STAR file
+        :return: instance of `StarFile` dict class
+        :rtype: nmrstarlib.nmrstarlib.StarFile
+        """
         self._filename = filename
 
         with open(filename, 'r') as infile:
             text = self._transform_text(infile.read())
             # text = infile.read()
 
-        lexer = shlex.shlex(text)
-        # lexer.quotes += self.LongStringQuote
+        lexer = bmrblex.bmrblex(text)
         lexer.whitespace_split = True # whitespace_split is required for parsing floating point numbers
         lexer.infile = filename
-
-        # for token in lexer:
-        #     print("token from lexer:", token)
-
         return self._build_file(lexer)
 
     def write(self, filename=None, f=None):
+        """Write `StarFile` dict object into text file
+
+        :param str filename: path of input BMRB NMR-STAR file
+        :param str f: path to output BMRB NMR-STAR file
+        :return: None
+        :rtype: None
+        """
         if filename is None:
             filename = self._filename
 
@@ -83,10 +68,15 @@ class StarFile(dict):
         self._print_file(f)
         f.close()
 
+    def _build_file(self, lexer):
+        """Build `StarFile` dict object
 
-    def _build_file(self,lexer):
+        :param lexer: instance of BMRB lexical analyzer class
+        :type lexer: nmrstarlib.bmrblex.bmrblex
+        :return: instance of `StarFile` object
+        :rtype: nmrstarlib.nmrstarlib.StarFile
+        """
         odict = self
-        
         token = lexer.get_token()
         # print(token) #DEBUG
 
@@ -105,7 +95,6 @@ class StarFile(dict):
                     print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
                     print("In _build_file try block", file=sys.stderr) #DEBUG
                     raise InvalidToken("%s %s"%(lexer.error_leader(),token))
-
             except IndexError:
                 print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
                 print("In _build_file except block", file=sys.stderr) #DEBUG
@@ -113,20 +102,26 @@ class StarFile(dict):
             finally:
                 token = lexer.get_token()
                 #print(token) #DEBUG
+        return self
 
-    def _build_sf(self,lexer):
+    def _build_sf(self, lexer):
+        """Build NMR-STAR file saveframe
+
+        :param lexer: instance of BMRB lexical analyzer class
+        :type lexer: nmrstarlib.bmrblex.bmrblex
+        :return: Saveframe dict
+        :rtype: dict
+        """
         odict = dict()
-
         loopcount = 0
 
         token = lexer.get_token()
         while token != 'save_':
-            # print("TOKEN inside build_sf:", token)
+            print("TOKEN inside build_sf:", token)
             try:
                 if token[0] == '_':
                     # This strips off the leading underscore of tagnames for readability 
                     odict[token[1:]] = lexer.get_token()
-                    # print("token starts from _:", token)
 
                     # Skip the saveframe if it's not in the list of wanted categories
                     if self._frame_categories:
@@ -158,13 +153,27 @@ class StarFile(dict):
 
         return odict
 
-    def _skip_sf(self,lexer):
+    def _skip_sf(self, lexer):
+        """Skip entire saveframe - keep emitting tokens until the end of saveframe
+
+        :param lexer: instance of BMRB lexical analyzer class
+        :type lexer: nmrstarlib.bmrblex.bmrblex
+        :return: None
+        :rtype: None
+        """
         token = ''
         while  token != 'save_':
             token = lexer.get_token()
-#            print(token) #DEBUG
+            # print(token) #DEBUG
 
-    def _build_loop(self,lexer):
+    def _build_loop(self, lexer):
+        """Build loop inside of saveframe
+
+        :param lexer: instance of BMRB lexical analyzer class
+        :type lexer: nmrstarlib.bmrblex.bmrblex
+        :return: Fields and values of the loop
+        :rtype: tuple
+        """
         fields = []
         values = []
 
@@ -178,84 +187,69 @@ class StarFile(dict):
             token = lexer.get_token()
 
         return (fields,values)
-#        dlist = []
-#
-#        fields = []
-#        values = []
-#
-#        token = lexer.get_token() 
-##        #print(token) #DEBUG
-#        while token[0] == '_':
-#            fields.append(token[1:])
-#            token = lexer.get_token()
-#            #print(token) #DEBUG
-#
-#        proto_dict = dict(zip(fields, it.repeat(None)))
-#
-#        while token != 'stop_':
-#            values.append(token)
-#            token = lexer.get_token()
-#            #print(token) #DEBUG
-#
-#        #TODO Clean this up, ideally using iterators.
-#        try:
-#            for i in range(len(values) // len(fields)):
-#                dlist.append(copy(proto_dict))
-#            for d in dlist:
-#                for key in d:
-#                    d[key] = values.pop(0)
-#        except:
-#            print("%s Error: Wrong number of values in loop"%(lexer.error_leader()), file=sys.stderr)
-#            exit(1)
-#
-#        return dlist
+        # dlist = []
+        #
+        # fields = []
+        # values = []
+        #
+        # token = lexer.get_token()
+        # #print(token) #DEBUG
+        # while token[0] == '_':
+        #     fields.append(token[1:])
+        #     token = lexer.get_token()
+        #     #print(token) #DEBUG
+        #
+        # proto_dict = dict(zip(fields, it.repeat(None)))
+        #
+        # while token != 'stop_':
+        #     values.append(token)
+        #     token = lexer.get_token()
+        #     #print(token) #DEBUG
+        #
+        # #TODO Clean this up, ideally using iterators.
+        # try:
+        #     for i in range(len(values) // len(fields)):
+        #         dlist.append(copy(proto_dict))
+        #     for d in dlist:
+        #         for key in d:
+        #             d[key] = values.pop(0)
+        # except:
+        #     print("%s Error: Wrong number of values in loop"%(lexer.error_leader()), file=sys.stderr)
+        #     exit(1)
+        #
+        # return dlist
     
-    def _transform_text(self,text):
-        leftsinglequote = re.compile("(\s\')([\w.,\[\(\{\'\-%<\?\+])")
-        rightsinglequote = re.compile("([.,\w\]\)\}\'\"/])(\'[\s])")
-        leftdoublequote = re.compile("(\s\")([\w.,\[\(\{\'\-%<\?\+])")
-        rightdoublequote = re.compile("([.,\w\]\)\}\'\"/])(\"[\s])")
+    def _transform_text(self, text):
+        """Replace all lines that start with ';' with special character 'ಠ'
+        to simplify multiline string processing with bmrblex.
 
+        :param str text: Original text
+        :return: Transformed text where lines starting with ';' replaced by 'ಠ'
+        :rtype: str
+        """
         lines = text.split('\n')
-
         newtext = ''
         for line in lines:
-            if line and line[0] == ';':
+            if line and line.startswith(';'):
                 line = self.LongStringQuote
-
-            # if line and "'" in line:
-            #     print("before", line)
-            #     left = re.search(leftsinglequote, line)
-            #     right = re.search(rightsinglequote, line)
-            #     if left is None or right is None:
-            #         pass
-            #     else:
-            #         # print(left.group(2))
-            #         # print(right.group(1))
-            #         line = re.sub(leftsinglequote, ' "'+left.group(2), line)
-            #         line = re.sub(rightsinglequote, right.group(1)+'" ', line)
-            #     print("after", line)
-
-            # if line and "\'" in line:
-            #     singlequotes = re.compile("\'")
-            #     print(line)
-            #     for match in re.finditer(singlequotes, line):
-            #         print(match.start(), match.group())
-
             newtext += ('\n' + line)
         return newtext
 
-    # sf means saveframe; f means file
     def _print_file(self, f):
+        """Print `StarFile` object.
+        sf means saveframe, f means file.
+        """
         print("data_%s\n"%(self.datanum), file=f)
         for sf in self.keys():
             print("save_%s"%(sf), file=f)
-            self._print_saveframe(f,sf,3)
+            self._print_saveframe(f, sf, 3)
             print("save_\n", file=f)
 
-    # We need to keep track of how far over everything is tabbed. The
-    # "tab width" variable tw does this for us.
     def _print_saveframe(self, f, sf, tw):
+        """Print saveframe.
+        We need to keep track of how far over everything is tabbed.
+        The "tab width" variable tw does this for us.
+        """
         for ind in self[sf].keys():
             # handle the NMR-Star "long string" type
             if self[sf][ind][0] == self.LongStringQuote:
@@ -270,8 +264,8 @@ class StarFile(dict):
             else:
                 print(tw*' ',"_%s\t%s"%(ind,self[sf][ind]), file=f)
 
-
     def _print_loop(self, f, sf, ind, tw):
+        """Print loop."""
         # First print the keys
         for key in self[sf][ind][0].keys():
             print(tw*' ','_%s'%(key), file=f)
@@ -305,38 +299,6 @@ class SkipSaveFrame(Exception):
 
 
 if __name__ == "__main__":
-    import json
-    import os
     script = sys.argv.pop(0)
     filename = sys.argv.pop(0)
     sf = StarFile(filename)
-
-    # for k in sf.keys(): print(k)
-    # print(sf["assembly"])
-
-    # with open("test.json", "w") as outfile:
-    #     json.dump(sf, outfile, indent=4)
-
-    # filenames = os.listdir("failed_bmrbs")
-    # print(filenames)
-    #
-    # i = 1
-    # for f in filenames:
-    #     try:
-    #         print("===================================================>", f)
-    #         sf = StarFile("failed_bmrbs/"+f)
-    #     except:
-    #         print(f, "FAILED")
-    #         i += 1
-    #         continue
-
-
-    # # Copy failed bmrbs
-    # import os
-    # import shutil
-    #
-    # filenames = ['bmr11026.str', 'bmr11038.str', 'bmr15178.str', 'bmr15442.str', 'bmr15511.str', 'bmr15757.str', 'bmr15965.str', 'bmr15969.str', 'bmr16021.str', 'bmr16273.str', 'bmr16373.str', 'bmr16622.str', 'bmr16895.str', 'bmr17054.str', 'bmr17089.str', 'bmr17445.str', 'bmr17645.str', 'bmr17647.str', 'bmr17685.str', 'bmr17973.str', 'bmr18159.str', 'bmr18160.str', 'bmr18380.str', 'bmr18731.str', 'bmr18873.str', 'bmr19131.str', 'bmr19220.str', 'bmr19315.str', 'bmr19505.str', 'bmr19752.str', 'bmr19844.str', 'bmr19878.str', 'bmr21022.str', 'bmr21023.str', 'bmr21024.str', 'bmr21025.str', 'bmr21026.str', 'bmr21027.str', 'bmr21028.str', 'bmr21041.str', 'bmr21042.str', 'bmr25066.str', 'bmr25070.str', 'bmr25278.str', 'bmr25459.str', 'bmr25460.str', 'bmr4397.str', 'bmr4418.str', 'bmr4428.str', 'bmr4429.str', 'bmr4706.str', 'bmr4802.str', 'bmr5042.str', 'bmr5156.str', 'bmr5183.str', 'bmr5770.str', 'bmr6018.str', 'bmr6123.str', 'bmr6591.str', 'bmr6637.str', 'bmr6639.str', 'bmr6647.str', 'bmr6656.str', 'bmr6657.str', 'bmr6890.str', 'bmr7084.str', 'bmr7126.str', 'bmr7139.str', 'bmr7191.str', 'bmr7194.str']
-    # dst_dir = os.path.join(os.getcwd() + "/failed_bmrbs1")
-    # os.mkdir(dst_dir)
-    # for f in filenames:
-    #     shutil.copy("../../bmrbscraper/NMR-STAR3/"+f, dst_dir)
