@@ -8,7 +8,7 @@ nmrstarlib.nmrstarlib
 """
 
 import sys
-# import bmrblex
+import bmrblex
 
 class StarFile(dict):
     """The StarFile class stores the data from a single NMR-STAR file in the
@@ -186,7 +186,7 @@ class StarFile(dict):
             values.append(token)
             token = lexer.get_token()
 
-        return (fields,values)
+        return (fields, values)
         # dlist = []
         #
         # fields = []
