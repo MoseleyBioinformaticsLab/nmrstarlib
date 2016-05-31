@@ -8,7 +8,7 @@ nmrstarlib.nmrstarlib
 """
 
 import sys
-import bmrblex
+from . import bmrblex
 
 class StarFile(dict):
     """The StarFile class stores the data from a single NMR-STAR file in the
@@ -43,8 +43,7 @@ class StarFile(dict):
         self._filename = filename
 
         with open(filename, 'r') as infile:
-            text = self._transform_text(infile.read())
-            # text = infile.read()
+            text = infile.read()
 
         lexer = bmrblex.bmrblex(text)
         lexer.whitespace_split = True # whitespace_split is required for parsing floating point numbers
@@ -227,12 +226,17 @@ class StarFile(dict):
         :return: Transformed text where lines starting with ';' replaced by 'ಠ'
         :rtype: str
         """
+        # f = open('test.txt', 'w')
+
         lines = text.split('\n')
         newtext = ''
         for line in lines:
             if line and line.startswith(';'):
                 line = self.LongStringQuote
             newtext += ('\n' + line)
+
+        # f.write(newtext)
+        # f.close()
         return newtext
 
     def _print_file(self, f):

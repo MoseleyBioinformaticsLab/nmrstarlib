@@ -60,7 +60,8 @@ class bmrblex:
 
         self.singlequote = "'"
         self.doublequote = '"'
-        self.multilinequote = 'ಠ\n'
+        # self.multilinequote = 'ಠ\n'
+        self.multilinequote = ';\n'
 
         # stream position gets incremented by 1 each time instream.read(1) is called
         # since instream has 0-based numeration, the first emitted character
@@ -75,8 +76,8 @@ class bmrblex:
         :rtype: str
         """
         if self.pushback:
-            tok = self.pushback.popleft()
-            return tok
+            token = self.pushback.popleft()
+            return token
         # No pushback.  Get a token.
         raw = self.read_token()
         return raw
@@ -92,9 +93,17 @@ class bmrblex:
         # next streamposition, i.e. streamposition+1 should not exceed the number of
         # characters inside instream, streamlength-1 ==> stopping criteria for the while loop
         while self.streamposition+1 < self.streamlength-1:
-
             nextchar = self.instream.read(1)
             self.streamposition += 1
+
+            nextnextchar = self.instream.read(1)       # look up 1 char ahead
+            self.instream.seek(self.streamposition+1)  # return to current stream position
+
+            # print("state:", repr(self.state), "nextchar:", repr(nextchar), "nextnextchar:", repr(nextnextchar))
+            # print("state:", repr(self.state), "nextchar:", repr(nextchar))
+
+            if nextchar+nextnextchar == self.multilinequote:
+                self.state = self.multilinequote
 
             if self.state is None:
                 self.token = ''        # past end of file
@@ -112,6 +121,9 @@ class bmrblex:
                 elif nextchar in self.commenters:
                     line = self.instream.readline()
                     self.streamposition += len(line)
+                elif nextchar in self.wordchars:
+                    self.token = nextchar
+                    self.state = 'a'
                 elif nextchar in self.singlequote:
                     self.token = nextchar
                     self.state = nextchar
@@ -121,9 +133,6 @@ class bmrblex:
                 elif nextchar in self.multilinequote:
                     self.token = nextchar
                     self.state = nextchar
-                elif nextchar in self.wordchars:
-                    self.token = nextchar
-                    self.state = 'a'
                 else:
                     self.token = nextchar
                     if self.token:
@@ -132,13 +141,13 @@ class bmrblex:
                         continue
 
             # Process multiline-quoted text
-            elif self.state in self.multilinequote:
+            elif self.state == self.multilinequote:
                 quoted = True
                 if not nextchar:      # end of file
                     raise EOFError("No closing quotation")
 
                 line = self.instream.readline()
-                self.streamposition += len(line) # skip first line == 'ಠ\n'
+                self.streamposition += len(line) # skip first line == ';\n'
 
                 line = self.instream.readline()
                 self.streamposition += len(line)
@@ -153,31 +162,31 @@ class bmrblex:
                         line = self.instream.readline()
                         self.streamposition += len(line)
 
-            # process token staring with singlequote '
+            # process token staring with single quote '
             elif self.state in self.singlequote:
                 quoted = True
                 if not nextchar:      # end of file
                     raise EOFError("No closing quotation")
 
                 if nextchar == self.state:
-                    nextnextchar = self.instream.getvalue()[self.streamposition + 1]  # look up 1 char ahead
-                    if nextnextchar not in self.whitespace: #' \n':
+                    # nextnextchar = self.instream.getvalue()[self.streamposition+1]
+                    if nextnextchar not in self.whitespace:
                         self.token = self.token + nextchar
                         self.state = self.singlequote
-                    elif nextnextchar in self.whitespace: #' \n':
+                    elif nextnextchar in self.whitespace:
                         self.token = self.token + nextchar
                         self.state = ' '
                         break   # emit current token
                 else:
                     self.token = self.token + nextchar
 
-            # process token staring with doublequote "
+            # process token staring with double quote "
             elif self.state in self.doublequote:
                 quoted = True
                 if not nextchar:      # end of file
                     raise EOFError("No closing quotation")
                 if nextchar == self.state:
-                    nextnextchar = self.instream.getvalue()[self.streamposition + 1]  # look up 1 char ahead
+                    # nextnextchar = self.instream.getvalue()[self.streamposition + 1]
                     if nextnextchar not in self.whitespace:
                         self.token = self.token + nextchar
                         self.state = self.doublequote
