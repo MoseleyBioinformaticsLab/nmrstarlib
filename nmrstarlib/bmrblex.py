@@ -38,6 +38,9 @@ class bmrblex:
     def __init__(self, instream=None, infile=None):
         if isinstance(instream, str):
             instream = StringIO(instream)
+        elif isinstance(instream, bytes):
+            instream = StringIO(instream.decode("utf-8"))
+
         if instream is not None:
             self.instream = instream
             self.infile = infile
@@ -60,14 +63,15 @@ class bmrblex:
 
         self.singlequote = "'"
         self.doublequote = '"'
-        # self.multilinequote = 'ಠ\n'
-        self.multilinequote = ';\n'
+        self.multilinequote = '\n;\n'
+        self.prevchar = ''
 
         # stream position gets incremented by 1 each time instream.read(1) is called
         # since instream has 0-based numeration, the first emitted character
         # gets streamposition = 0, hence initial streamposition = -1
         self.streamposition = -1
         self.streamlength = len(self.instream.getvalue())
+        # self.streamlength = len(self.instream)
  
     def get_token(self):
         """Get a token from the input stream (or from stack if it's nonempty).
@@ -99,116 +103,124 @@ class bmrblex:
             nextnextchar = self.instream.read(1)       # look up 1 char ahead
             self.instream.seek(self.streamposition+1)  # return to current stream position
 
-            # print("state:", repr(self.state), "nextchar:", repr(nextchar), "nextnextchar:", repr(nextnextchar))
-            # print("state:", repr(self.state), "nextchar:", repr(nextchar))
-
-            if nextchar+nextnextchar == self.multilinequote:
+            # print("all 3 together:", repr(self.prevchar), repr(nextchar), repr(nextnextchar))
+            if self.prevchar+nextchar+nextnextchar == '\n;\n': #self.multilinequote:
                 self.state = self.multilinequote
 
-            if self.state is None:
-                self.token = ''        # past end of file
-                break
-
-            elif self.state == ' ':
-                if not nextchar:
-                    self.state = None  # end of file
+            try:
+                if self.state is None:
+                    self.token = ''        # past end of file
                     break
-                elif nextchar in self.whitespace:
-                    if self.token:
-                        break   # emit current token
-                    else:
-                        continue
-                elif nextchar in self.commenters:
-                    line = self.instream.readline()
-                    self.streamposition += len(line)
-                elif nextchar in self.wordchars:
-                    self.token = nextchar
-                    self.state = 'a'
-                elif nextchar in self.singlequote:
-                    self.token = nextchar
-                    self.state = nextchar
-                elif nextchar in self.doublequote:
-                    self.token = nextchar
-                    self.state = nextchar
-                elif nextchar in self.multilinequote:
-                    self.token = nextchar
-                    self.state = nextchar
-                else:
-                    self.token = nextchar
-                    if self.token:
-                        break   # emit current token
-                    else:
-                        continue
 
-            # Process multiline-quoted text
-            elif self.state == self.multilinequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
-
-                line = self.instream.readline()
-                self.streamposition += len(line) # skip first line == ';\n'
-
-                line = self.instream.readline()
-                self.streamposition += len(line)
-
-                while True:
-                    if line == self.multilinequote:
-                        self.token = self.token + line
-                        self.state = ' '
-                        break   # emit current token
-                    else:
-                        self.token = self.token + line
+                elif self.state == ' ':
+                    if not nextchar:
+                        self.state = None  # end of file
+                        break
+                    elif nextchar in self.whitespace:
+                        if self.token:
+                            break   # emit current token
+                        else:
+                            continue
+                    elif nextchar in self.commenters:
                         line = self.instream.readline()
                         self.streamposition += len(line)
-
-            # process token staring with single quote '
-            elif self.state in self.singlequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
-
-                if nextchar == self.state:
-                    # nextnextchar = self.instream.getvalue()[self.streamposition+1]
-                    if nextnextchar not in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = self.singlequote
-                    elif nextnextchar in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = ' '
-                        break   # emit current token
-                else:
-                    self.token = self.token + nextchar
-
-            # process token staring with double quote "
-            elif self.state in self.doublequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
-                if nextchar == self.state:
-                    # nextnextchar = self.instream.getvalue()[self.streamposition + 1]
-                    if nextnextchar not in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = self.doublequote
-                    elif nextnextchar in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = ' '
-                        break
-                else:
-                    self.token = self.token + nextchar
-
-            elif self.state == 'a':
-                if not nextchar:
-                    self.state = None   # end of file
-                    break
-                elif nextchar in self.whitespace:
-                    self.state = ' '
-                    if self.token or quoted:
-                        break   # emit current token
+                    elif nextchar in self.wordchars:
+                        self.token = nextchar
+                        self.state = 'a'
+                    elif nextchar in self.singlequote:
+                        self.token = nextchar
+                        self.state = nextchar
+                    elif nextchar in self.doublequote:
+                        self.token = nextchar
+                        self.state = nextchar
+                    # elif nextchar in self.multilinequote:
+                    #     self.token = nextchar
+                    #     self.state = nextchar
                     else:
-                        continue
-                else:
-                    self.token = self.token + nextchar
+                        self.token = nextchar
+                        if self.token:
+                            break   # emit current token
+                        else:
+                            continue
+
+                # Process multiline-quoted text
+                elif self.state == self.multilinequote:
+                    quoted = True
+                    if not nextchar:      # end of file
+                        raise EOFError("No closing quotation")
+
+                    line = self.instream.readline()
+                    self.streamposition += len(line) # skip first line == ';\n'
+
+                    line = self.instream.readline()
+                    self.streamposition += len(line)
+
+                    while True:
+                        if line.startswith(';'): # end of multiline string
+                            # self.token = " ".join(self.token.split()) # clean up multiline string - remove extra ' ' and '\n' characters
+                            # self.token = ';' + self.token + ';'
+                            self.prevchar = '\n'             # if line starts with ';' previous must be '\n'
+                            self.streamposition -= len(line) # get back to the beginning of line
+                            nextchar = self.instream.read(1) # emit nextchar after ';'
+                            self.streamposition += 1
+                            self.state = ' '
+                            break   # emit current token
+                        else:
+                            self.token = self.token + line   # continue concatenating lines to token
+                            line = self.instream.readline()
+                            self.streamposition += len(line)
+
+                # process token staring with single quote '
+                elif self.state in self.singlequote:
+                    quoted = True
+                    if not nextchar:      # end of file
+                        raise EOFError("No closing quotation")
+
+                    if nextchar == self.state:
+                        if nextnextchar not in self.whitespace:
+                            self.token = self.token + nextchar
+                            self.state = self.singlequote
+                        elif nextnextchar in self.whitespace:
+                            self.token = self.token + nextchar
+                            self.state = ' '
+                            break   # emit current token
+                    else:
+                        self.token = self.token + nextchar
+
+                # process token staring with double quote "
+                elif self.state in self.doublequote:
+                    quoted = True
+                    if not nextchar:      # end of file
+                        raise EOFError("No closing quotation")
+                    if nextchar == self.state:
+                        if nextnextchar not in self.whitespace:
+                            self.token = self.token + nextchar
+                            self.state = self.doublequote
+                        elif nextnextchar in self.whitespace:
+                            self.token = self.token + nextchar
+                            self.state = ' '
+                            break
+                    else:
+                        self.token = self.token + nextchar
+
+                elif self.state == 'a':
+                    if not nextchar:
+                        self.state = None   # end of file
+                        break
+                    elif nextchar in self.whitespace:
+                        self.state = ' '
+                        if self.token or quoted:
+                            break   # emit current token
+                        else:
+                            continue
+                    else:
+                        self.token = self.token + nextchar
+
+            finally:
+                # always keep an eye on the previous character in order to process
+                # multiline strings correctly: '\n' followed by ';' followed by '\n'
+                self.prevchar = nextchar
+
         result = self.token
         self.token = ''
         return result
