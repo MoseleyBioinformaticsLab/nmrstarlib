@@ -13,7 +13,6 @@ import zipfile
 import bz2
 import gzip
 import tarfile
-
 import json
 import urllib.request
 import urllib.error
@@ -21,6 +20,7 @@ from collections import OrderedDict
 
 # from . import bmrblex
 from . import bmrblex2
+
 
 class StarFile(OrderedDict):
     """The StarFile class stores the data from a single NMR-STAR file in the
@@ -44,173 +44,56 @@ class StarFile(OrderedDict):
         # a list of saveframe categories to read, skipping the rest
         self._frame_categories = frame_categories
 
-    @classmethod
-    def from_bmrbfile(cls, filepath):
-        """Construct StarFile from local BMRB NMR-STAR file
-
-        :param str filepath: Path to NMR-STAR file
-        :return: StarFile dict
-        :rtype: dict
-        """
-        try:
-            starfile = cls()
-            with open(filepath, 'r') as infile:
-                starfile.read(infile)
-            return starfile
-        except FileNotFoundError:
-            raise FileNotFoundError("Check filename or directory name: \"{}\"".format(filepath)) from None
-
-    @classmethod
-    def from_url(cls, url):
-        """Construct StarFile from URL address of BMRB NMR-STAR file
-
-        :param str url: URL address of BMRB NMR-STAR file
-        :return: StarFile dict
-        :rtype: dict
-        """
-        try:
-            response = urllib.request.urlopen(url)
-            starfile = cls()
-            starfile.read(response)
-            return starfile
-        except urllib.error.HTTPError:
-            raise urllib.error.HTTPError("Invalid URL, check that URL is correct") from None
-
-    @classmethod
-    def from_bmrbid(cls, bmrbid, base_url = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"):
-        """Construct StarFile using BMRB NMR-STAR file id
-
-        :param str bmrbid: BMRB id of NMR-STAR file, must be integer
-        :param str base_url: URL address where BMRB stores NMR-STAR files
-        :return: StarFile dict
-        :rtype: dict
-        """
-        try:
-            bmrbid = int(bmrbid)
-            file_url = base_url + str(bmrbid)
-            starfile = cls.from_url(file_url)
-            return starfile
-        except ValueError:
-            raise ValueError ("Couldn't parse BMRB id, BMRB id must be integer") from None
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct StarFile from json file
-
-        :param str filepath: path to JSON file
-        :return: instance of `StarFile` dict class
-        :rtype: dict
-        """
-        starfile = cls()
-        with open(filepath, 'r') as infile:
-            odict = json.load(infile)
-        starfile.update(odict)
-        return starfile
-
-    def to_json(self, filepath):
-        """Save StarFile dict into JSON file
-
-        :param str filepath:
-        :return: None
-        :rtype: None
-        """
-        json_str = json.dumps(self, sort_keys=False, indent=4)
-        self.write(json_str, filepath)
-
-    def to_bmrb(self, filepath):
-        """Save StarFile dict into BMRB file
-
-        :param filepath:
-        :return:
-        """
-        pass
-
-    # @staticmethod
-    def iscompressed(self, filehandle):
-        """
-
-        :param filehandle:
-        :return:
-        """
-        file_signature = {b'\x1f\x8b\x08': 'gz',
-                          b'\x42\x5a\x68': 'bz2',
-                          b'\x50\x4b\x03\x04': 'zip'}
-
-        max_len = max(len(x) for x in file_signature)
-        file_start = filehandle.read(max_len)
-        filehandle.seek(0)
-
-        for signature, filetype in file_signature.items():
-            if file_start.startswith(signature):
-                return filetype
-        return ''
-
-    def uncompress(self, filepath, filetype):
-        filehandles = []
-
-        if filetype == 'zip':
-            ziparchive = zipfile.ZipFile(filepath)
-            for fname in ziparchive.infolist():
-                f = ziparchive.open(fname)
-                filehandles.append(f)
-
-        elif filetype == 'bz2':
-            if tarfile.is_tarfile(filepath):
-                tararchive = tarfile.open(filepath)
-                for fname in tararchive:
-                    f = tararchive.extractfile(fname)
-                    filehandles.append(f)
-            else:
-                filehandles.append(bz2.open(filepath))
-
-        elif filetype == 'gz':
-            if tarfile.is_tarfile(filepath):
-                tar = tarfile.open(filepath)
-                for fname in tar:
-                    f = tar.extractfile(fname)
-                    filehandles.append(f)
-            else:
-                filehandles.append(gzip.open(filepath))
-
-        return filehandles
-
     def read(self, filehandle):
-        """Read BMRB NMR-STAR file into `StarFile` dict object
+        """Read into :class:`~nmrstarlib.nmrstarlib.StarFile` object
 
-        :param filename: path to input BMRB NMR-STAR file
-        :return: instance of `StarFile` dict class
-        :rtype: dict
+        :param filehandle: file-like object
+        :type filehandle: :py:class:`io.TextIOWrapper`, :py:class:`gzip.GzipFile`,
+                          :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`
+        :return: instance of :class:`~nmrstarlib.nmrstarlib.StarFile`
+        :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
         """
-        lexer = bmrblex2.bmrblex(filehandle.read())
-        # lexer = bmrblex.bmrblex(filehandle.read()) # return that
-        return self._build_file(lexer)
+        streamstr = filehandle.read()
+        nmrstar_str = self._is_nmrstar(streamstr)
+        json_str = self._is_json(streamstr)
 
-    # def write(self, filename=None, f=None):
-    #     """Write `StarFile` dict object into text file
-    #
-    #     :param str filename: path of input BMRB NMR-STAR file
-    #     :param str f: path to output BMRB NMR-STAR file
-    #     :return: None
-    #     :rtype: None
-    #     """
-    #     if filename is None:
-    #         filename = self._filename
-    #
-    #     if f is None:
-    #         f = open(filename,'w')
-    #
-    #     self._print_file(f)
-    #     f.close()
+        if streamstr == '' or streamstr == b'':
+            pass
+        elif nmrstar_str:
+            lexer = bmrblex2.bmrblex(nmrstar_str)
+            # lexer = bmrblex.bmrblex(filehandle.read()) # return that
+            return self._build_file(lexer)
+        elif json_str:
+            return self.update(json_str)
+        else:
+            raise TypeError("Unknown file format")
 
-    def write(self, strrepr, filepath): # filehandle
-        """Write StarFile into file in BMRB format
+        filehandle.close()
 
-        :param str filepath: path to output file
+    def write(self, filehandle, fileformat, compressiontype=None):
+        """Write :class:`~nmrstarlib.nmrstarlib.StarFile` into file in BMRB format
+
+        :param filehandle: file-like object
+        :type filehandle: :py:class:`io.TextIOWrapper`
+        :param str fileformat:
+        :param str compressiontype:
         :return: None
         :rtype: None
         """
-        with open(filepath, 'w') as outfile:
-            outfile.write(strrepr)
+        try:
+            if fileformat == 'json':
+                self._to_json(filehandle)
+            elif fileformat == 'nmrstar':
+                self._to_nmrstar(filehandle)
+            else:
+                raise TypeError('Unknown file format.')
+        except IOError:
+            raise IOError('"filehandle" parameter must be writable.')
+
+        if compressiontype:
+            _compress(filepath=filehandle.name, compressiontype=compressiontype)
+
+        filehandle.close()
 
     def _build_file(self, lexer):
         """Build `StarFile` dict object
@@ -222,10 +105,8 @@ class StarFile(OrderedDict):
         """
         odict = self
         token = lexer.get_token()
-        # print(token) #DEBUG
 
         while token != '':
-            # print(token) #DEBUG
             try:
                 if token[0:5] == 'save_':
                     # name = token[5:]
@@ -237,16 +118,15 @@ class StarFile(OrderedDict):
                 elif token[0:5] == 'data_':
                     self.bmrbid = token[5:]
                 else:
-                    print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
-                    print("In _build_file try block", file=sys.stderr) #DEBUG
-                    raise InvalidToken("%s %s"%(lexer.error_leader(),token))
+                    print("{} Error: Invalid token {}".format(lexer.error_leader(), token), file=sys.stderr)
+                    print("In _build_file try block", file=sys.stderr)  # DEBUG
+                    raise InvalidToken("{} {}".format(lexer.error_leader(), token))
             except IndexError:
-                print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
-                print("In _build_file except block", file=sys.stderr) #DEBUG
+                print("{} Error: Invalid token {}".format(lexer.error_leader(), token), file=sys.stderr)
+                print("In _build_file except block", file=sys.stderr)  # DEBUG
                 raise
             finally:
                 token = lexer.get_token()
-                #print(token) #DEBUG
         return self
 
     def _build_sf(self, lexer):
@@ -275,17 +155,17 @@ class StarFile(OrderedDict):
                             raise SkipSaveFrame()
 
                 elif token == 'loop_':
-                    odict['loop_%s'%(loopcount)] = self._build_loop(lexer)
+                    odict['loop_{}'.format(loopcount)] = self._build_loop(lexer)
                     loopcount += 1
 
                 else:
-                    print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
-                    print("In _build_sf try block", file=sys.stderr) #DEBUG
-                    raise InvalidToken("%s %s"%(lexer.error_leader(),token))
+                    print("{} Error: Invalid token {}".format(lexer.error_leader(), token), file=sys.stderr)
+                    print("In _build_sf try block", file=sys.stderr)  # DEBUG
+                    raise InvalidToken("{} {}".format(lexer.error_leader(), token))
 
             except IndexError:
-                print("%s Error: Invalid token %s"%(lexer.error_leader(), token), file=sys.stderr)
-                print("In _build_sf except block", file=sys.stderr) #DEBUG
+                print("{} Error: Invalid token {}".format(lexer.error_leader(), token), file=sys.stderr)
+                print("In _build_sf except block", file=sys.stderr)  # DEBUG
                 raise
             except SkipSaveFrame:
                 self._skip_sf(lexer)
@@ -303,7 +183,7 @@ class StarFile(OrderedDict):
         """Skip entire saveframe - keep emitting tokens until the end of saveframe
 
         :param lexer: instance of BMRB lexical analyzer class
-        :type lexer: nmrstarlib.bmrblex.bmrblex
+        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
         :return: None
         :rtype: None
         """
@@ -316,8 +196,8 @@ class StarFile(OrderedDict):
         """Build loop inside of saveframe
 
         :param lexer: instance of BMRB lexical analyzer class
-        :type lexer: nmrstarlib.bmrblex.bmrblex
-        :return: Fields and values of the loop
+        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
+        :return: fields and values of the loop
         :rtype: tuple
         """
         fields = []
@@ -337,19 +217,22 @@ class StarFile(OrderedDict):
 
         # divide list of loop values into chunks corresponding to fields
         values = [values[i:i+len(fields)] for i in range(0, len(values), len(fields))]
+        return (fields, values)
 
         # dvalues = [OrderedDict(zip(fields, values[i:i + len(fields)])) for i in range(0, len(values), len(fields))]
-
-        return (fields, values)
         # return dvalues
 
-    def _print_file(self, filepath):
-        """Print StarFile."""
-        print("data_{}\n".format(self.bmrbid), file=filepath)
+    def _print_nmrstar(self, filehandle=sys.stdout):
+        """Print `StarFile` dict into file or stdout.
+
+        :param filepath:
+        :return:
+        """
+        print("data_{}\n".format(self.bmrbid), file=filehandle)
+
         for saveframe in self.keys():
-            print("save_{}".format(saveframe), file=filepath)
-            self._print_saveframe(filepath, saveframe, 3)
-            print("save_\n", file=filepath)
+            print("{}".format(saveframe), file=filehandle)
+            self._print_saveframe(filehandle, saveframe, 3)
 
     def _print_saveframe(self, f, sf, tw):
         """Print saveframe.
@@ -359,29 +242,78 @@ class StarFile(OrderedDict):
         for ind in self[sf].keys():
             # handle the NMR-Star "long string" type
             if self[sf][ind][0] == ';':
-                print(tw*' ',"_%s"%(ind), file=f)
-                print(";\n%s\n;"%(self[sf][ind][1:-1]), file=f)
+                print(tw*' ',"_{}".format(ind), file=f)
+                print('{}'.format(self[sf][ind]), file=f)
+
             # handle loops
             elif ind[:5] == "loop_":
                 print(tw*' ',"loop_", file=f)
-                self._print_loop(f,sf,ind,tw+3)
-                #print(2*tw*' ',"Not implemented...", file=f)
-                print(tw*' ',"stop_\n", file=f)
+                self._print_loop(f,sf,ind,tw*2)
+                print(tw*' ',"stop_", file=f)
+
             else:
-                print(tw*' ',"_%s\t%s"%(ind,self[sf][ind]), file=f)
+                print(tw*' ',"_{}\t{}".format(ind,self[sf][ind]), file=f)
 
     def _print_loop(self, f, sf, ind, tw):
         """Print loop."""
-        # First print the keys
-        for key in self[sf][ind][0].keys():
-            print(tw*' ','_%s'%(key), file=f)
-        print("\n", file=f)
+        # First print the fields
+        for field in self[sf][ind][0]:
+            print(tw*' ', '_{}'.format(field), file=f)
 
         # Then print the values
-        for record in self[sf][ind]:
-            line = tw*' ' + ' '.join(record[i] for i in record.keys())
+        for values in self[sf][ind][1]:
+            line = tw*' ' + ' '.join(values)
             print(line, file=f)
 
+    def _to_json(self, filehandle):
+        """Save :class:`nmrstarlib.nmrstarlib.StarFile` into JSON file
+
+        :param filehandle:
+        :return: None
+        :rtype: None
+        """
+        json.dump(self, filehandle, sort_keys=False, indent=4)
+
+    def _to_nmrstar(self, filehandle):
+        """Save `StarFile` dict into BMRB NMR_STAR format
+
+        :param filepath:
+        :return:
+        """
+        self._print_nmrstar(filehandle)
+
+    @staticmethod
+    def _is_nmrstar(streamstr):
+        """Test if streamstr in NMR-STAR format
+
+        :param streamstr: stream string
+        :type streamstr: str, bytes
+        :return: str or False
+        :rtype: str or False
+        """
+        if streamstr[0:5] == 'data_' or streamstr[0:5] == b'data_':
+            return streamstr
+        return False
+
+    @staticmethod
+    def _is_json(streamstr):
+        """Test if streamstr in JSON format
+
+        :param streamstr: stream string
+        :type streamstr: str, bytes
+        :return: JSON str or False
+        :rtype: JSON str if successful, False otherwise
+        """
+        try:
+            if isinstance(streamstr, bytes):
+                json_str = json.loads(streamstr.decode('utf-8'))
+            elif isinstance(streamstr, str):
+                json_str = json.loads(streamstr)
+            else:
+                raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(streamstr)))
+            return json_str
+        except ValueError:
+            return False
 
 class InvalidToken(Exception):
     def __init__(self,value):
@@ -398,36 +330,189 @@ class SkipSaveFrame(Exception):
         return 'Skipping save frame'
 
 
-if __name__ == "__main__":
-    script = sys.argv.pop(0)
-    filename = sys.argv.pop(0)
-    sf = StarFile(filename)
-    sf.to_json('jsontest2.json')
+def from_file(filepath):
+    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from file.
+
+    :param str filepath: path to file
+    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    """
+    starfile = StarFile()
+    with open(filepath, 'r') as infile:
+        is_compressed = _is_compressed(filepath)
+        if is_compressed:
+           filehandles = _decompress(filepath=filepath, compressiontype=is_compressed)
+           if len(filehandles) == 1:
+               starfile.read(filehandles[0])
+           else:
+               raise TypeError("Expecting single file, got list of {} files instead.".format(len(filehandles)))
+        else:
+            starfile.read(infile)
+    return starfile
 
 
-# class TagParserError(Exception):
-#     """Exception class for errors thrown by TagParser."""
-#     def __init__(self, message, sheetName, rowIndex, columnIndex) :
-#         self.value = message + " at cell \"" + sheetName + "\"[" + TagParserError.columnName(columnIndex) + str(rowIndex+1) + "]"
-#
-#     @staticmethod
-#     def columnName(columnIndex) :
-#         """RETURNS Excel-style column name for PARAMETER columnIndex (integer)."""
-#         if columnIndex < 0 :
-#             return ":"
-#         dividend = columnIndex+1
-#         name = ""
-#         while dividend > 0 :
-#             modulo = (dividend - 1 ) % 26
-#             name = chr(65+modulo) + name
-#             dividend = int((dividend - modulo) / 26)
-#         return name
-#
-#     def __str__(self) :
-#         return repr(self.value)
+def from_archive(archivepath):
+    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from archive.
 
-# (11:58:35 AM) Hunter Moseley: .txt, .json, .str, .gz .bz2 .zip
-# (12:02:23 PM) Hunter Moseley: toJSON and toBMRB writes to a filehandle.
-# (12:03:12 PM) Hunter Moseley: toJSONFile toBMRBFile writes to a file, but checks if it is a compressed format or not by checking the given extension of the provided filename.
-# (12:03:33 PM) Hunter Moseley: toFile
-# (12:03:40 PM) Hunter Moseley: fromFile
+    :param str archivepath: path to archive
+    :return: list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects
+    :rtype: list
+    """
+    starfiles = []
+    is_compressed = _is_compressed(archivepath)
+    if is_compressed:
+        filehandles = _decompress(filepath=archivepath, compressiontype=is_compressed)
+        for fh in filehandles:
+            starfile = StarFile()
+            starfile.read(fh)
+            if starfile:
+                starfiles.append(starfile)
+    else:
+        # need to through error here
+        print(archivepath, "is not archive file")
+    return starfiles
+
+
+def from_dir(dirpath):
+    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from directory of files.
+
+    :param str dirpath: path to directory of files
+    :return: list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects
+    :rtype: list
+    """
+    starfiles = []
+    if os.path.isdir(dirpath):
+        for root, dirs, files in os.walk(dirpath):
+            for fpath in files:
+                if _is_archive(fpath):
+                    starfiles.extend(from_archive(fpath))
+                else:
+                    starfiles.append(from_file(os.path.abspath(fpath)))
+    else:
+        # need to through error here
+        print(dirpath, "is not a directory")
+    return starfiles
+
+
+def from_url(url):
+    """Construct :class:`~nmrstarlib.nmrstarlib.StaFile` from URL address of BMRB NMR-STAR file
+
+    :param str url: URL address of BMRB NMR-STAR file
+    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    """
+    try:
+        response = urllib.request.urlopen(url)
+        starfile = StarFile()
+        starfile.read(response)
+        return starfile
+    except urllib.error.HTTPError:
+        raise urllib.error.HTTPError("Invalid URL, check that URL is correct")
+
+
+def from_bmrbid(bmrbid, base_url="http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"):
+    """Construct :class:`~nmrstarlib.nmrstarlib.StaFile` using BMRB NMR-STAR file id
+
+    :param str bmrbid: BMRB id of NMR-STAR file, must be integer
+    :param str base_url: URL address where BMRB stores NMR-STAR files
+    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
+    """
+    try:
+        bmrbid = int(bmrbid)
+        file_url = base_url + str(bmrbid)
+        starfile = from_url(file_url)
+        return starfile
+    except ValueError:
+        raise ValueError("Couldn't parse BMRB id, BMRB id must be integer")
+
+
+def _is_compressed(filepath):
+    """Check if file is compressed by reading beginning of file and checking
+    against known file signatures.
+
+    :param str filepath: path to file
+    :return: compression type str or empty str if file is not compressed
+    :rtype: str
+    """
+    file_signature = {b'\x1f\x8b\x08':     'gz',
+                      b'\x42\x5a\x68':     'bz2',
+                      b'\x50\x4b\x03\x04': 'zip'}
+
+    max_len = max(len(x) for x in file_signature)
+    with open(filepath, 'rb') as infile:
+        file_start = infile.read(max_len)
+
+    for signature, filetype in file_signature.items():
+        if file_start.startswith(signature):
+            return filetype
+    return ''
+
+
+def _decompress(filepath, compressiontype):
+    """Decompress compressed filer or archive into file-like object
+
+    :param str filepath: path to file
+    :param str compressiontype: compression type (gz, bz2, zip)
+    :return: list of filehandles
+    :rtype: list of file-like objects (:py:class:`gzip.GzipFile`, :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`)
+    """
+    filehandles = []
+
+    if compressiontype == 'zip':
+        ziparchive = zipfile.ZipFile(filepath)
+        for fname in ziparchive.infolist():
+            filehandle = ziparchive.open(fname)
+            filehandles.append(filehandle)
+            # yield filehandle
+
+    elif compressiontype == 'bz2' or compressiontype == 'gz':
+        if tarfile.is_tarfile(filepath):
+            tararchive = tarfile.open(filepath)
+            for fname in tararchive:
+                filehandle = tararchive.extractfile(fname)
+                if filehandle:
+                    filehandles.append(filehandle)
+        elif compressiontype == 'bz2':
+            filehandles.append(bz2.open(filepath))
+        elif compressiontype == 'gz':
+            filehandles.append(gzip.open(filepath))
+    else:
+        raise TypeError("Unknown compression type: {}".format(compressiontype))
+
+    return filehandles
+
+def _compress(filepath, compressiontype):
+    """Compress file using specified compression type
+
+    :param str filepath: path to uncompressed file
+    :param str compressiontype: compression type
+    :return: None
+    :rtype: None
+    """
+    if compressiontype == 'bz2':
+        with open(filepath, 'rb') as infile, bz2.open(filepath + '.bz2', 'wb') as outfile:
+            outfile.writelines(infile)
+    elif compressiontype == 'gz':
+        with open(filepath, 'rb') as infile, gzip.open(filepath + '.gz', 'wb') as outfile:
+            outfile.writelines(infile)
+    elif compressiontype == 'zip':
+        with zipfile.ZipFile(filepath + '.zip', 'w') as outfile:
+            outfile.write(filepath)
+    elif compressiontype == 'tar.bz2':
+        with tarfile.open(filepath + '.tar.bz2', 'w:bz2') as outfile:
+            outfile.add(filepath)
+    elif compressiontype == 'tar.gz':
+        with tarfile.open(filepath + '.tar.gz', 'w:gz') as outfile:
+            outfile.add(filepath)
+    else:
+        raise TypeError("Unknown compression type: {}".format(compressiontype))
+    # os.remove(filepath)
+
+
+def _is_archive(filepath):
+    if zipfile.is_zipfile(filepath):
+        return True
+    elif tarfile.is_tarfile(filepath):
+        return True
+    return False
