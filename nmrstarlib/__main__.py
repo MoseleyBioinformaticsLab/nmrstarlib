@@ -6,9 +6,9 @@ import time
 from . import nmrstarlib
 
 script = sys.argv.pop(0)
-bmrbfile = sys.argv.pop(0)
+source = sys.argv.pop(0)
 
-sf = nmrstarlib.from_file(bmrbfile)
+# sf = nmrstarlib.from_file(bmrbfile)
 # sf = nmrstarlib.from_dir(bmrbfile)
 # sf = nmrstarlib.from_archive(bmrbfile)
 # sf = nmrstarlib.from_url(bmrbfile)
@@ -26,20 +26,23 @@ sf = nmrstarlib.from_file(bmrbfile)
 
 
 # from_path, to_path
-def converter(path, from_format='nmrstar', to_format='json'):
-    if os.path.isdir(path):
-        for root, dirs, files in os.walk(path):
-            for fname in files:
-                print(fname)
-                starfile = nmrstarlib.from_file(os.path.abspath(fname))
-    else:
-        starfile = nmrstarlib.from_file(path)
-        with open(path + '.json', 'w') as outfile:
-            starfile.write(outfile, to_format)
+# def converter(path, from_format='nmrstar', to_format='json'):
+#     if os.path.isdir(path):
+#         for root, dirs, files in os.walk(path):
+#             for fname in files:
+#                 print(fname)
+#                 starfile = nmrstarlib.from_file(os.path.abspath(fname))
+#     else:
+#         starfile = nmrstarlib.from_file(path)
+#         with open(path + '.json', 'w') as outfile:
+#             starfile.write(outfile, to_format)
 
 # converter(bmrbfile)
 
-
+filenames = nmrstarlib.generate_filenames(source)
+filehandles = nmrstarlib.generate_handles(filenames)
+for sf in nmrstarlib.from_whatever(filehandles):
+    print("StarFile ID:", sf.bmrbid)
 
 
 

@@ -9,6 +9,7 @@ nmrstarlib.nmrstarlib
 
 import sys
 import os
+import io
 import zipfile
 import bz2
 import gzip
@@ -49,7 +50,7 @@ class StarFile(OrderedDict):
 
         :param filehandle: file-like object
         :type filehandle: :py:class:`io.TextIOWrapper`, :py:class:`gzip.GzipFile`,
-                          :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`
+                          :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`, :py:class:`generator`
         :return: instance of :class:`~nmrstarlib.nmrstarlib.StarFile`
         :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
         """
@@ -329,109 +330,95 @@ class SkipSaveFrame(Exception):
     def __str__(self):
         return 'Skipping save frame'
 
+def generate_filenames(source):
+    bmrb_url = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
 
-def from_file(filepath):
-    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from file.
-
-    :param str filepath: path to file
-    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    """
-    starfile = StarFile()
-    with open(filepath, 'r') as infile:
-        is_compressed = _is_compressed(filepath)
-        if is_compressed:
-           filehandles = _decompress(filepath=filepath, compressiontype=is_compressed)
-           if len(filehandles) == 1:
-               starfile.read(filehandles[0])
-           else:
-               raise TypeError("Expecting single file, got list of {} files instead.".format(len(filehandles)))
-        else:
-            starfile.read(infile)
-    return starfile
-
-
-def from_archive(archivepath):
-    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from archive.
-
-    :param str archivepath: path to archive
-    :return: list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects
-    :rtype: list
-    """
-    starfiles = []
-    is_compressed = _is_compressed(archivepath)
-    if is_compressed:
-        filehandles = _decompress(filepath=archivepath, compressiontype=is_compressed)
-        for fh in filehandles:
-            starfile = StarFile()
-            starfile.read(fh)
-            if starfile:
-                starfiles.append(starfile)
+    if os.path.isdir(source):
+        for path, dirlist, filelist in os.walk(source):
+            for fname in filelist:
+                yield os.path.join(path, fname)
+    elif os.path.isfile(source):
+        yield source
+    elif source.isdigit():
+        yield bmrb_url + source
+    elif _is_url(source):
+        yield source
     else:
-        # need to through error here
-        print(archivepath, "is not archive file")
-    return starfiles
+        raise TypeError("Uknown gpath parameter")
 
+def generate_handles(filenames):
+    """Open a sequence of filenames one at time producing file object.
+    The file is closed immediately when proceeding to the next iteration.
 
-def from_dir(dirpath):
-    """Read into :class:`~nmrstarlib.nmrstarlib.StaFile` from directory of files.
-
-    :param str dirpath: path to directory of files
-    :return: list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects
-    :rtype: list
+    :param filenames:
+    :type filenames: :py:class:`generator`
+    :return:
     """
-    starfiles = []
-    if os.path.isdir(dirpath):
-        for root, dirs, files in os.walk(dirpath):
-            for fpath in files:
-                if _is_archive(fpath):
-                    starfiles.extend(from_archive(fpath))
-                else:
-                    starfiles.append(from_file(os.path.abspath(fpath)))
+    for fname in filenames:
+        urlrequest = _is_url(fname)
+        if urlrequest:
+            try:
+                compressiontype = _is_compressed(fname)
+                if not compressiontype:
+                    urlhandle = urllib.request.urlopen(urlrequest)
+                    yield urlhandle
+                    urlhandle.close()
+                elif compressiontype:
+                    raise NotImplementedError("URL decompression is not implemented")
+            except urllib.error.HTTPError as e:
+                raise urllib.error.HTTPError(e.url, e.code, "Invalid URL, check that URL is correct", e.hdrs, e.fp)
+
+        elif os.path.isfile(fname):
+            compressiontype = _is_compressed(fname)
+            if not compressiontype:
+                filehandle = open(fname, 'r')
+                yield filehandle
+                filehandle.close()
+            elif compressiontype:
+                for filehandle in generate_archivehandles(fname, compressiontype):
+                    yield filehandle
+                    filehandle.close()
+
+def generate_archivehandles(path, compressiontype):
+    if compressiontype == 'zip':
+        ziparchive = zipfile.ZipFile(path)
+        for name in ziparchive.infolist():
+            if not name.filename.endswith('/'):
+                filehandle = ziparchive.open(name)
+                yield filehandle
+                filehandle.close()
+
+    elif compressiontype == 'tar.bz2' or compressiontype == 'tar.gz':
+        tararchive = tarfile.open(path)
+        for name in tararchive:
+            if name.isfile():
+                filehandle = tararchive.extractfile(name)
+                yield filehandle
+                filehandle.close()
+
+    elif compressiontype == 'bz2':
+        filehandle = bz2.open(path)
+        yield filehandle
+        filehandle.close()
+
+    elif compressiontype == 'gz':
+        filehandle = gzip.open(path)
+        yield filehandle
+        filehandle.close()
     else:
-        # need to through error here
-        print(dirpath, "is not a directory")
-    return starfiles
+        raise TypeError("Unknown compression type: {}".format(compressiontype))
 
-
-def from_url(url):
-    """Construct :class:`~nmrstarlib.nmrstarlib.StaFile` from URL address of BMRB NMR-STAR file
-
-    :param str url: URL address of BMRB NMR-STAR file
-    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    """
-    try:
-        response = urllib.request.urlopen(url)
+def from_whatever(source):
+    for fh in source:
         starfile = StarFile()
-        starfile.read(response)
-        return starfile
-    except urllib.error.HTTPError:
-        raise urllib.error.HTTPError("Invalid URL, check that URL is correct")
+        starfile.read(fh)
+        yield starfile
 
-
-def from_bmrbid(bmrbid, base_url="http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"):
-    """Construct :class:`~nmrstarlib.nmrstarlib.StaFile` using BMRB NMR-STAR file id
-
-    :param str bmrbid: BMRB id of NMR-STAR file, must be integer
-    :param str base_url: URL address where BMRB stores NMR-STAR files
-    :return: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
-    """
-    try:
-        bmrbid = int(bmrbid)
-        file_url = base_url + str(bmrbid)
-        starfile = from_url(file_url)
-        return starfile
-    except ValueError:
-        raise ValueError("Couldn't parse BMRB id, BMRB id must be integer")
-
-
-def _is_compressed(filepath):
+def _is_compressed(path):
     """Check if file is compressed by reading beginning of file and checking
     against known file signatures.
 
-    :param str filepath: path to file
+    :param str path: path to file
     :return: compression type str or empty str if file is not compressed
     :rtype: str
     """
@@ -440,47 +427,42 @@ def _is_compressed(filepath):
                       b'\x50\x4b\x03\x04': 'zip'}
 
     max_len = max(len(x) for x in file_signature)
-    with open(filepath, 'rb') as infile:
-        file_start = infile.read(max_len)
 
-    for signature, filetype in file_signature.items():
-        if file_start.startswith(signature):
-            return filetype
+    if _is_url(path):
+        with urllib.request.urlopen(path) as infile:
+            data = infile.read()
+            for signature, filetype in file_signature.items():
+                if data.startswith(signature):
+                    try:
+                        tararchive = tarfile.open(fileobj=io.BytesIO(data))
+                        return 'tar.' + filetype
+                    except tarfile.TarError:
+                        return filetype
+
+    elif os.path.isfile(path):
+        with open(path, 'rb') as infile:
+            file_start = infile.read(max_len)
+
+        for signature, filetype in file_signature.items():
+            if file_start.startswith(signature):
+                if not tarfile.is_tarfile(path):
+                    return filetype
+                elif tarfile.is_tarfile(path):
+                    return 'tar.' + filetype
     return ''
 
-
-def _decompress(filepath, compressiontype):
-    """Decompress compressed filer or archive into file-like object
-
-    :param str filepath: path to file
-    :param str compressiontype: compression type (gz, bz2, zip)
-    :return: list of filehandles
-    :rtype: list of file-like objects (:py:class:`gzip.GzipFile`, :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`)
-    """
-    filehandles = []
-
-    if compressiontype == 'zip':
-        ziparchive = zipfile.ZipFile(filepath)
-        for fname in ziparchive.infolist():
-            filehandle = ziparchive.open(fname)
-            filehandles.append(filehandle)
-            # yield filehandle
-
-    elif compressiontype == 'bz2' or compressiontype == 'gz':
-        if tarfile.is_tarfile(filepath):
-            tararchive = tarfile.open(filepath)
-            for fname in tararchive:
-                filehandle = tararchive.extractfile(fname)
-                if filehandle:
-                    filehandles.append(filehandle)
-        elif compressiontype == 'bz2':
-            filehandles.append(bz2.open(filepath))
-        elif compressiontype == 'gz':
-            filehandles.append(gzip.open(filepath))
-    else:
-        raise TypeError("Unknown compression type: {}".format(compressiontype))
-
-    return filehandles
+def _iscompressed(path):
+    if path.endswith('.zip'):
+        return 'zip'
+    elif path.endswith('.tar.gz'):
+        return 'tar.gz'
+    elif path.endswith('.tar.bz2'):
+        return 'tar.bz2'
+    elif path.endswith('.gz'):
+        return 'gz'
+    elif path.endswith('.bz2'):
+        return 'bz2'
+    return ''
 
 def _compress(filepath, compressiontype):
     """Compress file using specified compression type
@@ -516,3 +498,19 @@ def _is_archive(filepath):
     elif tarfile.is_tarfile(filepath):
         return True
     return False
+
+def _is_url(path):
+    try:
+        return urllib.request.Request(path)
+    except:
+        return False
+
+
+
+
+# from io import BytesIO
+# resp = urllib.request.urlopen('https://dl.dropboxusercontent.com/u/13554651/18569.zip')
+# bs = resp.read()
+# ziparchive = zipfile.ZipFile(io.BytesIO(bs), 'r')
+# tararchive = tarfile.open(fileobj=BytesIO(bs))
+
