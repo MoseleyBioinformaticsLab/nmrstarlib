@@ -1,22 +1,20 @@
 import sys
 import json
 import os
+import zipfile
+import tarfile
 import time
 
 from . import nmrstarlib
 
-script = sys.argv.pop(0)
-source = sys.argv.pop(0)
+script = sys.argv[0]
+sources = sys.argv[1:]
 
 # sf = nmrstarlib.from_file(bmrbfile)
 # sf = nmrstarlib.from_dir(bmrbfile)
 # sf = nmrstarlib.from_archive(bmrbfile)
 # sf = nmrstarlib.from_url(bmrbfile)
 # sf = nmrstarlib.from_bmrbid(bmrbfile)
-# for k in sf.keys():
-#     print(k)
-
-# print(sf["save_assigned_chem_shift_list_1"])
 
 # with open('jsontest8.json', 'w') as outfile:
 #     sf.write(outfile, fileformat='json', compressiontype='tar.bz2')
@@ -25,28 +23,29 @@ source = sys.argv.pop(0)
 #     sf.write(outfile, fileformat='nmrstar', compressiontype='bz2')
 
 
-# from_path, to_path
-# def converter(path, from_format='nmrstar', to_format='json'):
-#     if os.path.isdir(path):
-#         for root, dirs, files in os.walk(path):
-#             for fname in files:
-#                 print(fname)
-#                 starfile = nmrstarlib.from_file(os.path.abspath(fname))
-#     else:
-#         starfile = nmrstarlib.from_file(path)
-#         with open(path + '.json', 'w') as outfile:
-#             starfile.write(outfile, to_format)
+def convert(from_path, output_dir='converted_files', from_format='nmrstar', to_format='json', output_dir_compression=''):
+    file_extension = {'json': '.json',
+                      'nmrstar': '.txt'}
 
-# converter(bmrbfile)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-filenames = nmrstarlib.generate_filenames(source)
-filehandles = nmrstarlib.generate_handles(filenames)
-for sf in nmrstarlib.from_whatever(filehandles):
-    print("StarFile ID:", sf.bmrbid)
+    for sf in nmrstarlib.from_whatever(from_path):
+        if not output_dir_compression:
+            with open(os.path.join(output_dir, sf.bmrbid + file_extension[to_format]), 'w') as outfile:
+                outfile.write(sf.writestr(to_format))
+        elif output_dir_compression == 'zip':
+            with zipfile.ZipFile(output_dir + '.' + output_dir_compression, mode='a', compression=zipfile.ZIP_DEFLATED) as outfile:
+                outfile.writestr(sf.bmrbid + file_extension[to_format], sf.writestr(to_format))
+
+# convert(sources, output_dir_compression='zip')
 
 
-
-
+for sf in nmrstarlib.from_whatever(sources):
+    print("BMRB ID:", sf.bmrbid)
+    print("Source:", sf.source)
+#     print("Basename:", os.path.basename(sf.source))
+#     print("Dirname:", os.path.dirname(sf.source))
 
 
 # # ============================= timetest
@@ -75,3 +74,4 @@ for sf in nmrstarlib.from_whatever(filehandles):
 # tb = time.time()
 # print("END:\r\t\t", tb)
 # print("Files read in {} seconds".format(tb-ta))
+
