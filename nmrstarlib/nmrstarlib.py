@@ -344,32 +344,33 @@ class InvalidToken(Exception):
     def __str__(self):
         return repr(self.parameter)
 
-
 class SkipSaveFrame(Exception):
     def __init__(self):
         pass
     def __str__(self):
         return 'Skipping save frame'
 
-def generate_filenames(sources): # generate_filehandles()
+def generate_filenames(sources):
     bmrb_url = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
 
     # have testing
     # directory - yield files from dirwectory, do not yield anything else
     # tarfile - yield files from
-
+    # path = GenericFilePath(source)
     for source in sources:
-        # path = GenericFilePath(source)
-
         if os.path.isdir(source):
             for path, dirlist, filelist in os.walk(source):
                 for fname in filelist:
-                    yield os.path.join(path, fname)
+                    if GenericFilePath.is_compressed(fname):
+                        print("Skipping compressed file: {}".format(os.path.abspath(fname)))
+                        continue
+                    else:
+                        yield os.path.join(path, fname)
         elif os.path.isfile(source):
             yield source
         elif source.isdigit():
             yield bmrb_url + source
-        elif _is_url(source):
+        elif GenericFilePath.is_url(source):
             yield source
         else:
             raise TypeError("Unknown file source.")
@@ -383,15 +384,15 @@ def generate_handles(filenames):
     :return:
     """
     for fname in filenames:
-        path = GenericFilePath.create_path(fname)
+        path = GenericFilePath(fname)
         for filehandle, source in path.open():
             yield filehandle, source
             filehandle.close()
 
-def from_whatever(sources): # read_files()
+def read_files(sources):
     filenames = generate_filenames(sources) # -> yield single filehandles
 
-    # for fname in filename:
+    # for fname in filenames:
           # open filehandle
           # starfile = StarFile(fname)
           # starfile.read(filehandle)
@@ -405,117 +406,32 @@ def from_whatever(sources): # read_files()
         starfile.read(fh)
         yield starfile
 
-def _is_url(path):
-    try:
-        return urllib.request.Request(path)
-    except:
-        return False
-
 class GenericFilePath(object):
-    file_signature = {b'\x1f\x8b\x08': 'gz',
-                      b'\x42\x5a\x68': 'bz2',
-                      b'\x50\x4b\x03\x04': 'zip'}
 
-    @staticmethod
-    def create_path(path):
-        if os.path.isfile(path):
-            return LocalFilePath(path)
-        elif _is_url(path):
-            return URLFilePath(path)
-
-class LocalFilePath(GenericFilePath):
     def __init__(self, path):
         self.path = path
 
-    def is_compressed(self):
-        max_len = max(len(x) for x in self.file_signature)
-        with open(self.path, 'rb') as infile:
-            file_start = infile.read(max_len)
-
-            for signature, filetype in self.file_signature.items():
-                if file_start.startswith(signature):
-                    if not tarfile.is_tarfile(self.path):
-                        return filetype
-                    elif tarfile.is_tarfile(self.path):
-                        return 'tar.' + filetype
-        return ''
-
     def open(self):
-        compressiontype = self.is_compressed()
+        is_url = self.is_url(self.path)
+        compressiontype = self.is_compressed(self.path)
 
         if not compressiontype:
-            filehandle = open(self.path, 'r')
-            # source = os.path.abspath(self.path)
-            source = self.path
-            yield filehandle, source
-            filehandle.close()
-
-        elif compressiontype == 'zip':
-            ziparchive = zipfile.ZipFile(self.path)
-            for name in ziparchive.infolist():
-                if not name.filename.endswith('/'):
-                    filehandle = ziparchive.open(name)
-                    # source = os.path.abspath(self.path) + '/' + name.filename
-                    source = self.path + '/' + name.filename
-                    yield filehandle, source
-                    filehandle.close()
-
-        elif compressiontype == 'tar.bz2' or compressiontype == 'tar.gz':
-            tararchive = tarfile.open(self.path)
-            for name in tararchive:
-                if name.isfile():
-                    filehandle = tararchive.extractfile(name)
-                    # source = os.path.abspath(self.path) + '/' + name.name
-                    source = self.path + '/' + name.name
-                    yield filehandle, source
-                    filehandle.close()
-
-        elif compressiontype == 'bz2':
-            filehandle = bz2.open(self.path)
-            # source = os.path.abspath(self.path)
-            source = self.path
-            yield filehandle, source
-            filehandle.close()
-
-        elif compressiontype == 'gz':
-            filehandle = gzip.open(self.path)
-            # source = os.path.abspath(self.path)
-            source = self.path
-            yield filehandle, source
-            filehandle.close()
-
-class URLFilePath(GenericFilePath):
-    def __init__(self, path):
-        self.path = path
-
-    def is_compressed(self):
-        with urllib.request.urlopen(self.path) as infile:
-            data = infile.read()
-            for signature, filetype in self.file_signature.items():
-                if data.startswith(signature):
-                    try:
-                        tararchive = tarfile.open(fileobj=io.BytesIO(data))
-                        return 'tar.' + filetype
-                    except tarfile.TarError:
-                        return filetype
-        return ''
-
-    def open(self):
-        compressiontype = self.is_compressed()
-
-        if not compressiontype:
-            filehandle = urllib.request.urlopen(self.path)
+            if is_url:
+                filehandle = urllib.request.urlopen(self.path)
+            else:
+                filehandle = open(self.path, 'r')
             source = self.path
             yield filehandle, source
             filehandle.close()
 
         elif compressiontype:
-            response = urllib.request.urlopen(self.path)
-            bytestr = response.read()
-            response.close()
+            if is_url:
+                response = urllib.request.urlopen(self.path)
+                bytestr = response.read()
+                response.close()
 
             if compressiontype == 'zip':
-                ziparchive = zipfile.ZipFile(io.BytesIO(bytestr), 'r')
+                ziparchive = zipfile.ZipFile(io.BytesIO(bytestr), 'r') if is_url else zipfile.ZipFile(self.path)
                 for name in ziparchive.infolist():
                     if not name.filename.endswith('/'):
                         filehandle = ziparchive.open(name)
@@ -523,8 +439,8 @@ class URLFilePath(GenericFilePath):
                         yield filehandle, source
                         filehandle.close()
 
-            elif compressiontype == 'tar.bz2' or compressiontype == 'tar.gz':
-                tararchive = tarfile.open(fileobj=io.BytesIO(bytestr))
+            elif compressiontype in ('tar', 'tar.bz2', 'tar.gz'):
+                tararchive = tarfile.open(fileobj=io.BytesIO(bytestr)) if is_url else tarfile.open(self.path)
                 for name in tararchive:
                     if name.isfile():
                         filehandle = tararchive.extractfile(name)
@@ -533,29 +449,39 @@ class URLFilePath(GenericFilePath):
                         filehandle.close()
 
             elif compressiontype == 'bz2':
-                filehandle = bz2.open(io.BytesIO(bytestr))
+                filehandle = bz2.open(io.BytesIO(bytestr)) if is_url else bz2.open(self.path)
                 source = self.path
                 yield filehandle, source
                 filehandle.close()
 
             elif compressiontype == 'gz':
-                filehandle = gzip.open(io.BytesIO(bytestr))
+                filehandle = gzip.open(io.BytesIO(bytestr)) if is_url else gzip.open(self.path)
                 source = self.path
                 yield filehandle, source
                 filehandle.close()
 
-def _iscompressed(path):
-    if path.endswith('.zip'):
-        return 'zip'
-    elif path.endswith('.tar.gz'):
-        return 'tar.gz'
-    elif path.endswith('.tar.bz2'):
-        return 'tar.bz2'
-    elif path.endswith('.gz'):
-        return 'gz'
-    elif path.endswith('.bz2'):
-        return 'bz2'
-    return ''
+    @staticmethod
+    def is_compressed(path):
+        if path.endswith('.zip'):
+            return 'zip'
+        elif path.endswith('.tar.gz'):
+            return 'tar.gz'
+        elif path.endswith('.tar.bz2'):
+            return 'tar.bz2'
+        elif path.endswith('.gz'):
+            return 'gz'
+        elif path.endswith('.bz2'):
+            return 'bz2'
+        elif path.endswith('.tar'):
+            return 'tar'
+        return ''
+
+    @staticmethod
+    def is_url(path):
+        try:
+            return urllib.request.Request(path)
+        except:
+            return False
 
 def _compress(filepath, compressiontype):
     """Compress file using specified compression type
