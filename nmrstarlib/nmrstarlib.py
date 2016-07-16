@@ -261,6 +261,7 @@ class StarFile(OrderedDict):
 
         :param io.StringIO f: writable file-like stream.
         :param str format: Format to use: `nmrstar` or `json`.
+        :param int tw: Tab width.
         :return: None
         :rtype: None
         """
@@ -283,6 +284,7 @@ class StarFile(OrderedDict):
 
         :param str sf: Saveframe name.
         :param io.StringIO f: writable file-like stream.
+        :param str format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
         :rtype: None
@@ -314,6 +316,7 @@ class StarFile(OrderedDict):
         :param str sf: Saveframe name.
         :param str sftag: Saveframe tag, i.e. field name.
         :param io.StringIO f: writable file-like stream.
+        :param str format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
         :rtype: None

@@ -137,7 +137,7 @@ using bracket accessors.
    'Entry_author.First_initial', 'Entry_author.Middle_initials',
    'Entry_author.Family_title', 'Entry_author.Entry_ID']
    >>>
-   >>> # loop values is a list of dictionaries, every loop entry is accessed by index:
+   >>> # loop values is a list of dictionaries:
    >>> starfile["save_entry_information"]["loop_0"][1]
    [OrderedDict([('Entry_author.Ordinal', '1'),
                  ('Entry_author.Given_name', 'Linda'),
@@ -154,6 +154,7 @@ using bracket accessors.
                  ('Entry_author.Family_title', '.'),
                  ('Entry_author.Entry_ID', '18569')])]
    >>>
+   >>> # every loop entry is accessed by index:
    >>> starfile["save_entry_information"]["loop_0"].[1][0]["Entry_author.Family_name"]
    'Ball'
    >>> starfile["save_entry_information"]["loop_0"].[1][1]["Entry_author.Family_name"]
@@ -274,7 +275,8 @@ using bracket accessors.
 
    * Accessing chemical shifts data:
 
-   Chemical shifts data can be accessed using bracket accessors as described above:
+   Chemical shifts data can be accessed using bracket accessors as described above using
+   `saveframe` name:
 
    >>> starfile["save_assigned_chem_shift_list_1"]["loop_1"][0]
    ['Atom_chem_shift.ID', 'Atom_chem_shift.Assembly_atom_ID',
@@ -450,38 +452,38 @@ One-to-one file conversions
 
    * Convert from local file in NMR-STAR format to local file JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert 18569.txt 18569.json \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert 18569.txt 18569.json \
+                --from_format=nmrstar --to_format=json
 
    * Convert from local file in JSON format to local file in NMR-STAR format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert 18569.json 18569.txt \
-              --from_format=json --to_format=nmrstar
+      $ python3 -m nmrstarlib convert 18569.json 18569.txt \
+                --from_format=json --to_format=nmrstar
 
    * Convert from compressed local file in NMR-STAR format to compressed local file in JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert 18569.txt.gz 18569.json.gz \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert 18569.txt.gz 18569.json.gz \
+                --from_format=nmrstar --to_format=json
 
    * Convert from compressed local file in JSON format to compressed local file in NMR-STAR format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert 18569.json.gz 18569.txt.gz \
-              --from_format=json --to_format=nmrstar
+      $ python3 -m nmrstarlib convert 18569.json.gz 18569.txt.gz \
+                --from_format=json --to_format=nmrstar
 
    * Convert from uncompressed url file in NMR-STAR format to compressed local file in JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert 18569 18569.json.bz2 \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert 18569 18569.json.bz2 \
+                --from_format=nmrstar --to_format=json
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available conversions.
 
@@ -490,38 +492,38 @@ Many-to-many files conversions
 
    * Convert from directory of files in NMR-STAR format to directory of files in JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_dir_json \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_dir_json \
+                --from_format=nmrstar --to_format=json
 
    * Convert from directory of files in JSON format to directory of files in NMR-STAR format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert starfiles_dir_json starfiles_dir_nmrstar \
-              --from_format=json --to_format=nmrstar
+      $ python3 -m nmrstarlib convert starfiles_dir_json starfiles_dir_nmrstar \
+                --from_format=json --to_format=nmrstar
 
    * Convert from directory of files in NMR-STAR format to zip archive of files in JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_json.zip \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_json.zip \
+                --from_format=nmrstar --to_format=json
 
    * Convert from archive of files in JSON format to directory of files in NMR-STAR format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert starfiles_json.tar.gz starfiles_dir_nmrstar \
-              --from_format=json --to_format=nmrstar
+      $ python3 -m nmrstarlib convert starfiles_json.tar.gz starfiles_dir_nmrstar \
+                --from_format=json --to_format=nmrstar
 
    * Convert from archive of files in NMR-STAR format to archive of files in JSON format:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib convert starfiles_nmrstar.zip starfile_json.tar.bz2 \
-              --from_format=nmrstar --to_format=json
+      $ python3 -m nmrstarlib convert starfiles_nmrstar.zip starfile_json.tar.bz2 \
+                --from_format=nmrstar --to_format=json
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available conversions.
 
@@ -531,10 +533,10 @@ Visualizing chemical shift values
 
    * Visualize chemical shift values for entire sequence:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib csview 18569 \
-              --csview_outfile=18569_chem_shifts_all --csview_format=png
+      $ python3 -m nmrstarlib csview 18569 \
+                --csview_outfile=18569_chem_shifts_all --csview_format=png
 
    .. image:: _static/images/18569_chem_shifts_all.png
       :width: 110%
@@ -542,12 +544,12 @@ Visualizing chemical shift values
 
    * Visualize `CA`, `CB`, `CG`, and `CG2` chemical shift values for `GLU` and `THR` amino acid residues:
 
-   .. code::
+   .. code:: bash
 
-      python3 -m nmrstarlib csview 18569 \
-              --aminoacids=GLU,THR --atoms=CA,CB,CG,CG2 \
-              --csview_outfile=18569_chem_shifts_GLU_THR_CA_CB_CG_CG2 \
-              --csview_format=png
+      $ python3 -m nmrstarlib csview 18569 \
+                --aminoacids=GLU,THR --atoms=CA,CB,CG,CG2 \
+                --csview_outfile=18569_chem_shifts_GLU_THR_CA_CB_CG_CG2 \
+                --csview_format=png
 
    .. image:: _static/images/18569_chem_shifts_GLU_THR_CA_CB_CG_CG2.png
       :width: 60%

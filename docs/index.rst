@@ -6,13 +6,15 @@
 Welcome to nmrstarlib's documentation!
 ======================================
 
-Python library for parsing data from NMR-STAR format files.
+Python library for parsing and manipulating data from NMR-STAR format files
+used by Biological Magnetic Resonance Bank (BMRB_).
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   guide
    tutorial
    api
    license
@@ -25,4 +27,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _BMRB: http://www.bmrb.wisc.edu
 

@@ -24,6 +24,10 @@ Simplified description of parsing rules:
    * Multiline strings starts with semicolon *always* followed by new line character and
      end with semicolon *always* followed by whitespace character(s).
    * Multiline strings are processed one line at a time.
+
+.. note::
+   * For full description of NMR-STAR file format see official documentation: http://www.bmrb.wisc.edu/dictionary/
+   * For concise description of NMR-STAR file format grammar see: https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
 """
 
 import sys
