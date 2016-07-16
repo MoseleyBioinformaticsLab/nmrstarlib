@@ -1,0 +1,32 @@
+{
+    "chemshifts_loop": [
+        "Atom_chem_shift.ID",
+        "Atom_chem_shift.Assembly_atom_ID",
+        "Atom_chem_shift.Entity_assembly_ID",
+        "Atom_chem_shift.Entity_ID",
+        "Atom_chem_shift.Comp_index_ID", 
+        "Atom_chem_shift.Seq_ID", 
+        "Atom_chem_shift.Comp_ID",
+        "Atom_chem_shift.Atom_ID", 
+        "Atom_chem_shift.Atom_type",
+        "Atom_chem_shift.Atom_isotope_number", 
+        "Atom_chem_shift.Val", 
+        "Atom_chem_shift.Val_err",
+        "Atom_chem_shift.Assign_fig_of_merit", 
+        "Atom_chem_shift.Ambiguity_code",
+        "Atom_chem_shift.Occupancy", 
+        "Atom_chem_shift.Resonance_ID",
+        "Atom_chem_shift.Auth_entity_assembly_ID", 
+        "Atom_chem_shift.Auth_asym_ID",
+        "Atom_chem_shift.Auth_seq_ID", 
+        "Atom_chem_shift.Auth_comp_ID",
+        "Atom_chem_shift.Auth_atom_ID", 
+        "Atom_chem_shift.Details", 
+        "Atom_chem_shift.Entry_ID",
+        "Atom_chem_shift.Assigned_chem_shift_list_ID"
+    ],
+    "aminoacid_seq_id": "Atom_chem_shift.Seq_ID",
+    "aminoacid_code": "Atom_chem_shift.Comp_ID",
+    "atom_code": "Atom_chem_shift.Atom_ID",
+    "chemshift_value": "Atom_chem_shift.Val"
+}

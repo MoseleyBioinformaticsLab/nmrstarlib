@@ -26,5 +26,5 @@ import os
 from . import nmrstarlib
 
 this_directory = os.path.dirname(__file__)
-config_file = os.path.join(this_directory, '../config/constants.json')
+config_file = os.path.join(this_directory, '../conf/constants.json')
 nmrstarlib.update_constants(config_file)
