@@ -1,0 +1,4 @@
+include README.rst LICENSE
+include requirements.txt
+include conf/*.json
+recursive-include docs *.rst *.txt *.py *.png *.svg
