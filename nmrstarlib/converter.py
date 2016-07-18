@@ -5,8 +5,8 @@
 nmrstarlib.converter
 ~~~~~~~~~~~~~~~~~~~~
 
-Module provides conversion functionality to convert BMRB NMR-STAR files
-from NMR-STAR format to JSON format or from JSON format to NMR-STAR format.
+This module provides functionality for converting between the BMRB
+NMR-STAR format and an equivalent JSONized format.
 
 The following conversions are possible:
 

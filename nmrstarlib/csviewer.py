@@ -5,17 +5,18 @@
 nmrstarlib.csviewer
 ~~~~~~~~~~~~~~~~~~~
 
-This module provides :func:`~nmrstarlib.csviewer.csviewer` function - Chemical Shifts Viwer
+This module provides the :func:`~nmrstarlib.csviewer.csviewer` function - Chemical Shifts Viewer
 that visualizes chemical shifts values.
 """
 
 from graphviz import Source
 from . import nmrstarlib
 
+
 def csviewer(from_path, aminoacids=None, atoms=None, filename=None, format='svg', view=False):
     """Chemical Shifts Viewer: uses :meth:`nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue`
-    method chemical shifts organized by residue and visualizes chemical shifts values using
-    graphviz (http://www.graphviz.org/) DOT Languge description.
+    method chemical shifts organized by residue and visualizes chemical shifts values using the
+    Graphviz (http://www.graphviz.org/) DOT Languge description.
 
     :param str from_path: Path to single NMR-STAR file or BMRB id.
     :param list aminoacids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.

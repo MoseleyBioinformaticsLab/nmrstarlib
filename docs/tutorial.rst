@@ -1,14 +1,15 @@
 The nmrstarlib Tutorial
 =======================
 
-The nmrstarlib can be used as a library in order to access and/or manipulate data stored
-in NMR-STAR file format. Also nmrstarlib provides simple command-line interface.
+The :mod:`nmrstarlib` module is a impotable library, providing classes and other
+facilities for parsing, accessing, and manipulating data stored in NMR-STAR and
+JSONized NMR-STAR formats. Also, nmrstarlib provides simple command-line interface.
 
-Using nmrstarlib as a library
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Using nmrstarlib module as a library
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Importing nmrstarlib
---------------------
+Importing nmrstarlib module
+---------------------------
 
 If nmrstarlib is installed on the system it can be imported:
 
@@ -36,33 +37,35 @@ directory of NMR-STAR files, archive of NMR-STAR files or BMRB id:
 Processing StarFile generator
 -----------------------------
 
-:class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in several ways:
+The :class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in several ways:
 
-   * Feed it to for-loop and process one file at a time:
+   * Feed it to a for-loop and process one file at a time:
 
    >>> for starfile in dir_starfiles:
+   >>>     print(starfile.bmrbid)                  # print BMRB id of StarFile
+   >>>     print(starfile.source)                  # print source of StarFile
    >>>     for saveframe_name in starfile.keys():  # print saveframe names
    >>>         print(saveframe_name)
 
    .. note:: Once generator is consumed it becomes empty and needs to be created again.
 
-   * Since :class:`~nmrstarlib.nmrstarlib.StarFile` generator behaves like an iterator, we can call
-     :py:func:`next` built-in function:
+   * Since the :class:`~nmrstarlib.nmrstarlib.StarFile` generator behaves like an iterator,
+     we can call the :py:func:`next` built-in function:
 
    >>> starfile1 = next(dir_starfiles)
    >>> starfile2 = next(dir_starfiles)
    >>> ...
 
-   .. note:: Once generator is consumed, :py:class:`StopIteration` will be raised.
+   .. note:: Once the generator is consumed, :py:class:`StopIteration` will be raised.
 
-   * Convert :class:`~nmrstarlib.nmrstarlib.StarFile` generator into a :py:class:`list` of
+   * Convert the :class:`~nmrstarlib.nmrstarlib.StarFile` generator into a :py:class:`list` of
      :class:`~nmrstarlib.nmrstarlib.StarFile` objects:
 
    >>> starfiles_list = list(dir_starfiles)
 
-   .. warning:: Do not convert :class:`~nmrstarlib.nmrstarlib.StarFile` generator into :py:class:`list`
-                if generator can yield large number of files, e.g. several thousands, otherwise
-                it can consume all available memory.
+   .. warning:: Do not convert the :class:`~nmrstarlib.nmrstarlib.StarFile` generator into a
+                :py:class:`list` if the generator can yield a large number of files, e.g.
+                several thousand, otherwise it can consume all available memory.
 
 Accessing and manipulating data from a single StarFile
 ------------------------------------------------------
@@ -160,8 +163,8 @@ using bracket accessors.
    >>> starfile["save_entry_information"]["loop_0"].[1][1]["Entry_author.Family_name"]
    'Peter'
 
-   * Manipulating data in :class:`~nmrstarlib.nmrstarlib.StarFile` is easy - access data using bracket accessors
-     and set a new value:
+   * Manipulating data in a :class:`~nmrstarlib.nmrstarlib.StarFile` is easy - access data
+     using bracket accessors and set a new value:
 
    >>> starfile["data"] = "18569_modified"
    >>> starfile["data"]
@@ -175,7 +178,7 @@ using bracket accessors.
    '2015-07-05'
    >>>
 
-   * Printing :class:`~nmrstarlib.nmrstarlib.StarFile` and its components (`saveframe` and `loop` data):
+   * Printing a :class:`~nmrstarlib.nmrstarlib.StarFile` and its components (`saveframe` and `loop` data):
 
    >>> starfile.print_starfile(format="nmrstar")
    data_18569
@@ -273,9 +276,9 @@ using bracket accessors.
    ]
    >>>
 
-   * Accessing chemical shifts data:
+   * Accessing chemical shift data:
 
-   Chemical shifts data can be accessed using bracket accessors as described above using
+   Chemical shift data can be accessed using bracket accessors as described above using a
    `saveframe` name:
 
    >>> starfile["save_assigned_chem_shift_list_1"]["loop_1"][0]
@@ -310,7 +313,8 @@ using bracket accessors.
    '1.994'
    >>>
 
-   Also :class:`~nmrstarlib.nmrstarlib.StarFile` class provides :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method:
+   Also the :class:`~nmrstarlib.nmrstarlib.StarFile` class provides a
+   :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method:
 
    >>> starfile.chem_shifts_by_residue()
    [OrderedDict([(('1', 'MET'), OrderedDict([('H', '8.55'),
@@ -361,10 +365,10 @@ using bracket accessors.
 Converting NMR-STAR files
 -------------------------
 
-NMR-STAR files can be converted from NMR-STAR file format to JSON file format
-or from JSON file format to NMR-STAR file format using :mod:`nmrstarlib.converter` module.
+NMR-STAR files can be converted between the NMR-STAR file format and a JSONized NMR-STAR
+file format using the :mod:`nmrstarlib.converter` module.
 
-   * Converting from NMR-STAR file format to JSON file format:
+   * Converting from the NMR-STAR file format into its equivalent JSON file format:
 
    >>> from nmrstarlib.converter import Converter
    >>>
@@ -374,7 +378,7 @@ or from JSON file format to NMR-STAR file format using :mod:`nmrstarlib.converte
    >>> converter.convert()
    >>>
 
-   * Converting from JSON file format to NMR-STAR file format:
+   * Converting from JSON file format into its equivalent NMR-STAR file format:
 
    >>> from nmrstarlib.converter import Converter
    >>>
@@ -388,7 +392,8 @@ or from JSON file format to NMR-STAR file format using :mod:`nmrstarlib.converte
 Visualizing chemical shifts values
 ----------------------------------
 
-Chemical shifts values can be visualized using :mod:`nmrstarlib.csviewer` Chemical Shifts Viewer module.
+Chemical shifts values can be visualized using the :mod:`nmrstarlib.csviewer`
+Chemical Shifts Viewer module.
 
 >>> from nmrstarlib.csviewer import csviewer
 >>>
@@ -408,7 +413,7 @@ Chemical shifts values can be visualized using :mod:`nmrstarlib.csviewer` Chemic
 Command Line Interface
 ~~~~~~~~~~~~~~~~~~~~~~
 Command Line Interface functionality:
-   * Convert from NMR-STAR file format into JSON file format and from JSON file format to NMR-STAR file format.
+   * Convert from NMR-STAR file format into its equivalent JSON file format and visa versa.
    * Visualize assigned chemical shift values.
 
 .. code::
@@ -450,35 +455,35 @@ Converting NMR-STAR files in bulk
 One-to-one file conversions
 ***************************
 
-   * Convert from local file in NMR-STAR format to local file JSON format:
+   * Convert from a local file in NMR-STAR format to a local file in JSON format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert 18569.txt 18569.json \
                 --from_format=nmrstar --to_format=json
 
-   * Convert from local file in JSON format to local file in NMR-STAR format:
+   * Convert from a local file in JSON format to a local file in NMR-STAR format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert 18569.json 18569.txt \
                 --from_format=json --to_format=nmrstar
 
-   * Convert from compressed local file in NMR-STAR format to compressed local file in JSON format:
+   * Convert from a compressed local file in NMR-STAR format to a compressed local file in JSON format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert 18569.txt.gz 18569.json.gz \
                 --from_format=nmrstar --to_format=json
 
-   * Convert from compressed local file in JSON format to compressed local file in NMR-STAR format:
+   * Convert from a compressed local file in JSON format to a compressed local file in NMR-STAR format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert 18569.json.gz 18569.txt.gz \
                 --from_format=json --to_format=nmrstar
 
-   * Convert from uncompressed url file in NMR-STAR format to compressed local file in JSON format:
+   * Convert from a uncompressed URL file in NMR-STAR format to a compressed local file in JSON format:
 
    .. code:: bash
 
@@ -490,35 +495,35 @@ One-to-one file conversions
 Many-to-many files conversions
 ******************************
 
-   * Convert from directory of files in NMR-STAR format to directory of files in JSON format:
+   * Convert from a directory of files in NMR-STAR format to a directory of files in JSON format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_dir_json \
                 --from_format=nmrstar --to_format=json
 
-   * Convert from directory of files in JSON format to directory of files in NMR-STAR format:
+   * Convert from a directory of files in JSON format to a directory of files in NMR-STAR format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert starfiles_dir_json starfiles_dir_nmrstar \
                 --from_format=json --to_format=nmrstar
 
-   * Convert from directory of files in NMR-STAR format to zip archive of files in JSON format:
+   * Convert from a directory of files in NMR-STAR format to a zip archive of files in JSON format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert starfiles_dir_nmrstar starfiles_json.zip \
                 --from_format=nmrstar --to_format=json
 
-   * Convert from archive of files in JSON format to directory of files in NMR-STAR format:
+   * Convert from a compressed tar archive of files in JSON format to a directory of files in NMR-STAR format:
 
    .. code:: bash
 
       $ python3 -m nmrstarlib convert starfiles_json.tar.gz starfiles_dir_nmrstar \
                 --from_format=json --to_format=nmrstar
 
-   * Convert from archive of files in NMR-STAR format to archive of files in JSON format:
+   * Convert from a zip archive of files in NMR-STAR format to a compressed tar archive of files in JSON format:
 
    .. code:: bash
 
@@ -531,7 +536,7 @@ Many-to-many files conversions
 Visualizing chemical shift values
 ---------------------------------
 
-   * Visualize chemical shift values for entire sequence:
+   * Visualize chemical shift values for the entire sequence:
 
    .. code:: bash
 

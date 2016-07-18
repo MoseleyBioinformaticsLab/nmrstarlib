@@ -5,7 +5,7 @@
 nmrstarlib.nmrstarlib
 ~~~~~~~~~~~~~~~~~~~~~
 
-This module provides :class:`~nmrstarlib.nmrstarlib.StarFile` class
+This module provides the :class:`~nmrstarlib.nmrstarlib.StarFile` class
 that stores the data from a single NMR-STAR file in the form of an
 :py:class:`~collections.OrderedDict`. Data can be accessed directly from the
 :class:`~nmrstarlib.nmrstarlib.StarFile` instance using bracket
@@ -59,7 +59,7 @@ class StarFile(OrderedDict):
         self.bmrbid = ""
 
     def read(self, filehandle):
-        """Read data into :class:`~nmrstarlib.nmrstarlib.StarFile` class.
+        """Read data into a :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
 
         :param filehandle: file-like object.
         :type filehandle: :py:class:`io.TextIOWrapper`, :py:class:`gzip.GzipFile`,
@@ -109,7 +109,7 @@ class StarFile(OrderedDict):
         """Write :class:`~nmrstarlib.nmrstarlib.StarFile` data into string.
 
         :param str fileformat: Format to use to write data: `nmrstar` or `json`.
-        :return: String representing :class:`~nmrstarlib.nmrstarlib.StarFile`.
+        :return: String representing the :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
         :rtype: str
         """
         try:
@@ -127,7 +127,7 @@ class StarFile(OrderedDict):
     def _build_starfile(self, lexer):
         """Build :class:`~nmrstarlib.nmrstarlib.StarFile` object.
 
-        :param lexer: instance of BMRB lexical analyzer class.
+        :param lexer: instance of the BMRB lexical analyzer class.
         :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
         :return: instance of :class:`~nmrstarlib.nmrstarlib.StarFile`.
         :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
@@ -166,7 +166,7 @@ class StarFile(OrderedDict):
     def _build_saveframe(self, lexer):
         """Build NMR-STAR file saveframe.
 
-        :param lexer: instance of BMRB lexical analyzer class.
+        :param lexer: instance of the BMRB lexical analyzer class.
         :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
         :return: Saveframe dictionary.
         :rtype: :py:class:`collections.OrderedDict`
@@ -215,7 +215,7 @@ class StarFile(OrderedDict):
     def _skip_saveframe(self, lexer):
         """Skip entire saveframe - keep emitting tokens until the end of saveframe.
 
-        :param lexer: instance of BMRB lexical analyzer class.
+        :param lexer: instance of the BMRB lexical analyzer class.
         :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
         :return: None
         :rtype: None
@@ -257,7 +257,7 @@ class StarFile(OrderedDict):
         return fields, values
 
     def print_starfile(self, f=sys.stdout, format="nmrstar", tw=3):
-        """Print :class:`~nmrstarlib.nmrstarlib.StarFile` into file or stdout.
+        """Print :class:`~nmrstarlib.nmrstarlib.StarFile` into a file or stdout.
 
         :param io.StringIO f: writable file-like stream.
         :param str format: Format to use: `nmrstar` or `json`.
@@ -278,7 +278,7 @@ class StarFile(OrderedDict):
             print(self._to_json())
 
     def print_saveframe(self, sf, f=sys.stdout, format="nmrstar", tw=3):
-        """Print saveframe into file or stdout.
+        """Print saveframe into a file or stdout.
         We need to keep track of how far over everything is tabbed. The "tab width"
         variable tw does this for us.
 
@@ -311,7 +311,7 @@ class StarFile(OrderedDict):
             print(json.dumps(self[sf], sort_keys=False, indent=4))
 
     def print_loop(self, sf, sftag, f=sys.stdout, format="nmrstar", tw=3):
-        """Print loop into file or stdout.
+        """Print loop into a file or stdout.
 
         :param str sf: Saveframe name.
         :param str sftag: Saveframe tag, i.e. field name.
@@ -473,11 +473,11 @@ def _generate_filenames(sources):
 
 
 def _generate_handles(filenames):
-    """Open a sequence of filenames one at time producing file object.
+    """Open a sequence of filenames one at time producing file objects.
     The file is closed immediately when proceeding to the next iteration.
 
-    :param generator filenames: Generator object that yields path to file one at a time.
-    :return: Filehandle to be processed into :class:`~nmrstarlib.nmrstarlib.StarFile`.
+    :param generator filenames: Generator object that yields the path to each file, one at a time.
+    :return: Filehandle to be processed into a :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
     """
     for fname in filenames:
         path = GenericFilePath(fname)
@@ -507,7 +507,7 @@ class GenericFilePath(object):
     def __init__(self, path):
         """Initialize path.
 
-        :param str path: String representing path to local file(s) or valid URL address of file(s).
+        :param str path: String representing a path to local file(s) or valid URL address of file(s).
         """
         self.path = path
 
@@ -516,7 +516,7 @@ class GenericFilePath(object):
         test if path represents a local file or file over URL, if file is compressed
         or not.
 
-        :return: Filehandle to be processed into :class:`~nmrstarlib.nmrstarlib.StarFile`.
+        :return: Filehandle to be processed into a :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
         """
         is_url = self.is_url(self.path)
         compressiontype = self.is_compressed(self.path)
@@ -592,7 +592,7 @@ class GenericFilePath(object):
 
     @staticmethod
     def is_url(path):
-        """Test if path is valid URL.
+        """Test if path represents a valid URL.
 
         :param str path: Path to file.
         :return: Valid :py:class:`~urllib.request.Request` object or False otherwise.

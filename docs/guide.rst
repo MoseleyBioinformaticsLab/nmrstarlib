@@ -1,20 +1,22 @@
 User Guide
 ==========
 
-Installation
-~~~~~~~~~~~~
+Description
+~~~~~~~~~~~
 
 :mod:`nmrstarlib` provides a simple Python interface for the parsing and manipulating
 data stored in NMR-STAR format files used by Biological Magnetic Resonance Bank (BMRB_).
-It runs under Python 3.4+.
 
-To install system-wide with pip_ run the following:
+Installation
+~~~~~~~~~~~~
+
+:mod:`nmrstarlib` runs under Python 3.4+. To install system-wide with pip_ run the following:
 
 .. code:: bash
 
     $ pip3 install nmrstarlib
 
-For an isolated install, you can run the same inside a virtualenv (Python 3.3+ only).
+For an isolated install, you can run the same inside a virtualenv.
 
 .. code:: bash
 

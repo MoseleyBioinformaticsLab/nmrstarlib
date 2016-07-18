@@ -15,19 +15,21 @@ that of the Unix shell. Documentation: https://docs.python.org/3/library/shlex.h
 Simplified description of parsing rules:
 ----------------------------------------
    * Each word or number separated by whitespace characters is a separate BMRB token.
-   * Each single quoted (') string is a separate BMRB token, it should start with single quote (')
-     and end with single quote *always* followed by whitespace character(s).
-   * Each double quoted (") string is a separate BMRB token, it should start with double quote (")
-     and end with double quote *always* followed by whitespace character(s).
+   * Each single quoted (') string is a separate BMRB token, it should start with a single quote (')
+     and end with a single quote *always* followed by whitespace character(s).
+   * Each double quoted (") string is a separate BMRB token, it should start with a double quote (")
+     and end with a double quote *always* followed by whitespace character(s).
    * Single quoted and double quoted strings have to be processed separately.
    * Single quoted and double quoted strings are processed one character at a time.
-   * Multiline strings starts with semicolon *always* followed by new line character and
-     end with semicolon *always* followed by whitespace character(s).
+   * Multiline strings start with a semicolon *always* followed by new line character and
+     ending with a semicolon *always* followed by whitespace character(s).
    * Multiline strings are processed one line at a time.
 
 .. note::
-   * For full description of NMR-STAR file format see official documentation: http://www.bmrb.wisc.edu/dictionary/
-   * For concise description of NMR-STAR file format grammar see: https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
+   * For a full description of NMR-STAR file format, see official documentation:
+     http://www.bmrb.wisc.edu/dictionary/
+   * For a concise description of the NMR-STAR file format grammar see:
+     https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
 """
 
 import sys
@@ -38,7 +40,7 @@ __all__ = ["bmrblex"]
 
 
 class bmrblex:
-    """A lexical analyzer for BMRB NMR-STAR format syntax."""
+    """A lexical analyzer for the BMRB NMR-STAR format syntax."""
 
     multilinequote = 'ಠ'
 
@@ -84,11 +86,11 @@ class bmrblex:
         self.streamlength = len(text)
 
     def _transform_text(self, text):
-        """Replace all lines that start with ';' with special character
+        """Replace all lines that start with ';' with a special character
         to simplify multiline string processing with bmrblex.
 
         :param str text: Original text.
-        :return: Transformed text where lines starting with ';' replaced by special character.
+        :return: Transformed text where lines starting with ';' replaced by a special character.
         :rtype: str
         """
         lines = text.split('\n')
