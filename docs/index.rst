@@ -6,8 +6,7 @@
 Welcome to nmrstarlib's documentation!
 ======================================
 
-Python library for parsing and manipulating data from NMR-STAR format files
-used by Biological Magnetic Resonance Bank (BMRB_).
+.. include:: ../README.rst
 
 Contents:
 

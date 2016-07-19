@@ -4,8 +4,17 @@ User Guide
 Description
 ~~~~~~~~~~~
 
-:mod:`nmrstarlib` provides a simple Python interface for the parsing and manipulating
-data stored in NMR-STAR format files used by Biological Magnetic Resonance Bank (BMRB_).
+:mod:`nmrstarlib` package provides a simple Python interface for parsing and
+manipulating data stored in NMR-STAR format files used by Biological Magnetic
+Resonance Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
+experimental data.
+
+Also the nmrstarlib package provides facilities to convert NMR-STAR formatted files
+into their equivalent JSONized (JavaScript Object Notation, an open-standard format that
+uses human-readable text to transmit data objects consisting of attribute-value pairs)
+representation and visa versa.
+
+In addition, the nmrstarlib package provides facilities to visualize chemical shift data.
 
 Installation
 ~~~~~~~~~~~~
@@ -83,18 +92,18 @@ Basic usage
 
    * As a library for accessing and manipulating data stored in NMR-STAR format files.
 
-      * Create :class:`~nmrstarlib.nmrstarlib.StarFile` generator function that will generate
-        (yield) one :class:`~nmrstarlib.nmrstarlib.StarFile` at a time.
+      * Create the :class:`~nmrstarlib.nmrstarlib.StarFile` generator function that will generate
+        (yield) single :class:`~nmrstarlib.nmrstarlib.StarFile` instance at a time.
 
-      * Process each :class:`~nmrstarlib.nmrstarlib.StarFile` object:
+      * Process each :class:`~nmrstarlib.nmrstarlib.StarFile` instance:
 
-         * Process in a for-loop one file at a time.
-         * Process as an iterator calling :py:func:`next` function.
-         * Convert generator to a list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
+         * Process NMR-STAR files in a for-loop one file at a time.
+         * Process as an iterator calling the :py:func:`next` built-in function.
+         * Convert the generator into a list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
 
    * As a command-line tool:
 
-      * Convert data from NMR-STAR format to JSON format or from JSON format to NMR-STAR format.
+      * Convert from NMR-STAR file format into its equivalent JSON file format and visa versa.
       * Visualize (organize) assigned chemical shift values.
 
 Read :doc:`tutorial` to learn more and see code examples on using :mod:`nmrstarlib` as a library

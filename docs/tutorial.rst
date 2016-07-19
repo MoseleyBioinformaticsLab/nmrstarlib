@@ -5,13 +5,13 @@ The :mod:`nmrstarlib` module is a impotable library, providing classes and other
 facilities for parsing, accessing, and manipulating data stored in NMR-STAR and
 JSONized NMR-STAR formats. Also, nmrstarlib provides simple command-line interface.
 
-Using nmrstarlib module as a library
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Using nmrstarlib as a library
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Importing nmrstarlib module
 ---------------------------
 
-If nmrstarlib is installed on the system it can be imported:
+If nmrstarlib package is installed on the system it can be imported:
 
 >>> from nmrstarlib import nmrstarlib
 
@@ -42,10 +42,10 @@ The :class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in sever
    * Feed it to a for-loop and process one file at a time:
 
    >>> for starfile in dir_starfiles:
-   >>>     print(starfile.bmrbid)                  # print BMRB id of StarFile
-   >>>     print(starfile.source)                  # print source of StarFile
-   >>>     for saveframe_name in starfile.keys():  # print saveframe names
-   >>>         print(saveframe_name)
+   ...     print(starfile.bmrbid)                  # print BMRB id of StarFile
+   ...     print(starfile.source)                  # print source of StarFile
+   ...     for saveframe_name in starfile.keys():  # print saveframe names
+   ...         print(saveframe_name)
 
    .. note:: Once generator is consumed it becomes empty and needs to be created again.
 
@@ -166,8 +166,10 @@ using bracket accessors.
    * Manipulating data in a :class:`~nmrstarlib.nmrstarlib.StarFile` is easy - access data
      using bracket accessors and set a new value:
 
-   >>> starfile["data"] = "18569_modified"
    >>> starfile["data"]
+   '18569'
+   >>>
+   >>> starfile["data"] = "18569_modified"
    '18569_modified'
    >>>
    >>> # change submission date
@@ -279,7 +281,7 @@ using bracket accessors.
    * Accessing chemical shift data:
 
    Chemical shift data can be accessed using bracket accessors as described above using a
-   `saveframe` name:
+   `saveframe` name and `loop` name:
 
    >>> starfile["save_assigned_chem_shift_list_1"]["loop_1"][0]
    ['Atom_chem_shift.ID', 'Atom_chem_shift.Assembly_atom_ID',
@@ -314,7 +316,9 @@ using bracket accessors.
    >>>
 
    Also the :class:`~nmrstarlib.nmrstarlib.StarFile` class provides a
-   :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method:
+   :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method that organizes
+   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - sequence id
+   and amino acid residue type; `values` - chemical shift data):
 
    >>> starfile.chem_shifts_by_residue()
    [OrderedDict([(('1', 'MET'), OrderedDict([('H', '8.55'),
