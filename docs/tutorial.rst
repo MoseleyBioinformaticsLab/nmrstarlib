@@ -1,7 +1,7 @@
 The nmrstarlib Tutorial
 =======================
 
-The :mod:`nmrstarlib` module is a impotable library, providing classes and other
+The :mod:`nmrstarlib` module is an importable library, providing classes and other
 facilities for parsing, accessing, and manipulating data stored in NMR-STAR and
 JSONized NMR-STAR formats. Also, nmrstarlib provides simple command-line interface.
 
@@ -19,13 +19,15 @@ Constructing StarFile generator
 -------------------------------
 
 The nmrstarlib provides :func:`~nmrstarlib.nmrstarlib.read_files` generator function that
-yields :class:`~nmrstarlib.nmrstarlib.StarFile` objects. Constructing
+yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances. Constructing
 :class:`~nmrstarlib.nmrstarlib.StarFile` generator is easy - specify path to local NMR-STAR file,
 directory of NMR-STAR files, archive of NMR-STAR files or BMRB id:
 
 >>> from nmrstarlib import nmrstarlib
 >>>
->>> single_starfile = nmrstarlib.read_files(["18569.txt"])     # single NMR-STAR file
+>>> single_starfile = nmrstarlib.read_files(["bmr18569.str"])  # single NMR-STAR file
+>>>
+>>> starfiles = nmrstarlib.read_files(["bmr18569.str", "bmr336.str"]) # several NMR-STAR files
 >>>
 >>> dir_starfiles = nmrstarlib.read_files(["starfiles_dir"])   # directory of NMR-STAR files
 >>>
@@ -349,21 +351,38 @@ using bracket accessors.
    ]
    >>>
    >>> starfile.chem_shifts_by_residue(aminoacids=["SER"], atoms=["CA", "CB"])
-   [OrderedDict([(('108', 'SER'), OrderedDict([('CB', '62.493'),
-                                               ('CA', '61.617')])),
-                 (('9', 'SER'), OrderedDict([('CB', '67.332'),
-                                             ('CA', '57.852')])),
-                 (('46', 'SER'), OrderedDict([('CB', '66.829'),
-                                              ('CA', '55.939')])),
-                 (('8', 'SER'), OrderedDict([('CB', '64.863'),
-                                             ('CA', '57.456')])),
-                 (('34', 'SER'), OrderedDict([('CB', '66.248'),
-                                              ('CA', '59.113')])),
-                 (('95', 'SER'), OrderedDict([('CB', '66.501'),
-                                              ('CA', '57.013')])),
-                 (('2', 'SER'), OrderedDict([('CB', '64.057'),
-                                             ('CA', '58.593')]))])
+   [OrderedDict([(('108', 'SER'), OrderedDict([('CA', '61.617'),
+                                               ('CB', '62.493')])),
+                 (('9', 'SER'), OrderedDict([('CA', '57.852'),
+                                             ('CB', '67.332')])),
+                 (('46', 'SER'), OrderedDict([('CA', '55.939'),
+                                              ('CB', '66.829')])),
+                 (('8', 'SER'), OrderedDict([('CA', '57.456'),
+                                             ('CB', '64.863')])),
+                 (('34', 'SER'), OrderedDict([('CA', '59.113'),
+                                              ('CB', '66.248')])),
+                 (('95', 'SER'), OrderedDict([('CA', '57.013'),
+                                              ('CB', '66.501')])),
+                 (('2', 'SER'), OrderedDict([('CA', '58.593'),
+                                             ('CB', '64.057')]))])
    ]
+   >>>
+
+Writing data from StarFile object into file
+-------------------------------------------
+Data from :class:`~nmrstarlib.nmrstarlib.StarFile` can be written into file in original NMR-STAR format
+or in equivalent JSON format using :meth:`~nmrstarlib.nmrstarlib.StarFile.write()`:
+
+   * Writing into NMR-STAR formatted file:
+
+   >>> with open("bmr18569_mod.str", "w") as outfile:
+   ...     sf.write(outfile, fileformat="nmrstar")
+   >>>
+
+   * Writing into JSONized NMR-STAR formatted file:
+
+   >>> with open("bmr18569_mod.json", "w") as outfile:
+   ...     sf.write(outfile, fileformat="json")
    >>>
 
 Converting NMR-STAR files
@@ -377,7 +396,7 @@ file format using the :mod:`nmrstarlib.converter` module.
    >>> from nmrstarlib.converter import Converter
    >>>
    >>> # Using valid BMRB id to access file from URL: from_path="18569"
-   >>> converter = Converter(from_path="18569", to_path="18569.json",
+   >>> converter = Converter(from_path="18569", to_path="bmr18569.json",
    ...                       from_format="nmrstar", to_format="json")
    >>> converter.convert()
    >>>
@@ -386,7 +405,7 @@ file format using the :mod:`nmrstarlib.converter` module.
 
    >>> from nmrstarlib.converter import Converter
    >>>
-   >>> converter = Converter(from_path="18569.json", to_path="18569.txt",
+   >>> converter = Converter(from_path="bmr18569.json", to_path="bmr18569.str",
    ...                       from_format="json", to_format="nmrstar")
    >>> converter.convert()
    >>>
@@ -399,13 +418,15 @@ Visualizing chemical shifts values
 Chemical shifts values can be visualized using the :mod:`nmrstarlib.csviewer`
 Chemical Shifts Viewer module.
 
->>> from nmrstarlib.csviewer import csviewer
+>>> from nmrstarlib.csviewer import CSViewer
 >>>
->>> csviewer(from_path="18569", filename="18569_chem_shifts_all", format="png", view=True)
+>>> csviewer = CSViewer(from_path="18569", filename="18569_chem_shifts_all", csview_format="png")
+>>> csviewer.csview(view=True))
 >>>
->>> csviewer(from_path="18569", aminoacids=["SER", "THR"], atoms=["CA", "CB"],
-...          filename="18569_chem_shifts_SER_THR_CA_CB", format="png", view=True)
->>>
+>>> csviewer = CSViewer(from_path="18569", aminoacids=["SER", "THR"], atoms=["CA", "CB"],
+...                     filename="18569_chem_shifts_SER_THR_CA_CB", csview_format="png")
+>>> csviewer.csview(view=True)  # open in a default image viewer or pdf viewer
+>>> csviewer.csview(view=False) # save output file in current working directory
 
 :mod:`nmrstarlib.csviewer` output example:
 
@@ -417,7 +438,7 @@ Chemical Shifts Viewer module.
 Command Line Interface
 ~~~~~~~~~~~~~~~~~~~~~~
 Command Line Interface functionality:
-   * Convert from NMR-STAR file format into its equivalent JSON file format and visa versa.
+   * Convert from NMR-STAR file format into its equivalent JSON file format and vice versa.
    * Visualize assigned chemical shift values.
 
 .. code::
@@ -426,32 +447,37 @@ Command Line Interface functionality:
 
    Usage:
        nmrstarlib -h | --help
-
        nmrstarlib --version
-
        nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>]
                                                   [--to_format=<format>]
                                                   [--bmrb_url=<url>]
+                                                  [--nmrstarversion=<version>]
+                                                  [--verbose]
 
        nmrstarlib csview <starfile_path> [--aminoacids=<aa>]
                                          [--atoms=<at>]
                                          [--csview_outfile=<path>]
                                          [--csview_format=<format>]
+                                         [--nmrstarversion=<version>]
+                                         [--verbose]
 
    Options:
-       -h, --help                   Show help message.
+       -h, --help                   Show this screen.
        --version                    Show version.
+       --verbose                    Print what files are processing.
        --from_format=<format>       Input file format, available formats:
-                                    nmrstar, json [default: nmrstar].
+                                    nmrstar, json [default: nmrstar]
        --to_format=<format>         Output file format, available formats:
-                                    nmrstar, json [default: json].
+                                    nmrstar, json [default: json]
+       --nmrstarversion=<version>   Version of NMR-STAR format to use, available:
+                                    3, 2 [default: 3]
        --bmrb_url=<url>             URL to BMRB REST interface
-                                    [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
-       --aminoacids=<aa>            Comma-separated amino acid three-letter codes.
-       --atoms=<at>                 Comma-separated BMRB atom codes.
-       --csview_outfile=<path>      Where to save chemical shifts table.
+                                    [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/]
+       --aminoacids=<aa>            Comma-separated amino acid three-letter codes
+       --atoms=<at>                 Comma-separated BMRB atom codes
+       --csview_outfile=<path>      Where to save chemical shifts table
        --csview_format=<format>     Format to which save chamical shift table
-                                    [default: svg].
+                                    [default: svg]
 
 Converting NMR-STAR files in bulk
 ---------------------------------
@@ -463,35 +489,35 @@ One-to-one file conversions
 
    .. code:: bash
 
-      $ python3 -m nmrstarlib convert 18569.txt 18569.json \
+      $ python3 -m nmrstarlib convert bmr18569.str bmr18569.json \
                 --from_format=nmrstar --to_format=json
 
    * Convert from a local file in JSON format to a local file in NMR-STAR format:
 
    .. code:: bash
 
-      $ python3 -m nmrstarlib convert 18569.json 18569.txt \
+      $ python3 -m nmrstarlib convert bmr18569.json bmr18569.str \
                 --from_format=json --to_format=nmrstar
 
    * Convert from a compressed local file in NMR-STAR format to a compressed local file in JSON format:
 
    .. code:: bash
 
-      $ python3 -m nmrstarlib convert 18569.txt.gz 18569.json.gz \
+      $ python3 -m nmrstarlib convert bmr18569.str.gz bmr18569.json.gz \
                 --from_format=nmrstar --to_format=json
 
    * Convert from a compressed local file in JSON format to a compressed local file in NMR-STAR format:
 
    .. code:: bash
 
-      $ python3 -m nmrstarlib convert 18569.json.gz 18569.txt.gz \
+      $ python3 -m nmrstarlib convert bmr18569.json.gz bmr18569.str.gz \
                 --from_format=json --to_format=nmrstar
 
    * Convert from a uncompressed URL file in NMR-STAR format to a compressed local file in JSON format:
 
    .. code:: bash
 
-      $ python3 -m nmrstarlib convert 18569 18569.json.bz2 \
+      $ python3 -m nmrstarlib convert 18569 bmr18569.json.bz2 \
                 --from_format=nmrstar --to_format=json
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available conversions.

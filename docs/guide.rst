@@ -9,12 +9,12 @@ manipulating data stored in NMR-STAR format files used by Biological Magnetic
 Resonance Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
 experimental data.
 
-Also the nmrstarlib package provides facilities to convert NMR-STAR formatted files
+Also the :mod:`nmrstarlib` package provides facilities to convert NMR-STAR formatted files
 into their equivalent JSONized (JavaScript Object Notation, an open-standard format that
 uses human-readable text to transmit data objects consisting of attribute-value pairs)
 representation and visa versa.
 
-In addition, the nmrstarlib package provides facilities to visualize chemical shift data.
+In addition, the nmrstarlib package provides facilities to visualize assigned chemical shift data.
 
 Installation
 ~~~~~~~~~~~~
@@ -99,15 +99,15 @@ Basic usage
 
          * Process NMR-STAR files in a for-loop one file at a time.
          * Process as an iterator calling the :py:func:`next` built-in function.
-         * Convert the generator into a list of :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
+         * Convert the generator into a :py:class:`list` of :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
 
    * As a command-line tool:
 
-      * Convert from NMR-STAR file format into its equivalent JSON file format and visa versa.
+      * Convert from NMR-STAR file format into its equivalent JSON file format and vice versa.
       * Visualize (organize) assigned chemical shift values.
 
-Read :doc:`tutorial` to learn more and see code examples on using :mod:`nmrstarlib` as a library
-and as a command-line tool.
+.. note:: Read :doc:`tutorial` to learn more and see code examples on using :mod:`nmrstarlib` as a library
+          and as a command-line tool.
 
 
 

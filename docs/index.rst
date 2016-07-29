@@ -8,7 +8,8 @@ Welcome to nmrstarlib's documentation!
 
 .. include:: ../README.rst
 
-Contents:
+Documentation index:
+====================
 
 .. toctree::
    :maxdepth: 2
@@ -26,6 +27,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. _BMRB: http://www.bmrb.wisc.edu
-

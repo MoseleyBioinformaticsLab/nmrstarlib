@@ -51,18 +51,22 @@ Import :mod:`nmrstarlib` library and create generator function that will yield
 
 >>> from nmrstarlib import nmrstarlib
 >>>
->>> # path: path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
+>>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
 >>> starfile_gen = nmrstarlib.read_files(["path"])
 >>>
 >>> for starfile in in starfile_gen:
 ...     print(starfile.bmrbid)         # print BMRB id of StarFile
 ...     print(starfile.source)         # print source of StarFile
+...     print(list(starfile.keys()))   # print StarFile saveframe categories
 >>>
+
+.. note:: Read :doc:`guide` and :doc:`tutorial` to learn more and see code examples on using
+          :mod:`nmrstarlib` as a library and as a command-line tool.
 
 License
 ~~~~~~~
 
-This package is distributed under the `MIT license`_.
+This package is distributed under the MIT_ :doc:`license`.
 
 .. _pip: http://pip.readthedocs.io
 .. _docopt: http://docopt.readthedocs.io/
@@ -70,4 +74,4 @@ This package is distributed under the `MIT license`_.
 .. _BMRB: http://www.bmrb.wisc.edu
 .. _download page: http://www.graphviz.org/Download.php
 
-.. _MIT license: http://opensource.org/licenses/MIT
+.. _MIT: http://opensource.org/licenses/MIT
