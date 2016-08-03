@@ -1,0 +1,17 @@
+{
+    "chemshifts_loop": [
+        "Atom_shift_assign_ID",
+        "Residue_author_seq_code",
+        "Residue_seq_code",
+        "Residue_label",
+        "Atom_name",
+        "Atom_type",
+        "Chem_shift_value",
+        "Chem_shift_value_error",
+        "Chem_shift_ambiguity_code"
+    ],
+    "aminoacid_seq_id": "Residue_author_seq_code",
+    "aminoacid_code": "Residue_label",
+    "atom_code": "Atom_name",
+    "chemshift_value": "Chem_shift_value"
+}
