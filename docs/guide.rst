@@ -19,7 +19,7 @@ In addition, the nmrstarlib package provides facilities to visualize assigned ch
 Installation
 ~~~~~~~~~~~~
 
-:mod:`nmrstarlib` runs under Python 3.4+. To install system-wide with pip_ run the following:
+:mod:`nmrstarlib` runs under Python 3. To install system-wide with pip_ run the following:
 
 .. code:: bash
 

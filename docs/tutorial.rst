@@ -1,9 +1,9 @@
 The nmrstarlib Tutorial
 =======================
 
-The :mod:`nmrstarlib` module is an importable library, providing classes and other
-facilities for parsing, accessing, and manipulating data stored in NMR-STAR and
-JSONized NMR-STAR formats. Also, nmrstarlib provides simple command-line interface.
+The :mod:`nmrstarlib` package provides classes and other facilities for parsing,
+accessing, and manipulating data stored in NMR-STAR and JSONized NMR-STAR formats.
+Also, :mod:`nmrstarlib` package provides simple command-line interface.
 
 Using nmrstarlib as a library
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,15 +11,16 @@ Using nmrstarlib as a library
 Importing nmrstarlib module
 ---------------------------
 
-If nmrstarlib package is installed on the system it can be imported:
+If :mod:`nmrstarlib` package is installed on the system the :mod:`nmrstarlib.nmrstarlib`
+module can be imported:
 
 >>> from nmrstarlib import nmrstarlib
 
 Constructing StarFile generator
 -------------------------------
 
-The nmrstarlib provides :func:`~nmrstarlib.nmrstarlib.read_files` generator function that
-yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances. Constructing
+The :mod:`~nmrstarlib.nmrstarlib` module provides :func:`~nmrstarlib.nmrstarlib.read_files`
+generator function that yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances. Constructing
 :class:`~nmrstarlib.nmrstarlib.StarFile` generator is easy - specify path to local NMR-STAR file,
 directory of NMR-STAR files, archive of NMR-STAR files or BMRB id:
 
@@ -34,7 +35,7 @@ directory of NMR-STAR files, archive of NMR-STAR files or BMRB id:
 >>> arch_starfiles = nmrstarlib.read_files(["starfiles.zip"])  # archive of NMR-STAR files
 >>>
 >>> url_starfile = nmrstarlib.read_files(["18569"])            # BMRB id of NMR-STAR file
-
+>>>
 
 Processing StarFile generator
 -----------------------------
@@ -48,6 +49,7 @@ The :class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in sever
    ...     print(starfile.source)                  # print source of StarFile
    ...     for saveframe_name in starfile.keys():  # print saveframe names
    ...         print(saveframe_name)
+   >>>
 
    .. note:: Once generator is consumed it becomes empty and needs to be created again.
 
@@ -64,6 +66,7 @@ The :class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in sever
      :class:`~nmrstarlib.nmrstarlib.StarFile` objects:
 
    >>> starfiles_list = list(dir_starfiles)
+   >>>
 
    .. warning:: Do not convert the :class:`~nmrstarlib.nmrstarlib.StarFile` generator into a
                 :py:class:`list` if the generator can yield a large number of files, e.g.
@@ -72,8 +75,8 @@ The :class:`~nmrstarlib.nmrstarlib.StarFile` generator can be processed in sever
 Accessing and manipulating data from a single StarFile
 ------------------------------------------------------
 
-Since :class:`~nmrstarlib.nmrstarlib.StarFile` is a python :py:class:`collections.OrderedDict`,
-data can be accessed and manipulated as with any regular python :py:class:`dict` object
+Since :class:`~nmrstarlib.nmrstarlib.StarFile` is a Python :py:class:`collections.OrderedDict`,
+data can be accessed and manipulated as with any regular Python :py:class:`dict` object
 using bracket accessors.
 
    * Accessing data in :class:`~nmrstarlib.nmrstarlib.StarFile`:
@@ -319,8 +322,8 @@ using bracket accessors.
 
    Also the :class:`~nmrstarlib.nmrstarlib.StarFile` class provides a
    :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method that organizes
-   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - sequence id
-   and amino acid residue type; `values` - chemical shift data):
+   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - tuple of
+   sequence id and amino acid residue type; `values` - chemical shift data):
 
    >>> starfile.chem_shifts_by_residue()
    [OrderedDict([(('1', 'MET'), OrderedDict([('H', '8.55'),
@@ -351,38 +354,38 @@ using bracket accessors.
    ]
    >>>
    >>> starfile.chem_shifts_by_residue(aminoacids=["SER"], atoms=["CA", "CB"])
-   [OrderedDict([(('108', 'SER'), OrderedDict([('CA', '61.617'),
-                                               ('CB', '62.493')])),
-                 (('9', 'SER'), OrderedDict([('CA', '57.852'),
-                                             ('CB', '67.332')])),
-                 (('46', 'SER'), OrderedDict([('CA', '55.939'),
-                                              ('CB', '66.829')])),
+   [OrderedDict([(('2', 'SER'), OrderedDict([('CA', '58.593'),
+                                             ('CB', '64.057')])),
                  (('8', 'SER'), OrderedDict([('CA', '57.456'),
                                              ('CB', '64.863')])),
+                 (('9', 'SER'), OrderedDict([('CA', '57.852'),
+                                             ('CB', '67.332')])),
                  (('34', 'SER'), OrderedDict([('CA', '59.113'),
                                               ('CB', '66.248')])),
+                 (('46', 'SER'), OrderedDict([('CA', '55.939'),
+                                              ('CB', '66.829')])),
                  (('95', 'SER'), OrderedDict([('CA', '57.013'),
                                               ('CB', '66.501')])),
-                 (('2', 'SER'), OrderedDict([('CA', '58.593'),
-                                             ('CB', '64.057')]))])
+                 (('108', 'SER'), OrderedDict([('CA', '61.617'),
+                                               ('CB', '62.493')]))])
    ]
    >>>
 
-Writing data from StarFile object into file
--------------------------------------------
+Writing data from a StarFile object into a file
+-----------------------------------------------
 Data from :class:`~nmrstarlib.nmrstarlib.StarFile` can be written into file in original NMR-STAR format
 or in equivalent JSON format using :meth:`~nmrstarlib.nmrstarlib.StarFile.write()`:
 
-   * Writing into NMR-STAR formatted file:
+   * Writing into a NMR-STAR formatted file:
 
-   >>> with open("bmr18569_mod.str", "w") as outfile:
-   ...     sf.write(outfile, fileformat="nmrstar")
+   >>> with open("bmr18569_modified.str", "w") as outfile:
+   ...     starfile.write(outfile, fileformat="nmrstar")
    >>>
 
-   * Writing into JSONized NMR-STAR formatted file:
+   * Writing into a JSONized NMR-STAR formatted file:
 
-   >>> with open("bmr18569_mod.json", "w") as outfile:
-   ...     sf.write(outfile, fileformat="json")
+   >>> with open("bmr18569_modified.json", "w") as outfile:
+   ...     starfile.write(outfile, fileformat="json")
    >>>
 
 Converting NMR-STAR files
@@ -421,12 +424,13 @@ Chemical Shifts Viewer module.
 >>> from nmrstarlib.csviewer import CSViewer
 >>>
 >>> csviewer = CSViewer(from_path="18569", filename="18569_chem_shifts_all", csview_format="png")
->>> csviewer.csview(view=True))
+>>> csviewer.csview(view=True)
 >>>
 >>> csviewer = CSViewer(from_path="18569", aminoacids=["SER", "THR"], atoms=["CA", "CB"],
 ...                     filename="18569_chem_shifts_SER_THR_CA_CB", csview_format="png")
 >>> csviewer.csview(view=True)  # open in a default image viewer or pdf viewer
 >>> csviewer.csview(view=False) # save output file in current working directory
+>>>
 
 :mod:`nmrstarlib.csviewer` output example:
 

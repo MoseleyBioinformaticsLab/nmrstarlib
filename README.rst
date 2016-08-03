@@ -8,7 +8,7 @@ for archival of Nuclear Magnetic Resonance (NMR) data.
 The :mod:`nmrstarlib` package provides facilities to convert NMR-STAR formatted files into
 their equivalent JSONized (JavaScript Object Notation, an open-standard format that
 uses human-readable text to transmit data objects consisting of attribute-value pairs)
-representation and visa versa.
+representation and vice versa.
 
 In addition, the nmrstarlib package provides methods to visualize chemical shift data.
 
@@ -28,7 +28,7 @@ Links
 Installation
 ~~~~~~~~~~~~
 
-The nmrstarlib package runs under Python 3.4+, use pip_ to install:
+The nmrstarlib package runs under Python 3, use pip_ to install:
 
 .. code:: bash
 
