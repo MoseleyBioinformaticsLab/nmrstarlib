@@ -29,7 +29,7 @@ Installation
 ~~~~~~~~~~~~
 
 The :mod:`nmrstarlib` package runs under Python 3, use pip_ to install. Starting with Python 3.4
-pip_ is included by default:
+pip_ is included by default.
 
 Install on Linux, Mac OS X
 --------------------------

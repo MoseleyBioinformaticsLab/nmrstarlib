@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     platforms='any',
     long_description=open('README.rst').read(),
-    data_files=[('', ['LICENSE', 'README.rst']), ('conf', ['conf/constants_nmrstar2.json', 'constants_nmrstar3.json'])],
+    data_files=[('', ['LICENSE', 'README.rst']), ('conf', ['conf/constants_nmrstar2.json', 'conf/constants_nmrstar3.json'])],
     classifiers=[
         'Development Status :: 1.0.0',
         'Environment :: Console',
