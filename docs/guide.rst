@@ -6,7 +6,7 @@ Description
 
 :mod:`nmrstarlib` package provides a simple Python interface for parsing and
 manipulating data stored in NMR-STAR format files used by Biological Magnetic
-Resonance Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
+Resonance Data Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
 experimental data.
 
 Also the :mod:`nmrstarlib` package provides facilities to convert NMR-STAR formatted files
@@ -21,11 +21,42 @@ Installation
 
 :mod:`nmrstarlib` runs under Python 3. To install system-wide with pip_ run the following:
 
+Install on Linux, Mac OS X
+--------------------------
+
 .. code:: bash
 
-    $ pip3 install nmrstarlib
+   python3 -m pip install nmrstarlib
 
-For an isolated install, you can run the same inside a virtualenv.
+Also make sure that dependencies are installed on the system:
+
+.. code:: bash
+
+   python3 -m pip install docopt
+   python3 -m pip install graphviz
+
+graphviz_ Python library requires a working installation of Graphviz (`download page`_).
+
+Install on Windows
+------------------
+
+.. code:: bash
+
+   py -3 -m pip install nmrstarlib
+
+Also make sure that dependencies are installed on the system:
+
+.. code:: bash
+
+   py -3 -m pip install docopt
+   py -3 -m pip install graphviz
+
+graphviz_ Python library requires a working installation of Graphviz (`download page`_).
+
+Install inside virtualenv
+-------------------------
+
+For an isolated install, you can run the same inside a virtualenv_.
 
 .. code:: bash
 
@@ -33,7 +64,7 @@ For an isolated install, you can run the same inside a virtualenv.
 
    $ source venv/bin/activate             # activate virtual environment
 
-   $ pip3 install nmrstarlib              # install nmrstarlib as usually
+   $ python3 -m pip install nmrstarlib    # install nmrstarlib as usually
 
    $ deactivate                           # if you are done working in the virtual environment
 
@@ -53,7 +84,6 @@ Or, download the tarball:
 .. code:: bash
 
    $ curl -OL https://github.com/andreysmelter/nmrstarlib/tarball/master
-   # optionally, zipball is also available (for Windows users).
 
 Once you have a copy of the source, you can embed it in your own Python package,
 or install it into your system site-packages easily:
@@ -72,14 +102,16 @@ Dependencies
 
         .. code:: bash
 
-           pip3 install docopt
+           python3 -m pip install docopt  # On Linux, Mac OS X
+           py -3 -m pip install docopt    # On Windows
 
    * graphviz_ for visualizing assigned chemical shift values.
       * To install graphviz_ Python library run the following:
 
         .. code:: bash
 
-           pip3 install graphviz
+           python3 -m pip install graphviz  # On Linux, Mac OS X
+           py -3 -m pip install graphviz    # On Windows
 
       * The only dependency of graphviz_ Python library is a working installation of Graphviz
         (`download page`_).
@@ -111,7 +143,8 @@ Basic usage
 
 
 
-.. _pip: http://pip.readthedocs.io
+.. _pip: https://pip.pypa.io/
+.. _virtualenv: https://virtualenv.pypa.io/
 .. _docopt: http://docopt.readthedocs.io/
 .. _graphviz: http://graphviz.readthedocs.io/
 .. _BMRB: http://www.bmrb.wisc.edu

@@ -54,7 +54,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'nmrstarlib'
-copyright = u'2016, Andrey Smelter'
+copyright = u'2016, Andrey Smelter, Hunter N.B. Moseley'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
