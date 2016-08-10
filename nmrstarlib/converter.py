@@ -6,7 +6,7 @@ nmrstarlib.converter
 ~~~~~~~~~~~~~~~~~~~~
 
 This module provides functionality for converting between the BMRB
-NMR-STAR format and an equivalent JSONized format.
+NMR-STAR format and its equivalent JSONized NMR-STAR format.
 
 The following conversions are possible:
 
@@ -107,7 +107,6 @@ import zipfile
 import tarfile
 import bz2
 import gzip
-from pathlib import Path
 
 from . import nmrstarlib
 
@@ -116,7 +115,7 @@ class Converter(object):
     """Converter class to convert BMRB NMR-STAR files from NMR-STAR to JSON or from JSON to NMR-STAR format."""
 
     nmrstar_extension = {"json":    ".json",
-                         "nmrstar": ".txt"}
+                         "nmrstar": ".str"}
 
     def __init__(self, from_path, to_path, from_format="nmrstar", to_format="json"):
         """Converter initializer.
@@ -128,8 +127,8 @@ class Converter(object):
         :return: None
         :rtype: None
         """
-        self.from_path = from_path
-        self.to_path = to_path
+        self.from_path = os.path.normpath(from_path)
+        self.to_path = os.path.normpath(to_path)
         self.from_format = from_format
         self.to_format = to_format
 
@@ -204,14 +203,13 @@ class Converter(object):
         :rtype: None
         """
         for starfile in nmrstarlib.read_files([self.from_path]):
-            inpath = Path(starfile.source)
-            subdir = os.path.join(*" ".join(inpath.parts[1:-1]).split(" "))
-            fname = inpath.name
-            outpath = os.path.join(self.to_path, subdir, fname)
+            outpath = self._outputpath(starfile.source)
+
             if not os.path.exists(os.path.dirname(outpath)):
                 os.makedirs(os.path.dirname(outpath))
-            with open(outpath + self.nmrstar_extension[self.to_format], mode="w") as outfile:
-                outfile.write(starfile.writestr(self.to_format))
+
+            with open(outpath, mode="w") as outfile:
+                starfile.write(outfile, self.to_format)
 
     def _to_zipfile(self):
         """Convert files to zip archive.
@@ -221,11 +219,8 @@ class Converter(object):
         """
         with zipfile.ZipFile(self.to_path, mode="w", compression=zipfile.ZIP_DEFLATED) as outfile:
             for starfile in nmrstarlib.read_files([self.from_path]):
-                inpath = Path(starfile.source)
-                subdir = os.path.join(*" ".join(inpath.parts[1:-1]).split(" "))
-                fname = inpath.name
-                outpath = os.path.join(subdir, fname)
-                outfile.writestr(outpath + self.nmrstar_extension[self.to_format], starfile.writestr(self.to_format))
+                outpath = self._outputpath(starfile.source, archive=True)
+                outfile.writestr(outpath, starfile.writestr(self.to_format))
 
     def _to_tarfile(self):
         """Convert files to tar archive.
@@ -244,12 +239,8 @@ class Converter(object):
 
         with tarfile.open(self.to_path, mode=tar_mode) as outfile:
             for starfile in nmrstarlib.read_files([self.from_path]):
-                inpath = Path(starfile.source)
-                subdir = os.path.join(*" ".join(inpath.parts[1:-1]).split(" "))
-                fname = inpath.name
-                outpath = os.path.join(subdir, fname)
-
-                info = tarfile.TarInfo(outpath + self.nmrstar_extension[self.to_format])
+                outpath = self._outputpath(starfile.source, archive=True)
+                info = tarfile.TarInfo(outpath)
                 data = starfile.writestr(self.to_format).encode()
                 info.size = len(data)
                 outfile.addfile(tarinfo=info, fileobj=io.BytesIO(data))
@@ -285,3 +276,26 @@ class Converter(object):
         with open(to_path, mode="w") as outfile:
             for starfile in nmrstarlib.read_files([self.from_path]):
                 outfile.write(starfile.writestr(self.to_format))
+
+    def _outputpath(self, inputpath, archive=False):
+        """Construct an output path string from an input path string.
+
+        :param str inputpath: Input path string.
+        :return: Output path string.
+        :rtype: str
+        """
+        indirpath, fname = os.path.split(os.path.abspath(os.path.normpath(inputpath)))
+
+        commonprefix = os.path.commonprefix([os.path.abspath(self.from_path),
+                                             os.path.abspath(indirpath)])
+
+        commonparts = commonprefix.split(os.sep)
+        inparts = indirpath.split(os.sep)
+        outparts = inparts[len(commonparts):]
+
+        if archive:
+            outdirpath = os.path.join(*outparts)
+        else:
+            outdirpath = os.path.join(self.to_path, *outparts)
+
+        return os.path.join(outdirpath, fname + self.nmrstar_extension[self.to_format])
