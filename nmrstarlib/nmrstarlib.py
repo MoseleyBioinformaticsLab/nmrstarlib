@@ -13,10 +13,9 @@ accessors.
 
 The NMR-STAR format is a hierachical dictionary containing data on
 NMR experiments. The data is divided into a series of "saveframes"
-which each contain a number of key-value pairs and/or "loops" or
-lists of value records associated with a given set of keys.
+which each contain a number of key-value pairs and "loops".
 
-Each saveframe has a unique name, which is used here as the key in
+Each saveframe has a unique name, which is used as the key in
 the dictionary, corresponding to another dictionary containing the
 information in the saveframe.  Since loops in NMR-Star format do
 not have names, the keys for them inside the saveframe dictionary
@@ -37,7 +36,10 @@ from collections import OrderedDict
 
 from . import bmrblex
 
+
 BMRB_REST = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
+VERBOSE = False
+NMRSTAR_VERSION = "3"
 NMRSTAR_CONSTANTS = {}
 
 
@@ -232,8 +234,6 @@ class StarFile(OrderedDict):
         :return: Fields and values of the loop.
         :rtype: tuple
         """
-        # loop_data = namedtuple(typename="loop", field_names=["fields", "values"])
-
         fields = []
         values = []
 
@@ -385,7 +385,7 @@ class StarFile(OrderedDict):
         except ValueError:
             return False
 
-    def chem_shifts_by_residue(self, aminoacids=None, atoms=None):
+    def chem_shifts_by_residue(self, aminoacids=None, atoms=None, nmrstarversion="3"):
         """Organize chemical shifts by amino acid residue.
 
         :param list aminoacids: List of aminoacids three-letter codes.
@@ -393,14 +393,21 @@ class StarFile(OrderedDict):
         :return: List of OrderedDict per each chain
         :rtype: list of OrderedDict
         """
+        this_directory = os.path.dirname(__file__)
+        if nmrstarversion == "2":
+            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar2.json')
+        elif nmrstarversion == "3":
+            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+        else:
+            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+        with open(config_filepath, "r") as infile:
+            update_constants(infile)
+
         chemshifts_loop = NMRSTAR_CONSTANTS["chemshifts_loop"]
         aminoacid_seq_id = NMRSTAR_CONSTANTS["aminoacid_seq_id"]
         aminoacid_code = NMRSTAR_CONSTANTS["aminoacid_code"]
         atom_code = NMRSTAR_CONSTANTS["atom_code"]
         chemshift_value = NMRSTAR_CONSTANTS["chemshift_value"]
-
-        # aminoacids = [aa.upper() for aa in aminoacids]
-        # atoms = [at.upper() for at in atoms]
 
         chains = []
         for saveframe in self:
@@ -418,32 +425,29 @@ class StarFile(OrderedDict):
                             chains.append(chemshifts_dict)
 
         if aminoacids:
-            chains = [OrderedDict({aa: resonances for aa, resonances in chemshifts_dict.items()
-                                   if aa[1].upper() in aminoacids})
-                      for chemshifts_dict in chains]
-        #     chemshifts_dict = OrderedDict({aa: resonances for aa, resonances in chemshifts_dict.items()
-        #                                                   if aa[1].upper() in aminoacids})
+            for chemshifts_dict in chains:
+                for aa in list(chemshifts_dict.keys()):
+                    if aa[1].upper() not in aminoacids:
+                        chemshifts_dict.pop(aa)
+
         if atoms:
-            chains = [OrderedDict({aa: OrderedDict({at: chemshift for at, chemshift in atd.items()
-                                                    if at.upper() in atoms})
-                                   for aa, atd in chemshifts_dict.items()})
-                      for chemshifts_dict in chains]
-        #     chemshifts_dict = OrderedDict({aa: {at: chemshift for at, chemshift in atd.items() if at.upper() in atoms}
-        #                                    for aa, atd in chemshifts_dict.items()})
+            for chemshifts_dict in chains:
+                for resonances_dict in chemshifts_dict.values():
+                    for at in list(resonances_dict.keys()):
+                        if at.upper() not in atoms:
+                            resonances_dict.pop(at)
         return chains
 
 
-def update_constants(constants):
+def update_constants(filehandle):
     """Update constants related to NMR-STAR format, e.g. field names.
-    See `nmrstarlib/config/constants.json` file.
 
-    :param str constants: JSON file that contains information about NMR-STAR format.
+    :param str filehandle: JSON file that contains information about NMR-STAR format.
     :return: None
     :rtype: None
     """
-    with open(constants, "r") as configfile:
-        newconstants = json.load(configfile)
-        NMRSTAR_CONSTANTS.update(newconstants)
+    newconstants = json.loads(filehandle.read())
+    NMRSTAR_CONSTANTS.update(newconstants)
 
 
 def _generate_filenames(sources):
@@ -458,7 +462,8 @@ def _generate_filenames(sources):
             for path, dirlist, filelist in os.walk(source):
                 for fname in filelist:
                     if GenericFilePath.is_compressed(fname):
-                        print("Skipping compressed file: {}".format(os.path.abspath(fname)))
+                        if VERBOSE:
+                            print("Skipping compressed file: {}".format(os.path.abspath(fname)))
                         continue
                     else:
                         yield os.path.join(path, fname)
@@ -480,6 +485,8 @@ def _generate_handles(filenames):
     :return: Filehandle to be processed into a :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
     """
     for fname in filenames:
+        if VERBOSE:
+            print("Processing file: {}".format(os.path.abspath(fname)))
         path = GenericFilePath(fname)
         for filehandle, source in path.open():
             yield filehandle, source
@@ -487,10 +494,10 @@ def _generate_handles(filenames):
 
 
 def read_files(sources):
-    """Construct a generator that yields :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
+    """Construct a generator that yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances.
 
     :param list sources: List of strings representing path to file(s).
-    :return: :class:`~nmrstarlib.nmrstarlib.StarFile` objects.
+    :return: :class:`~nmrstarlib.nmrstarlib.StarFile` instance(s).
     :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
     """
     filenames = _generate_filenames(sources)
