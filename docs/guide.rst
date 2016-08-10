@@ -4,7 +4,7 @@ User Guide
 Description
 ~~~~~~~~~~~
 
-:mod:`nmrstarlib` package provides a simple Python interface for parsing and
+The :mod:`nmrstarlib` package provides a simple Python interface for parsing and
 manipulating data stored in NMR-STAR format files used by Biological Magnetic
 Resonance Data Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
 experimental data.
@@ -19,7 +19,7 @@ In addition, the nmrstarlib package provides facilities to visualize assigned ch
 Installation
 ~~~~~~~~~~~~
 
-:mod:`nmrstarlib` runs under Python 3. Starting with Python 3.4 pip_ is included by default.
+The :mod:`nmrstarlib` package runs under Python 3. Starting with Python 3.4 pip_ is included by default.
 To install system-wide with pip_ run the following:
 
 Install on Linux, Mac OS X
@@ -78,13 +78,15 @@ You can either clone the public repository:
 
 .. code:: bash
 
-   $ git clone git://github.com/andreysmelter/nmrstarlib
+   $ https://github.com/MoseleyBioinformaticsLab/nmrstarlib.git
 
-Or, download the tarball:
+Or, download the tarball and/or zipball:
 
 .. code:: bash
 
-   $ curl -OL https://github.com/andreysmelter/nmrstarlib/tarball/master
+   $ curl -OL https://github.com/MoseleyBioinformaticsLab/nmrstarlib/tarball/master
+
+   $ curl -OL https://github.com/MoseleyBioinformaticsLab/nmrstarlib/zipball/master
 
 Once you have a copy of the source, you can embed it in your own Python package,
 or install it into your system site-packages easily:
