@@ -72,7 +72,7 @@ For an isolated install, you can run the same inside a virtualenv_.
 Get the source code
 ~~~~~~~~~~~~~~~~~~~
 
-Code is available on GitHub:
+Code is available on GitHub: https://github.com/MoseleyBioinformaticsLab/nmrstarlib
 
 You can either clone the public repository:
 
