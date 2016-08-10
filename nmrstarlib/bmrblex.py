@@ -114,16 +114,6 @@ class bmrblex:
         raw = self._read_token()
         return raw
 
-    def _get_nextchar(self):
-        nextchar = self.instream.read(1)
-        self.streamposition += 1
-        return nextchar
-
-    def _get_nextnextchar(self):
-        nextnextchar = self.instream.read(1)
-        self.instream.seek(self.streamposition + 1)
-        return nextnextchar
-
     def _read_token(self):
         """Read token based on the parsing rules.
 
@@ -137,17 +127,15 @@ class bmrblex:
         while self.streamposition+1 < self.streamlength-1:
             nextchar = self.instream.read(1)
             self.streamposition += 1
-            # nextchar = self._get_nextchar()
 
             nextnextchar = self.instream.read(1)       # look up 1 char ahead
             self.instream.seek(self.streamposition+1)  # return to current stream position
-            # nextnextchar = self._get_nextnextchar()
 
             if self.state is None:
-                self.token = ''        # past end of file
+                self.token = ""        # past end of file
                 break
 
-            elif self.state == ' ':
+            elif self.state == " ":
                 if not nextchar:
                     self.state = None  # end of file
                     break
@@ -233,13 +221,13 @@ class bmrblex:
                 else:
                     self.token = self.token + nextchar
 
-            #
-            elif self.state == 'a':
+            # process regular token (unquoted text)
+            elif self.state == "a":
                 if not nextchar:
                     self.state = None   # end of file
                     break
                 elif nextchar in self.whitespace:
-                    self.state = ' '
+                    self.state = " "
                     if self.token or quoted:
                         break   # emit current token
                     else:

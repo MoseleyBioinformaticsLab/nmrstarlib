@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 """Routines for working with BMRB NMR-STAR format files.
 
 This package includes the following modules:
@@ -20,7 +23,7 @@ This package includes the following modules:
     JSONized file format.
 
 ``csviewer``
-    This module provides the :func:`~nmrstarlib.csviewer.csviewer` function that visualizes
+    This module provides the :class:`~nmrstarlib.csviewer.CSViewer` class that visualizes
     chemical shift values using the Graphviz (http://www.graphviz.org/) DOT Languge description.
 """
 
@@ -28,5 +31,13 @@ import os
 from . import nmrstarlib
 
 this_directory = os.path.dirname(__file__)
-config_file = os.path.join(this_directory, '../conf/constants.json')
-nmrstarlib.update_constants(config_file)
+
+if nmrstarlib.NMRSTAR_VERSION == "3":
+    config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+elif nmrstarlib.NMRSTAR_VERSION == "2":
+    config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar2.json')
+else:
+    config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+
+with open(config_filepath, "r") as infile:
+    nmrstarlib.update_constants(infile)

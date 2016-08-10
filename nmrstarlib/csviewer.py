@@ -15,7 +15,7 @@ from . import nmrstarlib
 class CSViewer(object):
     """Chemical Shifts Viewer: uses:meth:`nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue`
     method chemical shifts organized by residue and visualizes chemical shifts values using the
-    Graphviz(http: // www.graphviz.org /) DOT Languge description.
+    Graphviz (http://www.graphviz.org/) DOT Languge description.
     """
 
     dot_template = '''digraph {{
