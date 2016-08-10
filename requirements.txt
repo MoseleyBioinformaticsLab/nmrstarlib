@@ -1,3 +1,2 @@
-nmrstarlib
 docopt>=0.6.2
 graphviz>=0.4.10
