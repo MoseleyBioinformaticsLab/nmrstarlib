@@ -215,7 +215,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'nmrstarlib.tex', u'nmrstarlib Documentation',
-   u'Andrey Smelter', 'manual'),
+   u'Andrey Smelter, Hunter N.B. Moseley', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -245,7 +245,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'nmrstarlib', u'nmrstarlib Documentation',
-     [u'Andrey Smelter'], 1)
+     [u'Andrey Smelter, Hunter N.B. Moseley'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -259,7 +259,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'nmrstarlib', u'nmrstarlib Documentation',
-   u'Andrey Smelter', 'nmrstarlib', 'One line description of project.',
+   u'Andrey Smelter, Hunter N.B. Moseley', 'nmrstarlib', 'One line description of project.',
    'Miscellaneous'),
 ]
 
