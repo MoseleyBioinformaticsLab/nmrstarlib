@@ -275,7 +275,7 @@ class StarFile(OrderedDict):
                     print("save_\n", file=f)
 
         elif format is "json":
-            print(self._to_json())
+            print(self._to_json(), file=f)
 
     def print_saveframe(self, sf, f=sys.stdout, format="nmrstar", tw=3):
         """Print saveframe into a file or stdout.
@@ -308,7 +308,7 @@ class StarFile(OrderedDict):
                         print(tw*" ", "_{}\t {}".format(sftag, self[sf][sftag]), file=f)
 
         elif format is "json":
-            print(json.dumps(self[sf], sort_keys=False, indent=4))
+            print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
 
     def print_loop(self, sf, sftag, f=sys.stdout, format="nmrstar", tw=3):
         """Print loop into a file or stdout.
@@ -332,7 +332,7 @@ class StarFile(OrderedDict):
                 print(line, file=f)
 
         elif format is "json":
-            print(json.dumps(self[sf][sftag], sort_keys=False, indent=4))
+            print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)
 
     def _to_json(self):
         """Save :class:`~nmrstarlib.nmrstarlib.StarFile` into JSON string.

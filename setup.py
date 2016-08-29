@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='nmrstarlib',
-    version='1.0.2',
+    version='1.0.3',
     author='Andrey Smelter',
     author_email='andrey.smelter@gmail.com',
     description='Python library for parsing data from NMR-STAR format files',
