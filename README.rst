@@ -83,7 +83,7 @@ Import `nmrstarlib` library and create generator function that will yield
    ...     print(list(starfile.keys()))   # print StarFile saveframe categories
    >>>
 
-.. note:: Read `User Guide` and `The nmrstarlib Tutorial` on ReadTheDocs_ to learn more and see code examples on using
+.. note:: Read `User Guide`_ and `The nmrstarlib Tutorial`_ on ReadTheDocs_ to learn more and see code examples on using
           `nmrstarlib` as a library and as a command-line tool.
 
 License
@@ -99,6 +99,8 @@ This package is distributed under the MIT_ `license`.
 
 .. _GitHub: https://github.com/MoseleyBioinformaticsLab/nmrstarlib
 .. _ReadTheDocs: http://nmrstarlib.readthedocs.io/
+.. _User Guide: http://nmrstarlib.readthedocs.io/en/latest/guide.html
+.. _The nmrstarlib Tutorial: http://nmrstarlib.readthedocs.io/en/latest/tutorial.html
 .. _PyPI: https://pypi.python.org/pypi/nmrstarlib
 
 .. _MIT: http://opensource.org/licenses/MIT

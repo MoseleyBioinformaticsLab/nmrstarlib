@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='nmrstarlib',
-    version='1.0.3',
+    version='1.0.4',
     author='Andrey Smelter',
     author_email='andrey.smelter@gmail.com',
     description='Python library for parsing data from NMR-STAR format files',
@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     package_data={'nmrstarlib':['conf/*.json']},
     platforms='any',
-    long_description=open('READMEPYPI.rst').read(),
+    long_description=open('README.rst').read(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
