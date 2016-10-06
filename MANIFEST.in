@@ -1,4 +1,4 @@
-include README.rst READMEPYPI.rst LICENSE
+include README.rst LICENSE
 include requirements.txt
 include nmrstarlib/conf/*.json
 recursive-include docs *.rst *.txt *.py *.png *.svg
