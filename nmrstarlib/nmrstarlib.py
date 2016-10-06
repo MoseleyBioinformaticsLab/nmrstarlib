@@ -395,11 +395,11 @@ class StarFile(OrderedDict):
         """
         this_directory = os.path.dirname(__file__)
         if nmrstarversion == "2":
-            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar2.json')
+            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar2.json')
         elif nmrstarversion == "3":
-            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
         else:
-            config_filepath = os.path.join(this_directory, '../conf/constants_nmrstar3.json')
+            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
         with open(config_filepath, "r") as infile:
             update_constants(infile)
 
