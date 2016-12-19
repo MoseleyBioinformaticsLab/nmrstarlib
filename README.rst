@@ -77,7 +77,7 @@ Import `nmrstarlib` library and create generator function that will yield
    >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
    >>> starfile_gen = nmrstarlib.read_files(["path"])
    >>>
-   >>> for starfile in in starfile_gen:
+   >>> for starfile in starfile_gen:
    ...     print(starfile.bmrbid)         # print BMRB id of StarFile
    ...     print(starfile.source)         # print source of StarFile
    ...     print(list(starfile.keys()))   # print StarFile saveframe categories
