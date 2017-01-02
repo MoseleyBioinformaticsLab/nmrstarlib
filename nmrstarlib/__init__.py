@@ -13,8 +13,8 @@ This package includes the following modules:
     for processing of tokens.
 
 ``bmrblex``
-    This module provides the :class:`~nmrstarlib.bmrblex.bmrblex` class that is responsible for
-    the syntax analysis of BMRB NMR-STAR files, processing word, number, single quoted,
+    This module provides the :func:`~nmrstarlib.bmrblex.bmrblex` generator that is responsible
+    for the syntax analysis of BMRB NMR-STAR files, processing word, number, single quoted,
     double quoted, multiline quoted BMRB tokens.
 
 ``converter``
@@ -24,8 +24,10 @@ This package includes the following modules:
 
 ``csviewer``
     This module provides the :class:`~nmrstarlib.csviewer.CSViewer` class that visualizes
-    chemical shift values using the Graphviz (http://www.graphviz.org/) DOT Languge description.
+    chemical shift values using the Graphviz (http://www.graphviz.org/) DOT Languge description
+    and provides code example for utilizing the library.
 """
+from __future__ import print_function
 
 import os
 from . import nmrstarlib
