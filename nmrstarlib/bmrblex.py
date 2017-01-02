@@ -177,19 +177,3 @@ def bmrblex(text):
 
         yield token
         token = u""
-
-
-if __name__ == "__main__":
-
-    with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:
-        text = infile.read()
-
-    t0 = time.time()
-    lexer = bmrblex(text)
-
-    for token in lexer:
-        t = token
-        print(t)
-
-    t1 = time.time() - t0
-    print(t1)
