@@ -5,11 +5,10 @@
 nmrstarlib.bmrblex
 ~~~~~~~~~~~~~~~~~~
 
-A lexical analyzer for BMRB NMR-STAR format syntax.
-
-This module is based on python ``shlex`` module modified to address specifics of BMRB NMR-STAR format.
-The ``shlex`` class makes it easy to write lexical analyzers for simple syntaxes resembling
-that of the Unix shell. Documentation: https://docs.python.org/3/library/shlex.html
+This module provides :func:`nmrstarlib.bmrblex.bmrblex` lexical analyzer for
+BMRB NMR-STAR format syntax. It is implemented as Python generator-based
+state machine which generates (yields) token one at a time when
+:py:func:`next()` is invoked on :func:`nmrstarlib.bmrblex.bmrblex` instance.
 
 
 Simplified description of parsing rules:
@@ -32,218 +31,165 @@ Simplified description of parsing rules:
      https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
 """
 
-import sys
+import time
 from collections import deque
-from io import StringIO
-
-__all__ = ["bmrblex"]
 
 
-class bmrblex:
-    """A lexical analyzer for the BMRB NMR-STAR format syntax."""
+def transform_text(input_txt):
+    """Transforms text into :py:class:`~collections.deque`, pre-processes
+    multiline strings, and removes comments.
 
-    multilinequote = 'ಠ'
+    :param str or bytes input_txt: Input text.
+    :return: Double-ended queue of single characters and multiline strings.
+    :rtype: :py:class:`~collections.deque`
+    """
+    if isinstance(input_txt, str):
+        text = u"{}".format(input_txt)
+    elif isinstance(input_txt, bytes):
+        text = input_txt.decode("utf-8")
+    else:
+        raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))
 
-    def __init__(self, instream=None):
-        """Initialize stream string and attributes.
+    inputq = deque(text.split(u"\n"))
+    outputq = deque()
 
-        :param instream: Input string to be converted into stream object for tokens processing.
-        :type instream: str or bytes
-        """
-        if isinstance(instream, str):
-            text = self._transform_text(instream)
-        elif isinstance(instream, bytes):
-            text = self._transform_text(instream.decode("utf-8"))
+    while len(inputq) > 0:
+        line = inputq.popleft()
+
+        if line.startswith(u";"):
+            multiline = u";\n"
+            line = inputq.popleft()
+
+            while not line.startswith(u";"):
+                multiline += line
+                line = inputq.popleft()
+
+            multiline += line[:1]
+            outputq.append(multiline)
+
+            for character in line[1:]:
+                outputq.append(character)
+
+        elif line.lstrip().startswith(u"#"):
+            continue
         else:
-            raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(instream)))
+            for character in line:
+                outputq.append(character)
 
-        instream = StringIO(text)
+        outputq.append(u"\n")
 
-        if instream is not None:
-            self.instream = instream
-        else:
-            self.instream = sys.stdin
+    return outputq
 
-        self.eof = ''
-        self.commenters = '#'
-        self.wordchars = ('abcdfeghijklmnopqrstuvwxyz'
-                          'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
-                          'ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ'
-                          'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ'
-                          '!@#$%^&*()_+:;?/>.<,~`|\{[}]-=')
-        self.whitespace = ' \t\r\n'
-        self.escapedquotes = '"'
-        self.state = ' '
-        self.pushback = deque()
-        self.token = ''
-        self.singlequote = "'"
-        self.doublequote = '"'
 
-        # stream position gets incremented by 1 each time instream.read(1) is called
-        # since instream has 0-based numeration, the first emitted character
-        # gets streamposition = 0, hence initial streamposition = -1
-        self.streamposition = -1
-        self.streamlength = len(text)
+def bmrblex(text):
+    """A lexical analyzer for the BMRB NMR-STAR format syntax.
 
-    def _transform_text(self, text):
-        """Replace all lines that start with ';' with a special character
-        to simplify multiline string processing with bmrblex.
+    :param text: Input text.
+    :type text: :py:class:`str` or :py:class:`bytes`
+    :return: Current token.
+    :rtype: :py:class:`str`
+    """
+    stream = transform_text(text)
 
-        :param str text: Original text.
-        :return: Transformed text where lines starting with ';' replaced by a special character.
-        :rtype: str
-        """
-        lines = text.split('\n')
-        newtext = ''
-        for line in lines:
-            if line and line.startswith(';'):
-                line = self.multilinequote + line[1:]
-            newtext += line + '\n'
-        return newtext
- 
-    def get_token(self):
-        """Get a token from the input stream (or from stack if it's nonempty).
+    wordchars = (u"abcdfeghijklmnopqrstuvwxyz"
+                 u"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+                 u"ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"
+                 u"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ"
+                 u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
 
-        :return: Current token.
-        :rtype: str
-        """
-        if self.pushback:
-            token = self.pushback.popleft()
-            return token
-        # No pushback.  Get a token.
-        raw = self._read_token()
-        return raw
+    whitespace = u" \t\r\n"
+    state = u" "
+    token = u""
 
-    def _read_token(self):
-        """Read token based on the parsing rules.
+    while len(stream) > 0:
+        nextnextchar = stream.popleft()
 
-        :return: Current token.
-        :rtype: str
-        """
-        quoted = False
+        while True:
+            nextchar = nextnextchar
 
-        # next streamposition, i.e. streamposition+1 should not exceed the number of
-        # characters inside instream, streamlength-1 ==> stopping criteria for the while loop
-        while self.streamposition+1 < self.streamlength-1:
-            nextchar = self.instream.read(1)
-            self.streamposition += 1
+            if len(stream) > 0:
+                nextnextchar = stream.popleft()
+            else:
+                nextnextchar = u""
 
-            nextnextchar = self.instream.read(1)       # look up 1 char ahead
-            self.instream.seek(self.streamposition+1)  # return to current stream position
+            # Process multiline string
+            if len(nextchar) > 1:
+                state = u" "
+                token = nextchar
+                break  # emit current token
 
-            if self.state is None:
-                self.token = ""        # past end of file
+            if state is None:
+                token = u""  # past end of file
                 break
 
-            elif self.state == " ":
+            elif state == u" ":
                 if not nextchar:
-                    self.state = None  # end of file
+                    state = None
                     break
-                elif nextchar in self.whitespace:
-                    if self.token:
-                        break   # emit current token
-                    else:
-                        continue
-                elif nextchar in self.commenters:
-                    line = self.instream.readline()
-                    self.streamposition += len(line)
-                elif nextchar in self.wordchars:
-                    self.token = nextchar
-                    self.state = 'a'
-                elif nextchar in self.singlequote:
-                    self.token = nextchar
-                    self.state = nextchar
-                elif nextchar in self.doublequote:
-                    self.token = nextchar
-                    self.state = nextchar
-                elif nextchar in self.multilinequote:
-                    # self.token = nextchar
-                    self.state = nextchar
-                else:
-                    self.token = nextchar
-                    if self.token:
-                        break   # emit current token
+
+                elif nextchar in whitespace:
+                    if token:
+                        state = u" "
+                        break  # emit current token
                     else:
                         continue
 
-            # Process multiline-quoted text
-            elif self.state == self.multilinequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
+                elif nextchar in wordchars:
+                    token = nextchar
+                    state = u"a"
 
-                line = self.instream.readline()
-                self.streamposition += len(line)
+                elif nextchar == u"'" or nextchar == u'"':
+                    token = nextchar
+                    state = nextchar
 
-                while True:
-                    if line.startswith('ಠ'):
-                        self.streamposition -= len(line)  # get back to the beginning of line
-                        nextchar = self.instream.read(1)  # emit nextchar after 'ಠ'
-                        self.streamposition += 1
-                        self.token = '\n;\n' + self.token + ';'
-                        self.state = ' '
-                        break   # emit current token
-                    else:
-                        self.token = self.token + line
-                        line = self.instream.readline()
-                        self.streamposition += len(line)
-
-            # process token staring with single quote '
-            elif self.state in self.singlequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
-
-                if nextchar == self.state:
-                    if nextnextchar not in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = self.singlequote
-                    elif nextnextchar in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = ' '
-                        break   # emit current token
                 else:
-                    self.token = self.token + nextchar
+                    token = nextchar
+                    if token:
+                        state = u" "
+                        break  # emit current token
+                    else:
+                        continue
 
-            # process token staring with double quote "
-            elif self.state in self.doublequote:
-                quoted = True
-                if not nextchar:      # end of file
-                    raise EOFError("No closing quotation")
-                if nextchar == self.state:
-                    if nextnextchar not in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = self.doublequote
-                    elif nextnextchar in self.whitespace:
-                        self.token = self.token + nextchar
-                        self.state = ' '
+            # Process single-quoted or double-quoted token
+            elif state == u"'" or state == u'"':
+                token += nextchar
+                if nextchar == state:
+                    if nextnextchar in whitespace:
+                        state = u" "
                         break
-                else:
-                    self.token = self.token + nextchar
 
-            # process regular token (unquoted text)
-            elif self.state == "a":
+            # Process regular (unquoted) token
+            elif state == u"a":
                 if not nextchar:
-                    self.state = None   # end of file
+                    state = None
                     break
-                elif nextchar in self.whitespace:
-                    self.state = " "
-                    if self.token or quoted:
-                        break   # emit current token
+                elif nextchar in whitespace:
+                    state = u" "
+                    if token:
+                        break  # emit current token
                     else:
                         continue
                 else:
-                    self.token = self.token + nextchar
+                    token += nextchar
 
-        result = self.token
-        self.token = ''
-        return result
+        if nextnextchar:
+            stream.appendleft(nextnextchar)
 
-    def __iter__(self):
-        return self
+        yield token
+        token = u""
 
-    def __next__(self):
-        token = self.get_token()
-        if token == self.eof:
-            raise StopIteration
-        return token
+
+if __name__ == "__main__":
+
+    with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:
+        text = infile.read()
+
+    t0 = time.time()
+    lexer = bmrblex(text)
+
+    for token in lexer:
+        t = token
+        print(t)
+
+    t1 = time.time() - t0
+    print(t1)
