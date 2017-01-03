@@ -11,11 +11,7 @@ The nmrstarlib API Reference
 
 .. automodule:: nmrstarlib.bmrblex
 
-.. autoclass:: bmrblex
-   :member-order: bysource
-   :members:
-   :special-members:
-   :private-members:
+.. autofunction:: bmrblex
 
 .. automodule:: nmrstarlib.converter
 
