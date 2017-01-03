@@ -435,23 +435,25 @@ class StarFile(OrderedDict):
                             for entry in self[saveframe][ind][1]:
                                 residueid = int(entry[aminoacid_seq_id])
                                 chemshifts_dict.setdefault(residueid, OrderedDict())
-                                chemshifts_dict[residueid]["AACode_3"] = entry[aminoacid_code]
+                                chemshifts_dict[residueid]["AA3Code"] = entry[aminoacid_code]
                                 chemshifts_dict[residueid]["Seq_ID"] = residueid
                                 chemshifts_dict[residueid][entry[atom_code]] = entry[chemshift_value]
                             chains.append(chemshifts_dict)
 
         if aminoacids:
             for chemshifts_dict in chains:
-                for aa in list(chemshifts_dict.keys()):
-                    if aa[1].upper() not in aminoacids:
-                        chemshifts_dict.pop(aa)
+                for aa in chemshifts_dict.values():
+                    if aa["AA3Code"].upper() not in aminoacids:
+                        chemshifts_dict.pop(aa["Seq_ID"])
 
         if atoms:
             for chemshifts_dict in chains:
                 for resonances_dict in chemshifts_dict.values():
-                    for at in list(resonances_dict.keys()):
-                        if at.upper() not in atoms:
-                            resonances_dict.pop(at)
+                    for resonance in list(resonances_dict.keys()):
+                        if resonance in ("AA3Code", "Seq_ID") or resonance.upper() in atoms:
+                            continue
+                        else:
+                            resonances_dict.pop(resonance)
         return chains
 
 
