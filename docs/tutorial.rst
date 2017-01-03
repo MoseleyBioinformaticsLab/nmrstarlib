@@ -26,15 +26,15 @@ directory of NMR-STAR files, archive of NMR-STAR files or BMRB id:
 
 >>> from nmrstarlib import nmrstarlib
 >>>
->>> single_starfile = nmrstarlib.read_files(["bmr18569.str"])  # single NMR-STAR file
+>>> single_starfile = nmrstarlib.read_files("bmr18569.str")  # single NMR-STAR file
 >>>
->>> starfiles = nmrstarlib.read_files(["bmr18569.str", "bmr336.str"]) # several NMR-STAR files
+>>> starfiles = nmrstarlib.read_files("bmr18569.str", "bmr336.str") # several NMR-STAR files
 >>>
->>> dir_starfiles = nmrstarlib.read_files(["starfiles_dir"])   # directory of NMR-STAR files
+>>> dir_starfiles = nmrstarlib.read_files("starfiles_dir")   # directory of NMR-STAR files
 >>>
->>> arch_starfiles = nmrstarlib.read_files(["starfiles.zip"])  # archive of NMR-STAR files
+>>> arch_starfiles = nmrstarlib.read_files("starfiles.zip")  # archive of NMR-STAR files
 >>>
->>> url_starfile = nmrstarlib.read_files(["18569"])            # BMRB id of NMR-STAR file
+>>> url_starfile = nmrstarlib.read_files("18569")            # BMRB id of NMR-STAR file
 >>>
 
 Processing StarFile generator

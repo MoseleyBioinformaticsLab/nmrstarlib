@@ -125,7 +125,7 @@ class Converter(object):
         :param str from_format: Input format: `nmrstar` or `json`.
         :param str to_format: Output format: `nmrstar` or `json`.
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         self.from_path = os.path.normpath(from_path)
         self.to_path = os.path.normpath(to_path)
@@ -139,7 +139,7 @@ class Converter(object):
         """Convert file(s) from NMR-STAR format to JSON format or from JSON format to NMR-STAR format.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if not os.path.exists(os.path.dirname(self.to_path)):
             dirname = os.path.dirname(self.to_path)
@@ -164,7 +164,7 @@ class Converter(object):
         """Perform many-to-many files conversion.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if not self.to_path_compression:
             self._to_dir()
@@ -182,7 +182,7 @@ class Converter(object):
         """Perform one-to-one file conversion.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if not self.to_path_compression:
             self._to_textfile()
@@ -200,9 +200,9 @@ class Converter(object):
         """Convert files to directory.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
-        for starfile in nmrstarlib.read_files([self.from_path]):
+        for starfile in nmrstarlib.read_files(self.from_path):
             outpath = self._outputpath(starfile.source)
 
             if not os.path.exists(os.path.dirname(outpath)):
@@ -215,10 +215,10 @@ class Converter(object):
         """Convert files to zip archive.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         with zipfile.ZipFile(self.to_path, mode="w", compression=zipfile.ZIP_DEFLATED) as outfile:
-            for starfile in nmrstarlib.read_files([self.from_path]):
+            for starfile in nmrstarlib.read_files(self.from_path):
                 outpath = self._outputpath(starfile.source, archive=True)
                 outfile.writestr(outpath, starfile.writestr(self.to_format))
 
@@ -226,7 +226,7 @@ class Converter(object):
         """Convert files to tar archive.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if self.to_path_compression == "tar":
             tar_mode = "w"
@@ -238,7 +238,7 @@ class Converter(object):
             tar_mode = "w"
 
         with tarfile.open(self.to_path, mode=tar_mode) as outfile:
-            for starfile in nmrstarlib.read_files([self.from_path]):
+            for starfile in nmrstarlib.read_files(self.from_path):
                 outpath = self._outputpath(starfile.source, archive=True)
                 info = tarfile.TarInfo(outpath)
                 data = starfile.writestr(self.to_format).encode()
@@ -249,32 +249,32 @@ class Converter(object):
         """Convert file to bz2-compressed file.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         with bz2.BZ2File(self.to_path, mode="wb") as outfile:
-            for starfile in nmrstarlib.read_files([self.from_path]):
+            for starfile in nmrstarlib.read_files(self.from_path):
                 outfile.write(starfile.writestr(self.to_format).encode())
 
     def _to_gzipfile(self):
         """Convert file to gzip-compressed file.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         with gzip.GzipFile(self.to_path, mode="wb") as outfile:
-            for starfile in nmrstarlib.read_files([self.from_path]):
+            for starfile in nmrstarlib.read_files(self.from_path):
                 outfile.write(starfile.writestr(self.to_format).encode())
 
     def _to_textfile(self):
         """Convert file to regular text file.
 
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         to_path = self.to_path if self.to_path.endswith(self.nmrstar_extension[self.to_format]) \
             else self.to_path + self.nmrstar_extension[self.to_format]
         with open(to_path, mode="w") as outfile:
-            for starfile in nmrstarlib.read_files([self.from_path]):
+            for starfile in nmrstarlib.read_files(self.from_path):
                 outfile.write(starfile.writestr(self.to_format))
 
     def _outputpath(self, inputpath, archive=False):
@@ -282,7 +282,7 @@ class Converter(object):
 
         :param str inputpath: Input path string.
         :return: Output path string.
-        :rtype: str
+        :rtype: :py:class:`str`
         """
         indirpath, fname = os.path.split(os.path.abspath(os.path.normpath(inputpath)))
 
@@ -294,7 +294,7 @@ class Converter(object):
         outparts = inparts[len(commonparts):]
 
         if archive:
-            outdirpath = os.path.join(*outparts)
+            outdirpath = os.path.join(*outparts) if outparts else ""
         else:
             outdirpath = os.path.join(self.to_path, *outparts)
 
