@@ -22,6 +22,8 @@ not have names, the keys for them inside the saveframe dictionary
 are simply loop_0, loop_1, etc.
 """
 
+from __future__ import print_function, division
+
 import sys
 import os
 import io
@@ -29,12 +31,29 @@ import zipfile
 import bz2
 import gzip
 import tarfile
-import json
-import urllib.request
-import urllib.error
 from collections import OrderedDict
 
-from . import bmrblex
+if sys.version_info.major == 3 and sys.version_info.minor == 6:
+    try:
+        import ujson as json
+        UJSON = True
+    except ImportError:
+        UJSON = False
+        import json
+else:
+    import json
+
+if sys.version_info.major == 3:
+    from urllib.request import urlopen
+    from urllib.parse import urlparse
+else:
+    from urllib2 import urlopen
+    from urlparse import urlparse
+
+try:
+    from .cbmrblex import bmrblex
+except ImportError:
+    from .bmrblex import bmrblex
 
 
 BMRB_REST = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
@@ -47,15 +66,14 @@ class StarFile(OrderedDict):
     """StarFile class that stores the data from a single NMR-STAR file in the form of an
     :py:class:`~collections.OrderedDict`."""
 
-    def __init__(self, source="", frame_categories=None):
-        """`StarFile` initializer. Leave `frame_categories` as `None` to
-        read everything.  Otherwise it can be a list of saveframe
-        categories to read, skipping the rest.
+    def __init__(self, source="", frame_categories=None, *args, **kwds):
+        """`StarFile` initializer. Leave `frame_categories` as :py:obj:`None` to
+        read everything. Otherwise it can be a list of saveframe categories to read, skipping the rest.
 
-        :param str source: Source `StarFile` created from: local file or URL address.
+        :param str source: Source `StarFile` instance was created from - local file or URL address.
         :param list frame_categories: List of saveframe names.
         """
-        super().__init__(self)
+        super(StarFile, self).__init__(*args, **kwds)
         self.source = source
         self._frame_categories = frame_categories
         self.bmrbid = ""
@@ -67,20 +85,19 @@ class StarFile(OrderedDict):
         :type filehandle: :py:class:`io.TextIOWrapper`, :py:class:`gzip.GzipFile`,
                           :py:class:`bz2.BZ2File`, :py:class:`zipfile.ZipFile`
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         inputstr = filehandle.read()
         nmrstar_str = self._is_nmrstar(inputstr)
         json_str = self._is_json(inputstr)
 
-        if inputstr == "" or inputstr == b"":
+        if not inputstr:
             pass
         elif nmrstar_str:
-            lexer = bmrblex.bmrblex(nmrstar_str)
-            self._build_starfile(lexer)
+            self._build_starfile(nmrstar_str)
         elif json_str:
             self.update(json_str)
-            self.bmrbid = self["data"]
+            self.bmrbid = self[u"data"]
         else:
             raise TypeError("Unknown file format")
         filehandle.close()
@@ -92,7 +109,7 @@ class StarFile(OrderedDict):
         :type filehandle: :py:class:`io.TextIOWrapper`
         :param str fileformat: Format to use to write data: `nmrstar` or `json`.
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         try:
             if fileformat == "json":
@@ -112,7 +129,7 @@ class StarFile(OrderedDict):
 
         :param str fileformat: Format to use to write data: `nmrstar` or `json`.
         :return: String representing the :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
-        :rtype: str
+        :rtype: :py:class:`str`
         """
         try:
             if fileformat == "json":
@@ -126,127 +143,109 @@ class StarFile(OrderedDict):
         except IOError:
             raise IOError('"filehandle" parameter must be writable.')
 
-    def _build_starfile(self, lexer):
+    def _build_starfile(self, nmrstar_str):
         """Build :class:`~nmrstarlib.nmrstarlib.StarFile` object.
 
-        :param lexer: instance of the BMRB lexical analyzer class.
-        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
+        :param nmrstar_str: NMR-STAR-formatted string.
+        :type nmrstar_str: :py:class:`str` or :py:class:`bytes`
         :return: instance of :class:`~nmrstarlib.nmrstarlib.StarFile`.
         :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
         """
         odict = self
-        token = lexer.get_token()
+        lexer = bmrblex(nmrstar_str)
+        token = next(lexer)
 
-        while token != "":
+        while token != u"":
             try:
-                if token[0:5] == "save_":
-                    # name = token[5:]
+                if token[0:5] == u"save_":
                     name = token
                     frame = self._build_saveframe(lexer)
                     if frame:
                         odict[name] = frame
                     
-                elif token[0:5] == "data_":
+                elif token[0:5] == u"data_":
                     self.bmrbid = token[5:]
-                    self["data"] = self.bmrbid
+                    self[u"data"] = self.bmrbid
                 else:
-                    # print('{} Error: Invalid token {}'.format(lexer.error_leader(), token), file=sys.stderr)
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
-                    print("In _build_starfile try block", file=sys.stderr)  # DEBUG
-                    # raise InvalidToken("{} {}".format(lexer.error_leader(), token))
+                    print("In _build_starfile try block", file=sys.stderr)
                     raise InvalidToken("{}".format(token))
 
             except IndexError:
-                # print('{} Error: Invalid token {}'.format(lexer.error_leader(), token), file=sys.stderr)
                 print("Error: Invalid token {}".format(token), file=sys.stderr)
-                print("In _build_starfile except block", file=sys.stderr)  # DEBUG
+                print("In _build_starfile except block", file=sys.stderr)
                 raise
             finally:
-                token = lexer.get_token()
+                token = next(lexer)
         return self
 
     def _build_saveframe(self, lexer):
         """Build NMR-STAR file saveframe.
 
-        :param lexer: instance of the BMRB lexical analyzer class.
-        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
+        :param lexer: instance of the BMRB lexical analyzer.
+        :type lexer: :func:`~nmrstarlib.bmrblex.bmrblex`
         :return: Saveframe dictionary.
         :rtype: :py:class:`collections.OrderedDict`
         """
         odict = OrderedDict()
         loopcount = 0
 
-        token = lexer.get_token()
-        while token != "save_":
+        token = next(lexer)
+        while token != u"save_":
             try:
-                if token[0] == "_":
+                if token[0] == u"_":
                     # This strips off the leading underscore of tagnames for readability 
-                    odict[token[1:]] = lexer.get_token()
+                    odict[token[1:]] = next(lexer)
 
                     # Skip the saveframe if it's not in the list of wanted categories
                     if self._frame_categories:
                         if token == "_Saveframe_category" and odict[token[1:]] not in self._frame_categories:
                             raise SkipSaveFrame()
 
-                elif token == "loop_":
-                    odict["loop_{}".format(loopcount)] = self._build_loop(lexer)
+                elif token == u"loop_":
+                    odict[u"loop_{}".format(loopcount)] = self._build_loop(lexer)
                     loopcount += 1
 
                 else:
-                    # print('{} Error: Invalid token {}'.format(lexer.error_leader(), token), file=sys.stderr)
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
-                    print("In _build_saveframe try block", file=sys.stderr)  # DEBUG
-                    # raise InvalidToken("{} {}".format(lexer.error_leader(), token))
+                    print("In _build_saveframe try block", file=sys.stderr)
                     raise InvalidToken("{}".format(token))
 
             except IndexError:
-                # print("{} Error: Invalid token {}".format(lexer.error_leader(), token), file=sys.stderr)
                 print("Error: Invalid token {}".format(token), file=sys.stderr)
-                print("In _build_saveframe except block", file=sys.stderr)  # DEBUG
+                print("In _build_saveframe except block", file=sys.stderr)
                 raise
             except SkipSaveFrame:
                 self._skip_saveframe(lexer)
                 odict = None
             finally:
                 if odict is None:
-                    token = "save_"
+                    token = u"save_"
                 else:
-                    token = lexer.get_token()
+                    token = next(lexer)
         return odict
-
-    def _skip_saveframe(self, lexer):
-        """Skip entire saveframe - keep emitting tokens until the end of saveframe.
-
-        :param lexer: instance of the BMRB lexical analyzer class.
-        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
-        :return: None
-        :rtype: None
-        """
-        token = ''
-        while token != 'save_':
-            token = lexer.get_token()
 
     def _build_loop(self, lexer):
         """Build saveframe loop.
 
-        :param lexer: instance of BMRB lexical analyzer class.
-        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
+        :param lexer: instance of BMRB lexical analyzer.
+        :type lexer: :func:`~nmrstarlib.bmrblex.bmrblex`
         :return: Fields and values of the loop.
-        :rtype: tuple
+        :rtype: :py:class:`tuple`
         """
         fields = []
         values = []
 
-        token = lexer.get_token()
-        while token[0] == "_":
+        token = next(lexer)
+        while token[0] == u"_":
             fields.append(token[1:])
-            token = lexer.get_token()
+            token = next(lexer)
 
-        while token != "stop_":
+        while token != u"stop_":
             values.append(token)
-            token = lexer.get_token()
+            token = next(lexer)
 
-        assert (len(values)/len(fields)).is_integer(), \
+        assert float(len(values)/len(fields)).is_integer(), \
             "Error in loop construction: number of fields must be equal to number of values."
 
         # divide list of loop values into chunks corresponding to fields
@@ -263,7 +262,7 @@ class StarFile(OrderedDict):
         :param str format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if format is "nmrstar":
             for saveframe in self.keys():
@@ -287,14 +286,14 @@ class StarFile(OrderedDict):
         :param str format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if format is "nmrstar":
             if sf == "data":
                 print("{}_{}\n".format(sf, self[sf]), file=f)
             else:
                 for sftag in self[sf].keys():
-                    # handle the NMR-Star "long string"
+                    # handle the NMR-Star "multiline string"
                     if self[sf][sftag][0] == ";":
                         print(tw*" ", "_{}".format(sftag), file=f)
                         print("{}".format(self[sf][sftag]), file=f)
@@ -319,7 +318,7 @@ class StarFile(OrderedDict):
         :param str format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
-        :rtype: None
+        :rtype: :py:obj:`None`
         """
         if format is "nmrstar":
             # First print the fields
@@ -338,7 +337,7 @@ class StarFile(OrderedDict):
         """Save :class:`~nmrstarlib.nmrstarlib.StarFile` into JSON string.
 
         :return: JSON string.
-        :rtype: str
+        :rtype: :py:class:`str`
         """
         return json.dumps(self, sort_keys=False, indent=4)
 
@@ -346,20 +345,32 @@ class StarFile(OrderedDict):
         """Save :class:`~nmrstarlib.nmrstarlib.StarFile` NMR-STAR format string.
 
         :return: NMR-STAR string.
-        :rtype: str
+        :rtype: :py:class:`str`
         """
         nmrstar_str = io.StringIO()
         self.print_starfile(nmrstar_str)
         return nmrstar_str.getvalue()
+
+    def _skip_saveframe(self, lexer):
+        """Skip entire saveframe - keep emitting tokens until the end of saveframe.
+
+        :param lexer: instance of the BMRB lexical analyzer class.
+        :type lexer: :class:`~nmrstarlib.bmrblex.bmrblex`
+        :return: None
+        :rtype: :py:obj:`None`
+        """
+        token = u""
+        while token != u"save_":
+            token = next(lexer)
 
     @staticmethod
     def _is_nmrstar(string):
         """Test if input string is in NMR-STAR format.
 
         :param string: Input string.
-        :type string: str or bytes
+        :type string: :py:class:`str` or :py:class:`bytes`
         :return: Input string if in NMR-STAR format or False otherwise.
-        :rtype: str or False
+        :rtype: :py:class:`str` or :py:obj:`False`
         """
         if string[0:5] == "data_" or string[0:5] == b"data_":
             return string
@@ -370,15 +381,17 @@ class StarFile(OrderedDict):
         """Test if input string is in JSON format.
 
         :param string: Input string.
-        :type string: str or bytes
+        :type string: :py:class:`str` or :py:class:`bytes`
         :return: Input string if in JSON format or False otherwise.
-        :rtype: str or False
+        :rtype: :py:class:`str` or :py:obj:`False`
         """
         try:
             if isinstance(string, bytes):
-                json_str = json.loads(string.decode("utf-8"), object_pairs_hook=OrderedDict)
+                # json_str = json.loads(string.decode("utf-8"), object_pairs_hook=OrderedDict)
+                json_str = json.loads(string.decode("utf-8"))
             elif isinstance(string, str):
-                json_str = json.loads(string, object_pairs_hook=OrderedDict)
+                # json_str = json.loads(string, object_pairs_hook=OrderedDict)
+                json_str = json.loads(string)
             else:
                 raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(string)))
             return json_str
@@ -390,8 +403,9 @@ class StarFile(OrderedDict):
 
         :param list aminoacids: List of aminoacids three-letter codes.
         :param list atoms: List of BMRB atom type codes.
+        :param str nmrstarversion: Version of NMR-STAR format to use for look up chemichal shifts loop.
         :return: List of OrderedDict per each chain
-        :rtype: list of OrderedDict
+        :rtype: :py:class:`list` of :py:class:`collections.OrderedDict`
         """
         this_directory = os.path.dirname(__file__)
         if nmrstarversion == "2":
@@ -419,8 +433,10 @@ class StarFile(OrderedDict):
                         if list(self[saveframe][ind][0]) == chemshifts_loop:
                             chemshifts_dict = OrderedDict()
                             for entry in self[saveframe][ind][1]:
-                                residueid = (entry[aminoacid_seq_id], entry[aminoacid_code])
+                                residueid = int(entry[aminoacid_seq_id])
                                 chemshifts_dict.setdefault(residueid, OrderedDict())
+                                chemshifts_dict[residueid]["AACode_3"] = entry[aminoacid_code]
+                                chemshifts_dict[residueid]["Seq_ID"] = residueid
                                 chemshifts_dict[residueid][entry[atom_code]] = entry[chemshift_value]
                             chains.append(chemshifts_dict)
 
@@ -444,7 +460,7 @@ def update_constants(filehandle):
 
     :param str filehandle: JSON file that contains information about NMR-STAR format.
     :return: None
-    :rtype: None
+    :rtype: :py:obj:`None`
     """
     newconstants = json.loads(filehandle.read())
     NMRSTAR_CONSTANTS.update(newconstants)
@@ -455,7 +471,7 @@ def _generate_filenames(sources):
 
     :param list sources: List of strings representing path to file(s).
     :return: Path to file(s).
-    :rtype: str
+    :rtype: :py:class:`str`
     """
     for source in sources:
         if os.path.isdir(source):
@@ -493,7 +509,7 @@ def _generate_handles(filenames):
             filehandle.close()
 
 
-def read_files(sources):
+def read_files(*sources):
     """Construct a generator that yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances.
 
     :param list sources: List of strings representing path to file(s).
@@ -530,7 +546,7 @@ class GenericFilePath(object):
 
         if not compressiontype:
             if is_url:
-                filehandle = urllib.request.urlopen(self.path)
+                filehandle = urlopen(self.path)
             else:
                 filehandle = open(self.path, "r")
             source = self.path
@@ -539,7 +555,7 @@ class GenericFilePath(object):
 
         elif compressiontype:
             if is_url:
-                response = urllib.request.urlopen(self.path)
+                response = urlopen(self.path)
                 path = response.read()
                 response.close()
             else:
@@ -581,7 +597,7 @@ class GenericFilePath(object):
 
         :param str path: Path to file(s).
         :return: String specifying compression type if compressed, "" otherwise.
-        :rtype: str
+        :rtype: :py:class:`str`
         """
         if path.endswith(".zip"):
             return "zip"
@@ -602,11 +618,12 @@ class GenericFilePath(object):
         """Test if path represents a valid URL.
 
         :param str path: Path to file.
-        :return: Valid :py:class:`~urllib.request.Request` object or False otherwise.
-        :rtype: :py:class:`~urllib.request.Request` object or False
+        :return: True if path is valid url string, False otherwise.
+        :rtype: :py:obj:`True` or :py:obj:`False`
         """
         try:
-            return urllib.request.Request(path)
+            parse_result = urlparse(path)
+            return all((parse_result.scheme, parse_result.netloc, parse_result.path))
         except ValueError:
             return False
 
@@ -624,4 +641,4 @@ class SkipSaveFrame(Exception):
         pass
 
     def __str__(self):
-        return 'Skipping save frame'
+        return "Skipping save frame"
