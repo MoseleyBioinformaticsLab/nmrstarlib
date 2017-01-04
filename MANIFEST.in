@@ -1,5 +1,6 @@
 include README.rst LICENSE
 include requirements.txt
 include nmrstarlib/conf/*.json
-recursive-include nmrstarlib *.py *.pyx *.c
+include docs/Makefile
 recursive-include docs *.rst *.txt *.py *.png *.svg
+recursive-include nmrstarlib *.py *.pyx *.c
