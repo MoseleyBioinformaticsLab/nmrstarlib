@@ -322,8 +322,8 @@ using bracket accessors.
 
    Also the :class:`~nmrstarlib.nmrstarlib.StarFile` class provides a
    :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method that organizes
-   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - tuple of
-   sequence id and amino acid residue type; `values` - chemical shift data):
+   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - sequence id,
+   `values` - chemical shift data):
 
    >>> starfile.chem_shifts_by_residue()
    [OrderedDict([
