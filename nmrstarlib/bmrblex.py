@@ -5,10 +5,10 @@
 nmrstarlib.bmrblex
 ~~~~~~~~~~~~~~~~~~
 
-This module provides :func:`nmrstarlib.bmrblex.bmrblex` lexical analyzer for
+This module provides :func:`~nmrstarlib.bmrblex.bmrblex` lexical analyzer for
 BMRB NMR-STAR format syntax. It is implemented as Python generator-based
 state machine which generates (yields) token one at a time when
-:py:func:`next()` is invoked on :func:`nmrstarlib.bmrblex.bmrblex` instance.
+:py:func:`next()` is invoked on :func:`~nmrstarlib.bmrblex.bmrblex` instance.
 
 
 Simplified description of parsing rules:
@@ -31,7 +31,6 @@ Simplified description of parsing rules:
      https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
 """
 
-import time
 from collections import deque
 
 
