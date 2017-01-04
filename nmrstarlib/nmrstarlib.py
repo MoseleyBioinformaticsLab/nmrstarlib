@@ -33,6 +33,8 @@ import gzip
 import tarfile
 from collections import OrderedDict
 
+UJSON = False
+
 if sys.version_info.major == 3 and sys.version_info.minor == 6:
     try:
         import ujson as json
@@ -387,11 +389,15 @@ class StarFile(OrderedDict):
         """
         try:
             if isinstance(string, bytes):
-                # json_str = json.loads(string.decode("utf-8"), object_pairs_hook=OrderedDict)
-                json_str = json.loads(string.decode("utf-8"))
+                if UJSON:
+                    json_str = json.loads(string.decode("utf-8"))
+                else:
+                    json_str = json.loads(string.decode("utf-8"), object_pairs_hook=OrderedDict)
             elif isinstance(string, str):
-                # json_str = json.loads(string, object_pairs_hook=OrderedDict)
-                json_str = json.loads(string)
+                if UJSON:
+                    json_str = json.loads(string)
+                else:
+                    json_str = json.loads(string, object_pairs_hook=OrderedDict)
             else:
                 raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(string)))
             return json_str
@@ -514,7 +520,7 @@ def _generate_handles(filenames):
 def read_files(*sources):
     """Construct a generator that yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances.
 
-    :param list sources: List of strings representing path to file(s).
+    :param str sources: One or more strings representing path to file(s).
     :return: :class:`~nmrstarlib.nmrstarlib.StarFile` instance(s).
     :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
     """
