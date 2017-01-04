@@ -51,5 +51,5 @@ def main(cmdargs):
         csviewer.csview(view=True)
 
 
-args = docopt.docopt(__doc__)
+args = docopt.docopt(__doc__, version="1.0.5")
 main(args)
