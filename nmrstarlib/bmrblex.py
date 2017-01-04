@@ -63,7 +63,7 @@ def transform_text(input_txt):
                 multiline += line
                 line = inputq.popleft()
 
-            multiline += line[:1]
+            multiline += u"\n" + line[:1]
             outputq.append(multiline)
 
             for character in line[1:]:
