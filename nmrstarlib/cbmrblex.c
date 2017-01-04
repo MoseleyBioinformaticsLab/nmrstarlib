@@ -630,7 +630,7 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex;
 
-/* "nmrstarlib/cbmrblex.pyx":87
+/* "nmrstarlib/cbmrblex.pyx":86
  * 
  * 
  * def bmrblex(text):             # <<<<<<<<<<<<<<
@@ -859,58 +859,6 @@ static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 /* ImportFrom.proto */
 static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
-/* StrEquals.proto */
-#if PY_MAJOR_VERSION >= 3
-#define __Pyx_PyString_Equals __Pyx_PyUnicode_Equals
-#else
-#define __Pyx_PyString_Equals __Pyx_PyBytes_Equals
-#endif
-
-/* PyObjectLookupSpecial.proto */
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x02070000
-static CYTHON_INLINE PyObject* __Pyx_PyObject_LookupSpecial(PyObject* obj, PyObject* attr_name) {
-    PyObject *res;
-    PyTypeObject *tp = Py_TYPE(obj);
-#if PY_MAJOR_VERSION < 3
-    if (unlikely(PyInstance_Check(obj)))
-        return __Pyx_PyObject_GetAttrStr(obj, attr_name);
-#endif
-    res = _PyType_Lookup(tp, attr_name);
-    if (likely(res)) {
-        descrgetfunc f = Py_TYPE(res)->tp_descr_get;
-        if (!f) {
-            Py_INCREF(res);
-        } else {
-            res = f(res, obj, (PyObject *)tp);
-        }
-    } else {
-        PyErr_SetObject(PyExc_AttributeError, attr_name);
-    }
-    return res;
-}
-#else
-#define __Pyx_PyObject_LookupSpecial(o,n) __Pyx_PyObject_GetAttrStr(o,n)
-#endif
-
-/* SaveResetException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
-#else
-#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
-#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
-#endif
-
-/* GetException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
-static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#else
-static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
-#endif
-
 /* CodeObjectCache.proto */
 typedef struct {
     PyCodeObject* code_object;
@@ -929,16 +877,6 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 /* AddTraceback.proto */
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
-
-/* Print.proto */
-static int __Pyx_Print(PyObject*, PyObject *, int);
-#if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
-static PyObject* __pyx_print = 0;
-static PyObject* __pyx_print_kwargs = 0;
-#endif
-
-/* PrintOne.proto */
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
@@ -1016,41 +954,26 @@ static PyTypeObject *__pyx_ptype_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrb
 int __pyx_module_is_main_nmrstarlib__cbmrblex = 0;
 
 /* Implementation of 'nmrstarlib.cbmrblex' */
-static PyObject *__pyx_builtin_open;
 static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_[] = "{}";
 static const char __pyx_k_a[] = "a";
-static const char __pyx_k_r[] = "r";
-static const char __pyx_k_t[] = "t";
 static const char __pyx_k__3[] = "\n";
 static const char __pyx_k__5[] = ";";
 static const char __pyx_k__6[] = ";\n";
 static const char __pyx_k__7[] = "#";
 static const char __pyx_k__9[] = " \t\r\n";
-static const char __pyx_k_t0[] = "t0";
-static const char __pyx_k_t1[] = "t1";
 static const char __pyx_k__10[] = " ";
 static const char __pyx_k__11[] = "";
 static const char __pyx_k__12[] = "'";
 static const char __pyx_k__13[] = "\"";
-static const char __pyx_k_end[] = "end";
 static const char __pyx_k_args[] = "args";
-static const char __pyx_k_exit[] = "__exit__";
-static const char __pyx_k_file[] = "file";
 static const char __pyx_k_line[] = "line";
 static const char __pyx_k_main[] = "__main__";
-static const char __pyx_k_name[] = "__name__";
-static const char __pyx_k_open[] = "open";
-static const char __pyx_k_read[] = "read";
 static const char __pyx_k_send[] = "send";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_text[] = "text";
-static const char __pyx_k_time[] = "time";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_deque[] = "deque";
-static const char __pyx_k_enter[] = "__enter__";
-static const char __pyx_k_lexer[] = "lexer";
-static const char __pyx_k_print[] = "print";
 static const char __pyx_k_split[] = "split";
 static const char __pyx_k_state[] = "state";
 static const char __pyx_k_throw[] = "throw";
@@ -1060,7 +983,6 @@ static const char __pyx_k_append[] = "append";
 static const char __pyx_k_decode[] = "decode";
 static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_infile[] = "infile";
 static const char __pyx_k_inputq[] = "inputq";
 static const char __pyx_k_lstrip[] = "lstrip";
 static const char __pyx_k_stream[] = "stream";
@@ -1080,8 +1002,7 @@ static const char __pyx_k_collections[] = "collections";
 static const char __pyx_k_nextnextchar[] = "nextnextchar";
 static const char __pyx_k_transform_text[] = "transform_text";
 static const char __pyx_k_nmrstarlib_cbmrblex[] = "nmrstarlib.cbmrblex";
-static const char __pyx_k_nmrstarlib_bmrblex_This_module[] = "\nnmrstarlib.bmrblex\n~~~~~~~~~~~~~~~~~~\n\nThis module provides :class:`nmrstarlib.bmrblex` lexical analyzer for\nBMRB NMR-STAR format syntax. It is implemented as Python generator-based\nstate machine which generates (yields) token one at a time when\n:py:func:`next()` is invoked on :class:`nmrstarlib.bmrblex.bmrblex` instance.\n\n\nSimplified description of parsing rules:\n----------------------------------------\n   * Each word or number separated by whitespace characters is a separate BMRB token.\n   * Each single quoted (') string is a separate BMRB token, it should start with a single quote (')\n     and end with a single quote *always* followed by whitespace character(s).\n   * Each double quoted (\") string is a separate BMRB token, it should start with a double quote (\")\n     and end with a double quote *always* followed by whitespace character(s).\n   * Single quoted and double quoted strings have to be processed separately.\n   * Single quoted and double quoted strings are processed one character at a time.\n   * Multiline strings start with a semicolon *always* followed by new line character and\n     ending with a semicolon *always* followed by whitespace character(s).\n   * Multiline strings are processed one line at a time.\n\n.. note::\n   * For a full description of NMR-STAR file format, see official documentation:\n     http://www.bmrb.wisc.edu/dictionary/\n   * For a concise description of the NMR-STAR file format grammar see:\n     https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar\n";
-static const char __pyx_k_nmrstarlib_extras_example_data[] = "../../nmrstarlib_extras/example_data/bmr18569.str";
+static const char __pyx_k_nmrstarlib_bmrblex_This_module[] = "\nnmrstarlib.bmrblex\n~~~~~~~~~~~~~~~~~~\n\nThis module provides :func:`~nmrstarlib.bmrblex.bmrblex` lexical analyzer for\nBMRB NMR-STAR format syntax. It is implemented as Python generator-based\nstate machine which generates (yields) token one at a time when\n:py:func:`next()` is invoked on :func:`~nmrstarlib.bmrblex.bmrblex` instance.\n\n\nSimplified description of parsing rules:\n----------------------------------------\n   * Each word or number separated by whitespace characters is a separate BMRB token.\n   * Each single quoted (') string is a separate BMRB token, it should start with a single quote (')\n     and end with a single quote *always* followed by whitespace character(s).\n   * Each double quoted (\") string is a separate BMRB token, it should start with a double quote (\")\n     and end with a double quote *always* followed by whitespace character(s).\n   * Single quoted and double quoted strings have to be processed separately.\n   * Single quoted and double quoted strings are processed one character at a time.\n   * Multiline strings start with a semicolon *always* followed by new line character and\n     ending with a semicolon *always* followed by whitespace character(s).\n   * Multiline strings are processed one line at a time.\n\n.. note::\n   * For a full description of NMR-STAR file format, see official documentation:\n     http://www.bmrb.wisc.edu/dictionary/\n   * For a concise description of the NMR-STAR file format grammar see:\n     https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar\n";
 static const char __pyx_k_run_media_smelandr_7ABCF9FD1592[] = "/run/media/smelandr/7ABCF9FD15922165/My Data/Documents/University of Louisville/Project/nmrstarlib/nmrstarlib/cbmrblex.pyx";
 static const char __pyx_k_Expecting_class_str_or_class_byt[] = "Expecting <class 'str'> or <class 'bytes'>, but {} was passed";
 static const char __pyx_k_abcdfeghijklmnopqrstuvwxyzABCDEF[] = "abcdfeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_\303\237\303\240\303\241\303\242\303\243\303\244\303\245\303\246\303\247\303\250\303\251\303\252\303\253\303\254\303\255\303\256\303\257\303\260\303\261\303\262\303\263\303\264\303\265\303\266\303\270\303\271\303\272\303\273\303\274\303\275\303\276\303\277\303\200\303\201\303\202\303\203\303\204\303\205\303\206\303\207\303\210\303\211\303\212\303\213\303\214\303\215\303\216\303\217\303\220\303\221\303\222\303\223\303\224\303\225\303\226\303\230\303\231\303\232\303\233\303\234\303\235\303\236!@$%^&*()_+:;?/>.<,~`|\\{[}]-=";
@@ -1108,44 +1029,28 @@ static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_collections;
 static PyObject *__pyx_n_s_decode;
 static PyObject *__pyx_n_s_deque;
-static PyObject *__pyx_n_s_end;
-static PyObject *__pyx_n_s_enter;
-static PyObject *__pyx_n_s_exit;
-static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_import;
-static PyObject *__pyx_n_s_infile;
 static PyObject *__pyx_n_s_input_txt;
 static PyObject *__pyx_n_s_inputq;
-static PyObject *__pyx_n_s_lexer;
 static PyObject *__pyx_n_s_line;
 static PyObject *__pyx_n_s_lstrip;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_multiline;
-static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_nextchar;
 static PyObject *__pyx_n_s_nextnextchar;
 static PyObject *__pyx_n_s_nmrstarlib_cbmrblex;
-static PyObject *__pyx_kp_s_nmrstarlib_extras_example_data;
-static PyObject *__pyx_n_s_open;
 static PyObject *__pyx_n_s_outputq;
 static PyObject *__pyx_n_s_popleft;
-static PyObject *__pyx_n_s_print;
-static PyObject *__pyx_n_s_r;
-static PyObject *__pyx_n_s_read;
 static PyObject *__pyx_kp_s_run_media_smelandr_7ABCF9FD1592;
 static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_split;
 static PyObject *__pyx_n_s_startswith;
 static PyObject *__pyx_n_s_state;
 static PyObject *__pyx_n_s_stream;
-static PyObject *__pyx_n_s_t;
-static PyObject *__pyx_n_s_t0;
-static PyObject *__pyx_n_s_t1;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_text;
 static PyObject *__pyx_n_s_throw;
-static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_n_s_token;
 static PyObject *__pyx_n_s_transform_text;
 static PyObject *__pyx_kp_s_utf_8;
@@ -1159,12 +1064,10 @@ static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__14;
 static PyObject *__pyx_tuple__16;
-static PyObject *__pyx_tuple__18;
-static PyObject *__pyx_tuple__19;
 static PyObject *__pyx_codeobj__15;
 static PyObject *__pyx_codeobj__17;
 
-/* "nmrstarlib/cbmrblex.pyx":38
+/* "nmrstarlib/cbmrblex.pyx":37
  * 
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
@@ -1213,7 +1116,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
   PyObject *__pyx_t_15 = NULL;
   __Pyx_RefNannySetupContext("transform_text", 0);
 
-  /* "nmrstarlib/cbmrblex.pyx":46
+  /* "nmrstarlib/cbmrblex.pyx":45
  *     :rtype: :py:class:`~collections.deque`
  *     """
  *     if isinstance(input_txt, str):             # <<<<<<<<<<<<<<
@@ -1224,14 +1127,14 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "nmrstarlib/cbmrblex.pyx":47
+    /* "nmrstarlib/cbmrblex.pyx":46
  *     """
  *     if isinstance(input_txt, str):
  *         text = u"{}".format(input_txt)             # <<<<<<<<<<<<<<
  *     elif isinstance(input_txt, bytes):
  *         text = input_txt.decode("utf-8")
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_, __pyx_n_s_format); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_, __pyx_n_s_format); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -1244,13 +1147,13 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_input_txt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_input_txt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_input_txt};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
@@ -1258,19 +1161,19 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_input_txt};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
         __Pyx_INCREF(__pyx_v_input_txt);
         __Pyx_GIVEREF(__pyx_v_input_txt);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_input_txt);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -1279,7 +1182,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     __pyx_v_text = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "nmrstarlib/cbmrblex.pyx":46
+    /* "nmrstarlib/cbmrblex.pyx":45
  *     :rtype: :py:class:`~collections.deque`
  *     """
  *     if isinstance(input_txt, str):             # <<<<<<<<<<<<<<
@@ -1289,7 +1192,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     goto __pyx_L3;
   }
 
-  /* "nmrstarlib/cbmrblex.pyx":48
+  /* "nmrstarlib/cbmrblex.pyx":47
  *     if isinstance(input_txt, str):
  *         text = u"{}".format(input_txt)
  *     elif isinstance(input_txt, bytes):             # <<<<<<<<<<<<<<
@@ -1300,22 +1203,22 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "nmrstarlib/cbmrblex.pyx":49
+    /* "nmrstarlib/cbmrblex.pyx":48
  *         text = u"{}".format(input_txt)
  *     elif isinstance(input_txt, bytes):
  *         text = input_txt.decode("utf-8")             # <<<<<<<<<<<<<<
  *     else:
  *         raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_txt, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_input_txt, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_text = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "nmrstarlib/cbmrblex.pyx":48
+    /* "nmrstarlib/cbmrblex.pyx":47
  *     if isinstance(input_txt, str):
  *         text = u"{}".format(input_txt)
  *     elif isinstance(input_txt, bytes):             # <<<<<<<<<<<<<<
@@ -1325,7 +1228,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     goto __pyx_L3;
   }
 
-  /* "nmrstarlib/cbmrblex.pyx":51
+  /* "nmrstarlib/cbmrblex.pyx":50
  *         text = input_txt.decode("utf-8")
  *     else:
  *         raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))             # <<<<<<<<<<<<<<
@@ -1333,7 +1236,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  *     inputq = deque(text.split(u"\n"))
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Expecting_class_str_or_class_byt, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Expecting_class_str_or_class_byt, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1346,13 +1249,13 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)Py_TYPE(__pyx_v_input_txt))); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)Py_TYPE(__pyx_v_input_txt))); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, ((PyObject *)Py_TYPE(__pyx_v_input_txt))};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
@@ -1360,50 +1263,50 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, ((PyObject *)Py_TYPE(__pyx_v_input_txt))};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_input_txt)));
         __Pyx_GIVEREF(((PyObject *)Py_TYPE(__pyx_v_input_txt)));
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)Py_TYPE(__pyx_v_input_txt)));
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 51, __pyx_L1_error)
+    __PYX_ERR(0, 50, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "nmrstarlib/cbmrblex.pyx":53
+  /* "nmrstarlib/cbmrblex.pyx":52
  *         raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))
  * 
  *     inputq = deque(text.split(u"\n"))             # <<<<<<<<<<<<<<
  *     outputq = deque()
  * 
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_deque); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_deque); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_text, __pyx_n_s_split); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_text, __pyx_n_s_split); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -1417,14 +1320,14 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_6};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -1433,20 +1336,20 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_6};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else
     #endif
     {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 53, __pyx_L1_error)
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -1455,14 +1358,14 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
   __pyx_v_inputq = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "nmrstarlib/cbmrblex.pyx":54
+  /* "nmrstarlib/cbmrblex.pyx":53
  * 
  *     inputq = deque(text.split(u"\n"))
  *     outputq = deque()             # <<<<<<<<<<<<<<
  * 
  *     cdef unicode line
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_deque); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_deque); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -1475,17 +1378,17 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_outputq = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "nmrstarlib/cbmrblex.pyx":59
+  /* "nmrstarlib/cbmrblex.pyx":58
  *     cdef unicode multiline
  * 
  *     while len(inputq) > 0:             # <<<<<<<<<<<<<<
@@ -1493,18 +1396,18 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  * 
  */
   while (1) {
-    __pyx_t_8 = PyObject_Length(__pyx_v_inputq); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __pyx_t_8 = PyObject_Length(__pyx_v_inputq); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 58, __pyx_L1_error)
     __pyx_t_1 = ((__pyx_t_8 > 0) != 0);
     if (!__pyx_t_1) break;
 
-    /* "nmrstarlib/cbmrblex.pyx":60
+    /* "nmrstarlib/cbmrblex.pyx":59
  * 
  *     while len(inputq) > 0:
  *         line = inputq.popleft()             # <<<<<<<<<<<<<<
  * 
  *         if line.startswith(u";"):
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1517,18 +1420,18 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 60, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_4));
     __pyx_t_4 = 0;
 
-    /* "nmrstarlib/cbmrblex.pyx":62
+    /* "nmrstarlib/cbmrblex.pyx":61
  *         line = inputq.popleft()
  * 
  *         if line.startswith(u";"):             # <<<<<<<<<<<<<<
@@ -1537,12 +1440,12 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  */
     if (unlikely(__pyx_v_line == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "startswith");
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 61, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyUnicode_Tailmatch(__pyx_v_line, __pyx_kp_u__5, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_Tailmatch(__pyx_v_line, __pyx_kp_u__5, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 61, __pyx_L1_error)
     if ((__pyx_t_1 != 0)) {
 
-      /* "nmrstarlib/cbmrblex.pyx":63
+      /* "nmrstarlib/cbmrblex.pyx":62
  * 
  *         if line.startswith(u";"):
  *             multiline = u";\n"             # <<<<<<<<<<<<<<
@@ -1552,14 +1455,14 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       __Pyx_INCREF(__pyx_kp_u__6);
       __Pyx_XDECREF_SET(__pyx_v_multiline, __pyx_kp_u__6);
 
-      /* "nmrstarlib/cbmrblex.pyx":64
+      /* "nmrstarlib/cbmrblex.pyx":63
  *         if line.startswith(u";"):
  *             multiline = u";\n"
  *             line = inputq.popleft()             # <<<<<<<<<<<<<<
  * 
  *             while not line.startswith(u";"):
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_7 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1572,18 +1475,18 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
         }
       }
       if (__pyx_t_7) {
-        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else {
-        __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 64, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_DECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_4));
       __pyx_t_4 = 0;
 
-      /* "nmrstarlib/cbmrblex.pyx":66
+      /* "nmrstarlib/cbmrblex.pyx":65
  *             line = inputq.popleft()
  * 
  *             while not line.startswith(u";"):             # <<<<<<<<<<<<<<
@@ -1593,32 +1496,32 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       while (1) {
         if (unlikely(__pyx_v_line == Py_None)) {
           PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "startswith");
-          __PYX_ERR(0, 66, __pyx_L1_error)
+          __PYX_ERR(0, 65, __pyx_L1_error)
         }
-        __pyx_t_1 = __Pyx_PyUnicode_Tailmatch(__pyx_v_line, __pyx_kp_u__5, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 66, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyUnicode_Tailmatch(__pyx_v_line, __pyx_kp_u__5, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 65, __pyx_L1_error)
         __pyx_t_2 = ((!(__pyx_t_1 != 0)) != 0);
         if (!__pyx_t_2) break;
 
-        /* "nmrstarlib/cbmrblex.pyx":67
+        /* "nmrstarlib/cbmrblex.pyx":66
  * 
  *             while not line.startswith(u";"):
  *                 multiline += line             # <<<<<<<<<<<<<<
  *                 line = inputq.popleft()
  * 
  */
-        __pyx_t_4 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_multiline, __pyx_v_line); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_multiline, __pyx_v_line); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF_SET(__pyx_v_multiline, ((PyObject*)__pyx_t_4));
         __pyx_t_4 = 0;
 
-        /* "nmrstarlib/cbmrblex.pyx":68
+        /* "nmrstarlib/cbmrblex.pyx":67
  *             while not line.startswith(u";"):
  *                 multiline += line
  *                 line = inputq.popleft()             # <<<<<<<<<<<<<<
  * 
- *             multiline += line[:1]
+ *             multiline += u"\n" + line[:1]
  */
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_7 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1631,47 +1534,50 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
           }
         }
         if (__pyx_t_7) {
-          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         } else {
-          __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
         }
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 68, __pyx_L1_error)
+        if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 67, __pyx_L1_error)
         __Pyx_DECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_4));
         __pyx_t_4 = 0;
       }
 
-      /* "nmrstarlib/cbmrblex.pyx":70
+      /* "nmrstarlib/cbmrblex.pyx":69
  *                 line = inputq.popleft()
  * 
- *             multiline += line[:1]             # <<<<<<<<<<<<<<
+ *             multiline += u"\n" + line[:1]             # <<<<<<<<<<<<<<
  *             outputq.append(multiline)
  * 
  */
       if (unlikely(__pyx_v_line == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 70, __pyx_L1_error)
+        __PYX_ERR(0, 69, __pyx_L1_error)
       }
-      __pyx_t_4 = __Pyx_PyUnicode_Substring(__pyx_v_line, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyUnicode_Substring(__pyx_v_line, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_v_multiline, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_kp_u__3, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF_SET(__pyx_v_multiline, ((PyObject*)__pyx_t_3));
-      __pyx_t_3 = 0;
+      __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_v_multiline, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF_SET(__pyx_v_multiline, ((PyObject*)__pyx_t_4));
+      __pyx_t_4 = 0;
 
-      /* "nmrstarlib/cbmrblex.pyx":71
+      /* "nmrstarlib/cbmrblex.pyx":70
  * 
- *             multiline += line[:1]
+ *             multiline += u"\n" + line[:1]
  *             outputq.append(multiline)             # <<<<<<<<<<<<<<
  * 
  *             for character in line[1:]:
  */
-      __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_v_multiline); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_v_multiline); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 70, __pyx_L1_error)
 
-      /* "nmrstarlib/cbmrblex.pyx":73
+      /* "nmrstarlib/cbmrblex.pyx":72
  *             outputq.append(multiline)
  * 
  *             for character in line[1:]:             # <<<<<<<<<<<<<<
@@ -1680,30 +1586,30 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  */
       if (unlikely(__pyx_v_line == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 73, __pyx_L1_error)
+        __PYX_ERR(0, 72, __pyx_L1_error)
       }
-      __pyx_t_3 = __Pyx_PyUnicode_Substring(__pyx_v_line, 1, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_13 = __Pyx_init_unicode_iteration(__pyx_t_3, (&__pyx_t_10), (&__pyx_t_11), (&__pyx_t_12)); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyUnicode_Substring(__pyx_v_line, 1, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_13 = __Pyx_init_unicode_iteration(__pyx_t_4, (&__pyx_t_10), (&__pyx_t_11), (&__pyx_t_12)); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 72, __pyx_L1_error)
       for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_10; __pyx_t_14++) {
         __pyx_t_8 = __pyx_t_14;
         __pyx_v_character = __Pyx_PyUnicode_READ(__pyx_t_12, __pyx_t_11, __pyx_t_8);
 
-        /* "nmrstarlib/cbmrblex.pyx":74
+        /* "nmrstarlib/cbmrblex.pyx":73
  * 
  *             for character in line[1:]:
  *                 outputq.append(character)             # <<<<<<<<<<<<<<
  * 
  *         elif line.lstrip().startswith(u"#"):
  */
-        __pyx_t_4 = PyUnicode_FromOrdinal(__pyx_v_character); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_t_4); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 74, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_t_3 = PyUnicode_FromOrdinal(__pyx_v_character); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_t_3); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "nmrstarlib/cbmrblex.pyx":62
+      /* "nmrstarlib/cbmrblex.pyx":61
  *         line = inputq.popleft()
  * 
  *         if line.startswith(u";"):             # <<<<<<<<<<<<<<
@@ -1713,44 +1619,44 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       goto __pyx_L6;
     }
 
-    /* "nmrstarlib/cbmrblex.pyx":76
+    /* "nmrstarlib/cbmrblex.pyx":75
  *                 outputq.append(character)
  * 
  *         elif line.lstrip().startswith(u"#"):             # <<<<<<<<<<<<<<
  *             continue
  *         else:
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_lstrip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_lstrip); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_7 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
       if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
     }
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_startswith); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_2) {
 
-      /* "nmrstarlib/cbmrblex.pyx":77
+      /* "nmrstarlib/cbmrblex.pyx":76
  * 
  *         elif line.lstrip().startswith(u"#"):
  *             continue             # <<<<<<<<<<<<<<
@@ -1759,7 +1665,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  */
       goto __pyx_L4_continue;
 
-      /* "nmrstarlib/cbmrblex.pyx":76
+      /* "nmrstarlib/cbmrblex.pyx":75
  *                 outputq.append(character)
  * 
  *         elif line.lstrip().startswith(u"#"):             # <<<<<<<<<<<<<<
@@ -1768,7 +1674,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  */
     }
 
-    /* "nmrstarlib/cbmrblex.pyx":79
+    /* "nmrstarlib/cbmrblex.pyx":78
  *             continue
  *         else:
  *             for character in line:             # <<<<<<<<<<<<<<
@@ -1778,43 +1684,43 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
     /*else*/ {
       if (unlikely(__pyx_v_line == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
-        __PYX_ERR(0, 79, __pyx_L1_error)
+        __PYX_ERR(0, 78, __pyx_L1_error)
       }
       __Pyx_INCREF(__pyx_v_line);
       __pyx_t_15 = __pyx_v_line;
-      __pyx_t_13 = __Pyx_init_unicode_iteration(__pyx_t_15, (&__pyx_t_8), (&__pyx_t_11), (&__pyx_t_12)); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_init_unicode_iteration(__pyx_t_15, (&__pyx_t_8), (&__pyx_t_11), (&__pyx_t_12)); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 78, __pyx_L1_error)
       for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_8; __pyx_t_14++) {
         __pyx_t_10 = __pyx_t_14;
         __pyx_v_character = __Pyx_PyUnicode_READ(__pyx_t_12, __pyx_t_11, __pyx_t_10);
 
-        /* "nmrstarlib/cbmrblex.pyx":80
+        /* "nmrstarlib/cbmrblex.pyx":79
  *         else:
  *             for character in line:
  *                 outputq.append(character)             # <<<<<<<<<<<<<<
  * 
  *         outputq.append(u"\n")
  */
-        __pyx_t_3 = PyUnicode_FromOrdinal(__pyx_v_character); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_t_3); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_4 = PyUnicode_FromOrdinal(__pyx_v_character); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_t_4); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       }
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     }
     __pyx_L6:;
 
-    /* "nmrstarlib/cbmrblex.pyx":82
+    /* "nmrstarlib/cbmrblex.pyx":81
  *                 outputq.append(character)
  * 
  *         outputq.append(u"\n")             # <<<<<<<<<<<<<<
  * 
  *     return outputq
  */
-    __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_kp_u__3); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Append(__pyx_v_outputq, __pyx_kp_u__3); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 81, __pyx_L1_error)
     __pyx_L4_continue:;
   }
 
-  /* "nmrstarlib/cbmrblex.pyx":84
+  /* "nmrstarlib/cbmrblex.pyx":83
  *         outputq.append(u"\n")
  * 
  *     return outputq             # <<<<<<<<<<<<<<
@@ -1826,7 +1732,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
   __pyx_r = __pyx_v_outputq;
   goto __pyx_L0;
 
-  /* "nmrstarlib/cbmrblex.pyx":38
+  /* "nmrstarlib/cbmrblex.pyx":37
  * 
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
@@ -1856,7 +1762,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
 }
 static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "nmrstarlib/cbmrblex.pyx":87
+/* "nmrstarlib/cbmrblex.pyx":86
  * 
  * 
  * def bmrblex(text):             # <<<<<<<<<<<<<<
@@ -1866,7 +1772,7 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
 
 /* Python wrapper */
 static PyObject *__pyx_pw_10nmrstarlib_8cbmrblex_3bmrblex(PyObject *__pyx_self, PyObject *__pyx_v_text); /*proto*/
-static char __pyx_doc_10nmrstarlib_8cbmrblex_2bmrblex[] = "A lexical analyzer for the BMRB NMR-STAR format syntax.\n\n    :param str or bytes text: Input text.\n    :return: Current token.\n    :rtype: str\n    ";
+static char __pyx_doc_10nmrstarlib_8cbmrblex_2bmrblex[] = "A lexical analyzer for the BMRB NMR-STAR format syntax.\n\n    :param text: Input text.\n    :type text: :py:class:`str` or :py:class:`bytes`\n    :return: Current token.\n    :rtype: :py:class:`str`\n    ";
 static PyMethodDef __pyx_mdef_10nmrstarlib_8cbmrblex_3bmrblex = {"bmrblex", (PyCFunction)__pyx_pw_10nmrstarlib_8cbmrblex_3bmrblex, METH_O, __pyx_doc_10nmrstarlib_8cbmrblex_2bmrblex};
 static PyObject *__pyx_pw_10nmrstarlib_8cbmrblex_3bmrblex(PyObject *__pyx_self, PyObject *__pyx_v_text) {
   PyObject *__pyx_r = 0;
@@ -1888,7 +1794,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_2bmrblex(CYTHON_UNUSED PyObject
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 87, __pyx_L1_error)
+    __PYX_ERR(0, 86, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -1896,7 +1802,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_2bmrblex(CYTHON_UNUSED PyObject
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_text);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_text);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10nmrstarlib_8cbmrblex_4generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_bmrblex, __pyx_n_s_bmrblex, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!gen)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10nmrstarlib_8cbmrblex_4generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_bmrblex, __pyx_n_s_bmrblex, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!gen)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -1934,10 +1840,10 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 86, __pyx_L1_error)
 
   /* "nmrstarlib/cbmrblex.pyx":94
- *     :rtype: str
+ *     :rtype: :py:class:`str`
  *     """
  *     stream = transform_text(text)             # <<<<<<<<<<<<<<
  * 
@@ -2902,7 +2808,6 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
  * 
  *         yield token             # <<<<<<<<<<<<<<
  *         token = u""
- * 
  */
     __Pyx_INCREF(__pyx_cur_scope->__pyx_v_token);
     __pyx_r = __pyx_cur_scope->__pyx_v_token;
@@ -2918,8 +2823,6 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
  * 
  *         yield token
  *         token = u""             # <<<<<<<<<<<<<<
- * 
- * 
  */
     __Pyx_INCREF(__pyx_kp_u__11);
     __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_token);
@@ -2928,7 +2831,7 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "nmrstarlib/cbmrblex.pyx":87
+  /* "nmrstarlib/cbmrblex.pyx":86
  * 
  * 
  * def bmrblex(text):             # <<<<<<<<<<<<<<
@@ -3116,44 +3019,28 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_collections, __pyx_k_collections, sizeof(__pyx_k_collections), 0, 0, 1, 1},
   {&__pyx_n_s_decode, __pyx_k_decode, sizeof(__pyx_k_decode), 0, 0, 1, 1},
   {&__pyx_n_s_deque, __pyx_k_deque, sizeof(__pyx_k_deque), 0, 0, 1, 1},
-  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
-  {&__pyx_n_s_enter, __pyx_k_enter, sizeof(__pyx_k_enter), 0, 0, 1, 1},
-  {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
-  {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
-  {&__pyx_n_s_infile, __pyx_k_infile, sizeof(__pyx_k_infile), 0, 0, 1, 1},
   {&__pyx_n_s_input_txt, __pyx_k_input_txt, sizeof(__pyx_k_input_txt), 0, 0, 1, 1},
   {&__pyx_n_s_inputq, __pyx_k_inputq, sizeof(__pyx_k_inputq), 0, 0, 1, 1},
-  {&__pyx_n_s_lexer, __pyx_k_lexer, sizeof(__pyx_k_lexer), 0, 0, 1, 1},
   {&__pyx_n_s_line, __pyx_k_line, sizeof(__pyx_k_line), 0, 0, 1, 1},
   {&__pyx_n_s_lstrip, __pyx_k_lstrip, sizeof(__pyx_k_lstrip), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_multiline, __pyx_k_multiline, sizeof(__pyx_k_multiline), 0, 0, 1, 1},
-  {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_nextchar, __pyx_k_nextchar, sizeof(__pyx_k_nextchar), 0, 0, 1, 1},
   {&__pyx_n_s_nextnextchar, __pyx_k_nextnextchar, sizeof(__pyx_k_nextnextchar), 0, 0, 1, 1},
   {&__pyx_n_s_nmrstarlib_cbmrblex, __pyx_k_nmrstarlib_cbmrblex, sizeof(__pyx_k_nmrstarlib_cbmrblex), 0, 0, 1, 1},
-  {&__pyx_kp_s_nmrstarlib_extras_example_data, __pyx_k_nmrstarlib_extras_example_data, sizeof(__pyx_k_nmrstarlib_extras_example_data), 0, 0, 1, 0},
-  {&__pyx_n_s_open, __pyx_k_open, sizeof(__pyx_k_open), 0, 0, 1, 1},
   {&__pyx_n_s_outputq, __pyx_k_outputq, sizeof(__pyx_k_outputq), 0, 0, 1, 1},
   {&__pyx_n_s_popleft, __pyx_k_popleft, sizeof(__pyx_k_popleft), 0, 0, 1, 1},
-  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
-  {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
-  {&__pyx_n_s_read, __pyx_k_read, sizeof(__pyx_k_read), 0, 0, 1, 1},
   {&__pyx_kp_s_run_media_smelandr_7ABCF9FD1592, __pyx_k_run_media_smelandr_7ABCF9FD1592, sizeof(__pyx_k_run_media_smelandr_7ABCF9FD1592), 0, 0, 1, 0},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
   {&__pyx_n_s_split, __pyx_k_split, sizeof(__pyx_k_split), 0, 0, 1, 1},
   {&__pyx_n_s_startswith, __pyx_k_startswith, sizeof(__pyx_k_startswith), 0, 0, 1, 1},
   {&__pyx_n_s_state, __pyx_k_state, sizeof(__pyx_k_state), 0, 0, 1, 1},
   {&__pyx_n_s_stream, __pyx_k_stream, sizeof(__pyx_k_stream), 0, 0, 1, 1},
-  {&__pyx_n_s_t, __pyx_k_t, sizeof(__pyx_k_t), 0, 0, 1, 1},
-  {&__pyx_n_s_t0, __pyx_k_t0, sizeof(__pyx_k_t0), 0, 0, 1, 1},
-  {&__pyx_n_s_t1, __pyx_k_t1, sizeof(__pyx_k_t1), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_text, __pyx_k_text, sizeof(__pyx_k_text), 0, 0, 1, 1},
   {&__pyx_n_s_throw, __pyx_k_throw, sizeof(__pyx_k_throw), 0, 0, 1, 1},
-  {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_n_s_token, __pyx_k_token, sizeof(__pyx_k_token), 0, 0, 1, 1},
   {&__pyx_n_s_transform_text, __pyx_k_transform_text, sizeof(__pyx_k_transform_text), 0, 0, 1, 1},
   {&__pyx_kp_s_utf_8, __pyx_k_utf_8, sizeof(__pyx_k_utf_8), 0, 0, 1, 0},
@@ -3162,8 +3049,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_open = __Pyx_GetBuiltinName(__pyx_n_s_open); if (!__pyx_builtin_open) __PYX_ERR(0, 187, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 50, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3173,76 +3059,62 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "nmrstarlib/cbmrblex.pyx":49
+  /* "nmrstarlib/cbmrblex.pyx":48
  *         text = u"{}".format(input_txt)
  *     elif isinstance(input_txt, bytes):
  *         text = input_txt.decode("utf-8")             # <<<<<<<<<<<<<<
  *     else:
  *         raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_utf_8); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_utf_8); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "nmrstarlib/cbmrblex.pyx":53
+  /* "nmrstarlib/cbmrblex.pyx":52
  *         raise TypeError("Expecting <class 'str'> or <class 'bytes'>, but {} was passed".format(type(input_txt)))
  * 
  *     inputq = deque(text.split(u"\n"))             # <<<<<<<<<<<<<<
  *     outputq = deque()
  * 
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "nmrstarlib/cbmrblex.pyx":76
+  /* "nmrstarlib/cbmrblex.pyx":75
  *                 outputq.append(character)
  * 
  *         elif line.lstrip().startswith(u"#"):             # <<<<<<<<<<<<<<
  *             continue
  *         else:
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u__7); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u__7); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "nmrstarlib/cbmrblex.pyx":38
+  /* "nmrstarlib/cbmrblex.pyx":37
  * 
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
  *     multiline strings, and removes comments.
  */
-  __pyx_tuple__14 = PyTuple_Pack(7, __pyx_n_s_input_txt, __pyx_n_s_text, __pyx_n_s_inputq, __pyx_n_s_outputq, __pyx_n_s_line, __pyx_n_s_multiline, __pyx_n_s_character); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(7, __pyx_n_s_input_txt, __pyx_n_s_text, __pyx_n_s_inputq, __pyx_n_s_outputq, __pyx_n_s_line, __pyx_n_s_multiline, __pyx_n_s_character); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_run_media_smelandr_7ABCF9FD1592, __pyx_n_s_transform_text, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_run_media_smelandr_7ABCF9FD1592, __pyx_n_s_transform_text, 37, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 37, __pyx_L1_error)
 
-  /* "nmrstarlib/cbmrblex.pyx":87
+  /* "nmrstarlib/cbmrblex.pyx":86
  * 
  * 
  * def bmrblex(text):             # <<<<<<<<<<<<<<
  *     """A lexical analyzer for the BMRB NMR-STAR format syntax.
  * 
  */
-  __pyx_tuple__16 = PyTuple_Pack(8, __pyx_n_s_text, __pyx_n_s_stream, __pyx_n_s_wordchars, __pyx_n_s_whitespace, __pyx_n_s_state, __pyx_n_s_token, __pyx_n_s_nextchar, __pyx_n_s_nextnextchar); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(8, __pyx_n_s_text, __pyx_n_s_stream, __pyx_n_s_wordchars, __pyx_n_s_whitespace, __pyx_n_s_state, __pyx_n_s_token, __pyx_n_s_nextchar, __pyx_n_s_nextnextchar); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_run_media_smelandr_7ABCF9FD1592, __pyx_n_s_bmrblex, 87, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 87, __pyx_L1_error)
-
-  /* "nmrstarlib/cbmrblex.pyx":187
- * if __name__ == "__main__":
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:             # <<<<<<<<<<<<<<
- *         text = infile.read()
- * 
- */
-  __pyx_tuple__18 = PyTuple_Pack(2, __pyx_kp_s_nmrstarlib_extras_example_data, __pyx_n_s_r); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 187, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_tuple__19 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 187, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_run_media_smelandr_7ABCF9FD1592, __pyx_n_s_bmrblex, 86, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3267,18 +3139,6 @@ PyMODINIT_FUNC PyInit_cbmrblex(void)
 {
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
-  PyObject *__pyx_t_12 = NULL;
-  Py_ssize_t __pyx_t_13;
-  PyObject *(*__pyx_t_14)(PyObject *);
   __Pyx_RefNannyDeclarations
   #if CYTHON_REFNANNY
   __Pyx_RefNanny = __Pyx_RefNannyImportAPI("refnanny");
@@ -3354,7 +3214,7 @@ PyMODINIT_FUNC PyInit_cbmrblex(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
   __pyx_type_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex.tp_print = 0;
   __pyx_ptype_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex = &__pyx_type_10nmrstarlib_8cbmrblex___pyx_scope_struct__bmrblex;
   /*--- Type import code ---*/
@@ -3368,472 +3228,47 @@ PyMODINIT_FUNC PyInit_cbmrblex(void)
   /* "nmrstarlib/cbmrblex.pyx":34
  * """
  * 
- * import time             # <<<<<<<<<<<<<<
- * from collections import deque
- * 
- */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_time, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_time, __pyx_t_1) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "nmrstarlib/cbmrblex.pyx":35
- * 
- * import time
  * from collections import deque             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_deque);
   __Pyx_GIVEREF(__pyx_n_s_deque);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_deque);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_deque); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_deque); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_deque, __pyx_t_1) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_deque, __pyx_t_1) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "nmrstarlib/cbmrblex.pyx":38
+  /* "nmrstarlib/cbmrblex.pyx":37
  * 
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
  *     multiline strings, and removes comments.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10nmrstarlib_8cbmrblex_1transform_text, NULL, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10nmrstarlib_8cbmrblex_1transform_text, NULL, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_transform_text, __pyx_t_2) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_transform_text, __pyx_t_2) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "nmrstarlib/cbmrblex.pyx":87
+  /* "nmrstarlib/cbmrblex.pyx":86
  * 
  * 
  * def bmrblex(text):             # <<<<<<<<<<<<<<
  *     """A lexical analyzer for the BMRB NMR-STAR format syntax.
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10nmrstarlib_8cbmrblex_3bmrblex, NULL, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10nmrstarlib_8cbmrblex_3bmrblex, NULL, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bmrblex, __pyx_t_2) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bmrblex, __pyx_t_2) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "nmrstarlib/cbmrblex.pyx":185
- * 
- * 
- * if __name__ == "__main__":             # <<<<<<<<<<<<<<
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:
- */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 185, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__pyx_t_3) {
-
-    /* "nmrstarlib/cbmrblex.pyx":187
- * if __name__ == "__main__":
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:             # <<<<<<<<<<<<<<
- *         text = infile.read()
- * 
- */
-    /*with:*/ {
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_enter); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_6)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_6);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-        }
-      }
-      if (__pyx_t_6) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L3_error)
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      } else {
-        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L3_error)
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __pyx_t_1;
-      __pyx_t_1 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      /*try:*/ {
-        {
-          __Pyx_PyThreadState_declare
-          __Pyx_PyThreadState_assign
-          __Pyx_ExceptionSave(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9);
-          __Pyx_XGOTREF(__pyx_t_7);
-          __Pyx_XGOTREF(__pyx_t_8);
-          __Pyx_XGOTREF(__pyx_t_9);
-          /*try:*/ {
-            if (PyDict_SetItem(__pyx_d, __pyx_n_s_infile, __pyx_t_5) < 0) __PYX_ERR(0, 187, __pyx_L7_error)
-            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-            /* "nmrstarlib/cbmrblex.pyx":188
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:
- *         text = infile.read()             # <<<<<<<<<<<<<<
- * 
- *     t0 = time.time()
- */
-            __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_infile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_read); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_1);
-            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = NULL;
-            if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-              __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
-              if (likely(__pyx_t_2)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-                __Pyx_INCREF(__pyx_t_2);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_1, function);
-              }
-            }
-            if (__pyx_t_2) {
-              __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L7_error)
-              __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            } else {
-              __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L7_error)
-            }
-            __Pyx_GOTREF(__pyx_t_5);
-            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            if (PyDict_SetItem(__pyx_d, __pyx_n_s_text, __pyx_t_5) < 0) __PYX_ERR(0, 188, __pyx_L7_error)
-            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-            /* "nmrstarlib/cbmrblex.pyx":187
- * if __name__ == "__main__":
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:             # <<<<<<<<<<<<<<
- *         text = infile.read()
- * 
- */
-          }
-          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-          __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-          goto __pyx_L14_try_end;
-          __pyx_L7_error:;
-          __Pyx_PyThreadState_assign
-          __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-          __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-          __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-          /*except:*/ {
-            __Pyx_AddTraceback("nmrstarlib.cbmrblex", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_1, &__pyx_t_2) < 0) __PYX_ERR(0, 187, __pyx_L9_except_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            __Pyx_GOTREF(__pyx_t_1);
-            __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_6 = PyTuple_Pack(3, __pyx_t_5, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 187, __pyx_L9_except_error)
-            __Pyx_GOTREF(__pyx_t_6);
-            __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL);
-            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-            __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 187, __pyx_L9_except_error)
-            __Pyx_GOTREF(__pyx_t_10);
-            __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_10);
-            __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-            if (__pyx_t_3 < 0) __PYX_ERR(0, 187, __pyx_L9_except_error)
-            __pyx_t_11 = ((!(__pyx_t_3 != 0)) != 0);
-            if (__pyx_t_11) {
-              __Pyx_GIVEREF(__pyx_t_5);
-              __Pyx_GIVEREF(__pyx_t_1);
-              __Pyx_XGIVEREF(__pyx_t_2);
-              __Pyx_ErrRestoreWithState(__pyx_t_5, __pyx_t_1, __pyx_t_2);
-              __pyx_t_5 = 0; __pyx_t_1 = 0; __pyx_t_2 = 0; 
-              __PYX_ERR(0, 187, __pyx_L9_except_error)
-            }
-            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            goto __pyx_L8_exception_handled;
-          }
-          __pyx_L9_except_error:;
-          __Pyx_PyThreadState_assign
-          __Pyx_XGIVEREF(__pyx_t_7);
-          __Pyx_XGIVEREF(__pyx_t_8);
-          __Pyx_XGIVEREF(__pyx_t_9);
-          __Pyx_ExceptionReset(__pyx_t_7, __pyx_t_8, __pyx_t_9);
-          goto __pyx_L1_error;
-          __pyx_L8_exception_handled:;
-          __Pyx_PyThreadState_assign
-          __Pyx_XGIVEREF(__pyx_t_7);
-          __Pyx_XGIVEREF(__pyx_t_8);
-          __Pyx_XGIVEREF(__pyx_t_9);
-          __Pyx_ExceptionReset(__pyx_t_7, __pyx_t_8, __pyx_t_9);
-          __pyx_L14_try_end:;
-        }
-      }
-      /*finally:*/ {
-        /*normal exit:*/{
-          if (__pyx_t_4) {
-            __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__19, NULL);
-            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-            if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 187, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_9);
-            __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          }
-          goto __pyx_L6;
-        }
-        __pyx_L6:;
-      }
-      goto __pyx_L18;
-      __pyx_L3_error:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L1_error;
-      __pyx_L18:;
-    }
-
-    /* "nmrstarlib/cbmrblex.pyx":190
- *         text = infile.read()
- * 
- *     t0 = time.time()             # <<<<<<<<<<<<<<
- *     lexer = bmrblex(text)
- * 
- */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 190, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_1)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_1);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    if (__pyx_t_1) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_t0, __pyx_t_2) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-    /* "nmrstarlib/cbmrblex.pyx":191
- * 
- *     t0 = time.time()
- *     lexer = bmrblex(text)             # <<<<<<<<<<<<<<
- * 
- *     for token in lexer:
- */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_bmrblex); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 191, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_text); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    if (!__pyx_t_6) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
-    } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_1};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_1};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 191, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
-        __Pyx_GIVEREF(__pyx_t_1);
-        PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_1);
-        __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      }
-    }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_lexer, __pyx_t_2) < 0) __PYX_ERR(0, 191, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-    /* "nmrstarlib/cbmrblex.pyx":193
- *     lexer = bmrblex(text)
- * 
- *     for token in lexer:             # <<<<<<<<<<<<<<
- *         t = token
- *         print(t)
- */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_lexer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-      __pyx_t_5 = __pyx_t_2; __Pyx_INCREF(__pyx_t_5); __pyx_t_13 = 0;
-      __pyx_t_14 = NULL;
-    } else {
-      __pyx_t_13 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_14 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 193, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_14)) {
-        if (likely(PyList_CheckExact(__pyx_t_5))) {
-          if (__pyx_t_13 >= PyList_GET_SIZE(__pyx_t_5)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_13); __Pyx_INCREF(__pyx_t_2); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
-          #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          #endif
-        } else {
-          if (__pyx_t_13 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_13); __Pyx_INCREF(__pyx_t_2); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
-          #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          #endif
-        }
-      } else {
-        __pyx_t_2 = __pyx_t_14(__pyx_t_5);
-        if (unlikely(!__pyx_t_2)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 193, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_2);
-      }
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_token, __pyx_t_2) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-      /* "nmrstarlib/cbmrblex.pyx":194
- * 
- *     for token in lexer:
- *         t = token             # <<<<<<<<<<<<<<
- *         print(t)
- * 
- */
-      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_token); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_t, __pyx_t_2) < 0) __PYX_ERR(0, 194, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-      /* "nmrstarlib/cbmrblex.pyx":195
- *     for token in lexer:
- *         t = token
- *         print(t)             # <<<<<<<<<<<<<<
- * 
- *     t1 = time.time() - t0
- */
-      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      if (__Pyx_PrintOne(0, __pyx_t_2) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-      /* "nmrstarlib/cbmrblex.pyx":193
- *     lexer = bmrblex(text)
- * 
- *     for token in lexer:             # <<<<<<<<<<<<<<
- *         t = token
- *         print(t)
- */
-    }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-    /* "nmrstarlib/cbmrblex.pyx":197
- *         print(t)
- * 
- *     t1 = time.time() - t0             # <<<<<<<<<<<<<<
- *     print(t1)
- */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 197, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_12);
-      if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-        __Pyx_INCREF(__pyx_t_2);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_12, function);
-      }
-    }
-    if (__pyx_t_2) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_t0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 197, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_2 = PyNumber_Subtract(__pyx_t_5, __pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_t1, __pyx_t_2) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-    /* "nmrstarlib/cbmrblex.pyx":198
- * 
- *     t1 = time.time() - t0
- *     print(t1)             # <<<<<<<<<<<<<<
- */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_t1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    if (__Pyx_PrintOne(0, __pyx_t_2) < 0) __PYX_ERR(0, 198, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-    /* "nmrstarlib/cbmrblex.pyx":185
- * 
- * 
- * if __name__ == "__main__":             # <<<<<<<<<<<<<<
- * 
- *     with open("../../nmrstarlib_extras/example_data/bmr18569.str", "r") as infile:
- */
-  }
 
   /* "nmrstarlib/cbmrblex.pyx":1
  * #!/usr/bin/env python3             # <<<<<<<<<<<<<<
@@ -3851,9 +3286,6 @@ PyMODINIT_FUNC PyInit_cbmrblex(void)
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_12);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init nmrstarlib.cbmrblex", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -4687,93 +4119,8 @@ bad:
     return value;
 }
 
-/* SaveResetException */
-        #if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->exc_type;
-    *value = tstate->exc_value;
-    *tb = tstate->exc_traceback;
-    Py_XINCREF(*type);
-    Py_XINCREF(*value);
-    Py_XINCREF(*tb);
-}
-static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = type;
-    tstate->exc_value = value;
-    tstate->exc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-#endif
-
-/* GetException */
-        #if CYTHON_FAST_THREAD_STATE
-static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-#else
-static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb) {
-#endif
-    PyObject *local_type, *local_value, *local_tb;
-#if CYTHON_FAST_THREAD_STATE
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    local_type = tstate->curexc_type;
-    local_value = tstate->curexc_value;
-    local_tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-#else
-    PyErr_Fetch(&local_type, &local_value, &local_tb);
-#endif
-    PyErr_NormalizeException(&local_type, &local_value, &local_tb);
-#if CYTHON_FAST_THREAD_STATE
-    if (unlikely(tstate->curexc_type))
-#else
-    if (unlikely(PyErr_Occurred()))
-#endif
-        goto bad;
-    #if PY_MAJOR_VERSION >= 3
-    if (local_tb) {
-        if (unlikely(PyException_SetTraceback(local_value, local_tb) < 0))
-            goto bad;
-    }
-    #endif
-    Py_XINCREF(local_tb);
-    Py_XINCREF(local_type);
-    Py_XINCREF(local_value);
-    *type = local_type;
-    *value = local_value;
-    *tb = local_tb;
-#if CYTHON_FAST_THREAD_STATE
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = local_type;
-    tstate->exc_value = local_value;
-    tstate->exc_traceback = local_tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-#else
-    PyErr_SetExcInfo(local_type, local_value, local_tb);
-#endif
-    return 0;
-bad:
-    *type = 0;
-    *value = 0;
-    *tb = 0;
-    Py_XDECREF(local_type);
-    Py_XDECREF(local_value);
-    Py_XDECREF(local_tb);
-    return -1;
-}
-
 /* CodeObjectCache */
-          static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+        static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -4853,7 +4200,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-          #include "compile.h"
+        #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -4933,151 +4280,8 @@ bad:
     Py_XDECREF(py_frame);
 }
 
-/* Print */
-          #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static PyObject *__Pyx_GetStdout(void) {
-    PyObject *f = PySys_GetObject((char *)"stdout");
-    if (!f) {
-        PyErr_SetString(PyExc_RuntimeError, "lost sys.stdout");
-    }
-    return f;
-}
-static int __Pyx_Print(PyObject* f, PyObject *arg_tuple, int newline) {
-    int i;
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    for (i=0; i < PyTuple_GET_SIZE(arg_tuple); i++) {
-        PyObject* v;
-        if (PyFile_SoftSpace(f, 1)) {
-            if (PyFile_WriteString(" ", f) < 0)
-                goto error;
-        }
-        v = PyTuple_GET_ITEM(arg_tuple, i);
-        if (PyFile_WriteObject(v, f, Py_PRINT_RAW) < 0)
-            goto error;
-        if (PyString_Check(v)) {
-            char *s = PyString_AsString(v);
-            Py_ssize_t len = PyString_Size(v);
-            if (len > 0) {
-                switch (s[len-1]) {
-                    case ' ': break;
-                    case '\f': case '\r': case '\n': case '\t': case '\v':
-                        PyFile_SoftSpace(f, 0);
-                        break;
-                    default:  break;
-                }
-            }
-        }
-    }
-    if (newline) {
-        if (PyFile_WriteString("\n", f) < 0)
-            goto error;
-        PyFile_SoftSpace(f, 0);
-    }
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-}
-#else
-static int __Pyx_Print(PyObject* stream, PyObject *arg_tuple, int newline) {
-    PyObject* kwargs = 0;
-    PyObject* result = 0;
-    PyObject* end_string;
-    if (unlikely(!__pyx_print)) {
-        __pyx_print = PyObject_GetAttr(__pyx_b, __pyx_n_s_print);
-        if (!__pyx_print)
-            return -1;
-    }
-    if (stream) {
-        kwargs = PyDict_New();
-        if (unlikely(!kwargs))
-            return -1;
-        if (unlikely(PyDict_SetItem(kwargs, __pyx_n_s_file, stream) < 0))
-            goto bad;
-        if (!newline) {
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                goto bad;
-            if (PyDict_SetItem(kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                goto bad;
-            }
-            Py_DECREF(end_string);
-        }
-    } else if (!newline) {
-        if (unlikely(!__pyx_print_kwargs)) {
-            __pyx_print_kwargs = PyDict_New();
-            if (unlikely(!__pyx_print_kwargs))
-                return -1;
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                return -1;
-            if (PyDict_SetItem(__pyx_print_kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                return -1;
-            }
-            Py_DECREF(end_string);
-        }
-        kwargs = __pyx_print_kwargs;
-    }
-    result = PyObject_Call(__pyx_print, arg_tuple, kwargs);
-    if (unlikely(kwargs) && (kwargs != __pyx_print_kwargs))
-        Py_DECREF(kwargs);
-    if (!result)
-        return -1;
-    Py_DECREF(result);
-    return 0;
-bad:
-    if (kwargs != __pyx_print_kwargs)
-        Py_XDECREF(kwargs);
-    return -1;
-}
-#endif
-
-/* PrintOne */
-          #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    if (PyFile_SoftSpace(f, 0)) {
-        if (PyFile_WriteString(" ", f) < 0)
-            goto error;
-    }
-    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
-        goto error;
-    if (PyFile_WriteString("\n", f) < 0)
-        goto error;
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-    /* the line below is just to avoid C compiler
-     * warnings about unused functions */
-    return __Pyx_Print(f, NULL, 0);
-}
-#else
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
-    int res;
-    PyObject* arg_tuple = PyTuple_Pack(1, o);
-    if (unlikely(!arg_tuple))
-        return -1;
-    res = __Pyx_Print(stream, arg_tuple, 1);
-    Py_DECREF(arg_tuple);
-    return res;
-}
-#endif
-
 /* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -5108,7 +4312,7 @@ static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
 }
 
 /* CIntFromPyVerify */
-          #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+        #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -5130,7 +4334,7 @@ static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
     }
 
 /* CIntFromPy */
-          static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+        static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -5319,7 +4523,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-          static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+        static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -5508,7 +4712,7 @@ raise_neg_overflow:
 }
 
 /* FetchCommonType */
-          static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type) {
+        static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type) {
     PyObject* fake_module;
     PyTypeObject* cached_type = NULL;
     fake_module = PyImport_AddModule((char*) "_cython_" CYTHON_ABI);
@@ -5547,7 +4751,7 @@ bad:
 }
 
 /* SwapException */
-          #if CYTHON_FAST_THREAD_STATE
+        #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
     PyObject *tmp_type, *tmp_value, *tmp_tb;
     tmp_type = tstate->exc_type;
@@ -5572,7 +4776,7 @@ static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value,
 #endif
 
 /* CoroutineBase */
-          #include <structmember.h>
+        #include <structmember.h>
 #include <frameobject.h>
 static PyObject *__Pyx_Coroutine_Send(PyObject *self, PyObject *value);
 static PyObject *__Pyx_Coroutine_Close(PyObject *self);
@@ -6105,7 +5309,7 @@ static __pyx_CoroutineObject *__Pyx__Coroutine_New(
 }
 
 /* PatchModuleWithCoroutine */
-              static PyObject* __Pyx_Coroutine_patch_module(PyObject* module, const char* py_code) {
+            static PyObject* __Pyx_Coroutine_patch_module(PyObject* module, const char* py_code) {
 #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
     int result;
     PyObject *globals, *result_obj;
@@ -6145,7 +5349,7 @@ ignore:
 }
 
 /* PatchGeneratorABC */
-              #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
+            #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
 static PyObject* __Pyx_patch_abc_module(PyObject *module);
 static PyObject* __Pyx_patch_abc_module(PyObject *module) {
     module = __Pyx_Coroutine_patch_module(
@@ -6199,7 +5403,7 @@ static int __Pyx_patch_abc(void) {
 }
 
 /* Generator */
-              static PyMethodDef __pyx_Generator_methods[] = {
+            static PyMethodDef __pyx_Generator_methods[] = {
     {"send", (PyCFunction) __Pyx_Coroutine_Send, METH_O,
      (char*) PyDoc_STR("send(arg) -> send 'arg' into generator,\nreturn next yielded value or raise StopIteration.")},
     {"throw", (PyCFunction) __Pyx_Coroutine_Throw, METH_VARARGS,
@@ -6288,7 +5492,7 @@ static int __pyx_Generator_init(void) {
 }
 
 /* CheckBinaryVersion */
-              static int __Pyx_check_binary_version(void) {
+            static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -6304,7 +5508,7 @@ static int __pyx_Generator_init(void) {
 }
 
 /* InitStrings */
-              static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+            static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {
