@@ -19,7 +19,7 @@ In addition, the nmrstarlib package provides facilities to visualize assigned ch
 Installation
 ~~~~~~~~~~~~
 
-The :mod:`nmrstarlib` package runs under Python 3. Starting with Python 3.4 pip_ is included by default.
+The :mod:`nmrstarlib` package runs under Python 2.7 and Python 3.4+. Starting with Python 3.4 pip_ is included by default.
 To install system-wide with pip_ run the following:
 
 Install on Linux, Mac OS X
