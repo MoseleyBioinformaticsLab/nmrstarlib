@@ -448,7 +448,7 @@ class StarFile(OrderedDict):
 
         if aminoacids:
             for chemshifts_dict in chains:
-                for aa in chemshifts_dict.values():
+                for aa in list(chemshifts_dict.values()):
                     if aa["AA3Code"].upper() not in aminoacids:
                         chemshifts_dict.pop(aa["Seq_ID"])
 
