@@ -269,11 +269,11 @@ class StarFile(OrderedDict):
         if format is "nmrstar":
             for saveframe in self.keys():
                 if saveframe == "data":
-                    print("{}_{}\n".format(saveframe, self[saveframe]), file=f)
+                    print(u"{}_{}\n".format(saveframe, self[saveframe]), file=f)
                 else:
-                    print("{}".format(saveframe), file=f)
+                    print(u"{}".format(saveframe), file=f)
                     self.print_saveframe(saveframe, f, format, tw)
-                    print("save_\n", file=f)
+                    print(u"save_\n", file=f)
 
         elif format is "json":
             print(self._to_json(), file=f)
@@ -291,22 +291,22 @@ class StarFile(OrderedDict):
         :rtype: :py:obj:`None`
         """
         if format is "nmrstar":
-            if sf == "data":
-                print("{}_{}\n".format(sf, self[sf]), file=f)
+            if sf == u"data":
+                print(u"{}_{}\n".format(sf, self[sf]), file=f)
             else:
                 for sftag in self[sf].keys():
                     # handle the NMR-Star "multiline string"
                     if self[sf][sftag][0] == ";":
-                        print(tw*" ", "_{}".format(sftag), file=f)
-                        print("{}".format(self[sf][sftag]), file=f)
+                        print(tw*u" ", u"_{}".format(sftag), file=f)
+                        print(u"{}".format(self[sf][sftag]), file=f)
 
                     # handle loops
                     elif sftag[:5] == "loop_":
-                        print(tw*" ", "loop_", file=f)
+                        print(tw*u" ", u"loop_", file=f)
                         self.print_loop(sf, sftag, f, format, tw * 2)
-                        print(tw*" ", "stop_", file=f)
+                        print(tw*u" ", u"stop_", file=f)
                     else:
-                        print(tw*" ", "_{}\t {}".format(sftag, self[sf][sftag]), file=f)
+                        print(tw*u" ", u"_{}\t {}".format(sftag, self[sf][sftag]), file=f)
 
         elif format is "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
@@ -325,11 +325,11 @@ class StarFile(OrderedDict):
         if format is "nmrstar":
             # First print the fields
             for field in self[sf][sftag][0]:
-                print(tw*" ", "_{}".format(field), file=f)
+                print(tw*u" ", u"_{}".format(field), file=f)
 
             # Then print the values
             for valuesdict in self[sf][sftag][1]:
-                line = tw*" " + " ".join(valuesdict.values())
+                line = tw*u" " + u" ".join(valuesdict.values())
                 print(line, file=f)
 
         elif format is "json":
@@ -374,7 +374,7 @@ class StarFile(OrderedDict):
         :return: Input string if in NMR-STAR format or False otherwise.
         :rtype: :py:class:`str` or :py:obj:`False`
         """
-        if string[0:5] == "data_" or string[0:5] == b"data_":
+        if string[0:5] == u"data_" or string[0:5] == b"data_":
             return string
         return False
 
@@ -431,32 +431,32 @@ class StarFile(OrderedDict):
 
         chains = []
         for saveframe in self:
-            if saveframe == "data":
+            if saveframe == u"data":
                 continue
             else:
                 for ind in self[saveframe].keys():
-                    if ind.startswith("loop_"):
+                    if ind.startswith(u"loop_"):
                         if list(self[saveframe][ind][0]) == chemshifts_loop:
                             chemshifts_dict = OrderedDict()
                             for entry in self[saveframe][ind][1]:
                                 residueid = int(entry[aminoacid_seq_id])
                                 chemshifts_dict.setdefault(residueid, OrderedDict())
-                                chemshifts_dict[residueid]["AA3Code"] = entry[aminoacid_code]
-                                chemshifts_dict[residueid]["Seq_ID"] = residueid
+                                chemshifts_dict[residueid][u"AA3Code"] = entry[aminoacid_code]
+                                chemshifts_dict[residueid][u"Seq_ID"] = residueid
                                 chemshifts_dict[residueid][entry[atom_code]] = entry[chemshift_value]
                             chains.append(chemshifts_dict)
 
         if aminoacids:
             for chemshifts_dict in chains:
                 for aa in list(chemshifts_dict.values()):
-                    if aa["AA3Code"].upper() not in aminoacids:
-                        chemshifts_dict.pop(aa["Seq_ID"])
+                    if aa[u"AA3Code"].upper() not in aminoacids:
+                        chemshifts_dict.pop(aa[u"Seq_ID"])
 
         if atoms:
             for chemshifts_dict in chains:
                 for resonances_dict in chemshifts_dict.values():
                     for resonance in list(resonances_dict.keys()):
-                        if resonance in ("AA3Code", "Seq_ID") or resonance.upper() in atoms:
+                        if resonance in (u"AA3Code", u"Seq_ID") or resonance.upper() in atoms:
                             continue
                         else:
                             resonances_dict.pop(resonance)
