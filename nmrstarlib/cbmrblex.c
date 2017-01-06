@@ -959,7 +959,7 @@ static const char __pyx_k_[] = "{}";
 static const char __pyx_k_a[] = "a";
 static const char __pyx_k__3[] = "\n";
 static const char __pyx_k__5[] = ";";
-static const char __pyx_k__6[] = ";\n";
+static const char __pyx_k__6[] = "\n;\n";
 static const char __pyx_k__7[] = "#";
 static const char __pyx_k__9[] = " \t\r\n";
 static const char __pyx_k__10[] = " ";
@@ -1435,7 +1435,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  *         line = inputq.popleft()
  * 
  *         if line.startswith(u";"):             # <<<<<<<<<<<<<<
- *             multiline = u";\n"
+ *             multiline = u"\n;\n"
  *             line = inputq.popleft()
  */
     if (unlikely(__pyx_v_line == Py_None)) {
@@ -1448,7 +1448,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
       /* "nmrstarlib/cbmrblex.pyx":62
  * 
  *         if line.startswith(u";"):
- *             multiline = u";\n"             # <<<<<<<<<<<<<<
+ *             multiline = u"\n;\n"             # <<<<<<<<<<<<<<
  *             line = inputq.popleft()
  * 
  */
@@ -1457,7 +1457,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
 
       /* "nmrstarlib/cbmrblex.pyx":63
  *         if line.startswith(u";"):
- *             multiline = u";\n"
+ *             multiline = u"\n;\n"
  *             line = inputq.popleft()             # <<<<<<<<<<<<<<
  * 
  *             while not line.startswith(u";"):
@@ -1613,7 +1613,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  *         line = inputq.popleft()
  * 
  *         if line.startswith(u";"):             # <<<<<<<<<<<<<<
- *             multiline = u";\n"
+ *             multiline = u"\n;\n"
  *             line = inputq.popleft()
  */
       goto __pyx_L6;

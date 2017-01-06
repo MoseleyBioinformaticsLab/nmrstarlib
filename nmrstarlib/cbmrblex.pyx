@@ -59,7 +59,7 @@ def transform_text(input_txt):
         line = inputq.popleft()
 
         if line.startswith(u";"):
-            multiline = u";\n"
+            multiline = u"\n;\n"
             line = inputq.popleft()
 
             while not line.startswith(u";"):
