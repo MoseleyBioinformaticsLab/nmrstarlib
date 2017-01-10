@@ -49,8 +49,8 @@ class CSViewer(object):
         """CSViewer initializer.
 
         :param str from_path: Path to single NMR-STAR file or BMRB id.
-        :param list aminoacids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
-        :param list atoms: List of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
+        :param list or tuple aminoacids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
+        :param list or tuple atoms: List of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
         :param str filename: Output filename chemical shifts graph to be saved.
         :param str csview_format: `svg`, `png`, `pdf`. See http://www.graphviz.org/doc/info/output.html for all available formats.
         :param str nmrstarversion: Version of NMR-STAR format to use for look up chemichal shifts loop.
@@ -79,15 +79,15 @@ class CSViewer(object):
                 edges = []
 
                 for seq_id in chemshifts_dict:
-                    aaname = "{}_{}".format(chemshifts_dict[seq_id]["AACode_3"], seq_id)
-                    label = '"{{{}|{}}}"'.format(seq_id, chemshifts_dict[seq_id]["AACode_3"])
+                    aaname = "{}_{}".format(chemshifts_dict[seq_id]["AA3Code"], seq_id)
+                    label = '"{{{}|{}}}"'.format(seq_id, chemshifts_dict[seq_id]["AA3Code"])
                     color = 8
                     aanode_entry = "            {} [label={}, fillcolor={}]".format(aaname, label, color)
                     nodes.append(aanode_entry)
                     currnodename = aaname
 
                     for atomtype in chemshifts_dict[seq_id]:
-                        if atomtype in ["AACode3", "Seq_ID"]:
+                        if atomtype in ["AA3Code", "Seq_ID"]:
                             continue
                         else:
                             atname = "{}_{}".format(aaname, atomtype)

@@ -439,7 +439,7 @@ class StarFile(OrderedDict):
                         if list(self[saveframe][ind][0]) == chemshifts_loop:
                             chemshifts_dict = OrderedDict()
                             for entry in self[saveframe][ind][1]:
-                                residueid = int(entry[aminoacid_seq_id])
+                                residueid = entry[aminoacid_seq_id]
                                 chemshifts_dict.setdefault(residueid, OrderedDict())
                                 chemshifts_dict[residueid][u"AA3Code"] = entry[aminoacid_code]
                                 chemshifts_dict[residueid][u"Seq_ID"] = residueid
