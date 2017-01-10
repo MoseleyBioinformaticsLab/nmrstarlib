@@ -60,10 +60,10 @@ def transform_text(input_txt):
             line = inputq.popleft()
 
             while not line.startswith(u";"):
-                multiline += line
+                multiline += line + u"\n"
                 line = inputq.popleft()
 
-            multiline += u"\n" + line[:1]
+            multiline += line[:1]
             outputq.append(multiline)
 
             for character in line[1:]:

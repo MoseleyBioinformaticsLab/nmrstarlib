@@ -268,12 +268,12 @@ class StarFile(OrderedDict):
         """
         if format is "nmrstar":
             for saveframe in self.keys():
-                if saveframe == "data":
+                if saveframe == u"data":
                     print(u"{}_{}\n".format(saveframe, self[saveframe]), file=f)
                 else:
                     print(u"{}".format(saveframe), file=f)
                     self.print_saveframe(saveframe, f, format, tw)
-                    print(u"save_\n", file=f)
+                    print(u"\nsave_\n", file=f)
 
         elif format is "json":
             print(self._to_json(), file=f)
@@ -296,17 +296,18 @@ class StarFile(OrderedDict):
             else:
                 for sftag in self[sf].keys():
                     # handle the NMR-Star "multiline string"
-                    if self[sf][sftag][0] == ";":
-                        print(tw*u" ", u"_{}".format(sftag), file=f)
+                    if self[sf][sftag][0] == u";":
+                        print(u"{}_{}".format(tw * u" ", sftag), file=f)
                         print(u"{}".format(self[sf][sftag]), file=f)
 
                     # handle loops
                     elif sftag[:5] == "loop_":
-                        print(tw*u" ", u"loop_", file=f)
+                        print(u"\n{}loop_".format(tw * u" "), file=f)
                         self.print_loop(sf, sftag, f, format, tw * 2)
-                        print(tw*u" ", u"stop_", file=f)
+                        print(u"\n{}stop_".format(tw * u" "), file=f)
                     else:
-                        print(tw*u" ", u"_{}\t {}".format(sftag, self[sf][sftag]), file=f)
+                        print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
+                        # print(tw * u" " + u"_{}\t {}".format(sftag, self[sf][sftag]), file=f)
 
         elif format is "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
@@ -325,12 +326,13 @@ class StarFile(OrderedDict):
         if format is "nmrstar":
             # First print the fields
             for field in self[sf][sftag][0]:
-                print(tw*u" ", u"_{}".format(field), file=f)
+                print(u"{}_{}".format(tw * u" ", field), file=f)
+
+            print(u"", file=f)  # new line between fields and values
 
             # Then print the values
             for valuesdict in self[sf][sftag][1]:
-                line = tw*u" " + u" ".join(valuesdict.values())
-                print(line, file=f)
+                print(u"{}{}".format(tw * u" ", u" ".join(valuesdict.values())), file=f)
 
         elif format is "json":
             print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)

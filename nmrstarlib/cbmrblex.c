@@ -1490,7 +1490,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  *             line = inputq.popleft()
  * 
  *             while not line.startswith(u";"):             # <<<<<<<<<<<<<<
- *                 multiline += line
+ *                 multiline += line + u"\n"
  *                 line = inputq.popleft()
  */
       while (1) {
@@ -1505,51 +1505,54 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
         /* "nmrstarlib/cbmrblex.pyx":66
  * 
  *             while not line.startswith(u";"):
- *                 multiline += line             # <<<<<<<<<<<<<<
+ *                 multiline += line + u"\n"             # <<<<<<<<<<<<<<
  *                 line = inputq.popleft()
  * 
  */
-        __pyx_t_4 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_multiline, __pyx_v_line); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_line, __pyx_kp_u__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF_SET(__pyx_v_multiline, ((PyObject*)__pyx_t_4));
-        __pyx_t_4 = 0;
+        __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_v_multiline, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __Pyx_DECREF_SET(__pyx_v_multiline, ((PyObject*)__pyx_t_3));
+        __pyx_t_3 = 0;
 
         /* "nmrstarlib/cbmrblex.pyx":67
  *             while not line.startswith(u";"):
- *                 multiline += line
+ *                 multiline += line + u"\n"
  *                 line = inputq.popleft()             # <<<<<<<<<<<<<<
  * 
- *             multiline += u"\n" + line[:1]
+ *             multiline += line[:1]
  */
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_inputq, __pyx_n_s_popleft); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_7 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
+          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
           if (likely(__pyx_t_7)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
             __Pyx_INCREF(__pyx_t_7);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_3, function);
+            __Pyx_DECREF_SET(__pyx_t_4, function);
           }
         }
         if (__pyx_t_7) {
-          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         } else {
-          __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
         }
-        __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 67, __pyx_L1_error)
-        __Pyx_DECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_4));
-        __pyx_t_4 = 0;
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 67, __pyx_L1_error)
+        __Pyx_DECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_3));
+        __pyx_t_3 = 0;
       }
 
       /* "nmrstarlib/cbmrblex.pyx":69
  *                 line = inputq.popleft()
  * 
- *             multiline += u"\n" + line[:1]             # <<<<<<<<<<<<<<
+ *             multiline += line[:1]             # <<<<<<<<<<<<<<
  *             outputq.append(multiline)
  * 
  */
@@ -1557,11 +1560,8 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 69, __pyx_L1_error)
       }
-      __pyx_t_4 = __Pyx_PyUnicode_Substring(__pyx_v_line, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_kp_u__3, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_Substring(__pyx_v_line, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_v_multiline, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1570,7 +1570,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
 
       /* "nmrstarlib/cbmrblex.pyx":70
  * 
- *             multiline += u"\n" + line[:1]
+ *             multiline += line[:1]
  *             outputq.append(multiline)             # <<<<<<<<<<<<<<
  * 
  *             for character in line[1:]:
