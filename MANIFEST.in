@@ -1,4 +1,4 @@
-include README.rst LICENSE
+include README.rst LICENSE CHANGELOG.rst
 include requirements.txt
 include nmrstarlib/conf/*.json
 include docs/Makefile
