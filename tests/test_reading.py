@@ -24,32 +24,32 @@ def test_from_bmrbids():
     starfile_generator = nmrstarlib.read_files("15000", "18569")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
 
 
 def test_from_directory():
     starfile_generator = nmrstarlib.read_files("tests/example_data/starfiles_directory")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
 
 
 def test_from_zip_archive():
     starfile_generator = nmrstarlib.read_files("tests/example_data/starfiles_archive.zip")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
 
 
 def test_from_tar_gz_archive():
     starfile_generator = nmrstarlib.read_files("tests/example_data/starfiles_archive.tar.gz")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
 
 
 def test_from_tar_bz2_archive():
     starfile_generator = nmrstarlib.read_files("tests/example_data/starfiles_archive.tar.bz2")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")

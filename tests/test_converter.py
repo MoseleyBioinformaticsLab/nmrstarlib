@@ -38,7 +38,7 @@ def test_from_nmrstar_to_json_directory():
     starfile_generator = nmrstarlib.read_files("tests/example_data/tmp/starfiles_directory_json")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
 
 
 def test_from_json_to_nmrstar_directory():
@@ -50,4 +50,4 @@ def test_from_json_to_nmrstar_directory():
     starfile_generator = nmrstarlib.read_files("tests/example_data/tmp/starfiles_directory_nmrstar")
     starfile1 = next(starfile_generator)
     starfile2 = next(starfile_generator)
-    assert starfile1.bmrbid == "15000" and starfile2.bmrbid == "18569"
+    assert starfile1.bmrbid in ("15000", "18569") and starfile2.bmrbid in ("15000", "18569")
