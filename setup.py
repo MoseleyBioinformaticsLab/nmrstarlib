@@ -30,7 +30,7 @@ else:
 
 setup(
     name='nmrstarlib',
-    version='1.0.5',
+    version='1.1.0',
     author='Andrey Smelter',
     author_email='andrey.smelter@gmail.com',
     description='Python library for parsing data from NMR-STAR format files',
