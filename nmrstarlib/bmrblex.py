@@ -64,6 +64,7 @@ def transform_text(input_txt):
                 line = inputq.popleft()
 
             outputq.append(comment)
+
             for character in line:
                 outputq.append(character)
 
@@ -122,7 +123,7 @@ def bmrblex(text):
                 nextnextchar = u""
 
             # Process multiline string or comment
-            if nextchar.startswith(u"\n;\n") or nextchar.lstrip().startswith(u"#"):
+            if len(nextchar) > 1:
                 state = u" "
                 token = nextchar
                 break  # emit current token
