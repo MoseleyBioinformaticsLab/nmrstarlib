@@ -169,9 +169,11 @@ class StarFile(OrderedDict):
                 elif token[0:5] == u"data_":
                     self.bmrbid = token[5:]
                     self[u"data"] = self.bmrbid
+
                 elif token.lstrip().startswith(u"#"):
                     odict[u"comment_{}".format(comment_count)] = token
                     comment_count += 1
+
                 else:
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
                     print("In _build_starfile try block", file=sys.stderr)
@@ -211,6 +213,9 @@ class StarFile(OrderedDict):
                 elif token == u"loop_":
                     odict[u"loop_{}".format(loop_count)] = self._build_loop(lexer)
                     loop_count += 1
+
+                elif token.lstrip().startswith(u"#"):
+                    continue
 
                 else:
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
@@ -438,9 +443,7 @@ class StarFile(OrderedDict):
 
         chains = []
         for saveframe in self:
-            if saveframe == u"data":
-                continue
-            elif saveframe.startswith(u"comment"):
+            if saveframe == u"data" or saveframe.startswith(u"comment"):
                 continue
             else:
                 for ind in self[saveframe].keys():
