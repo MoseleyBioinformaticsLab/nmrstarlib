@@ -49,8 +49,10 @@ class CSViewer(object):
         """CSViewer initializer.
 
         :param str from_path: Path to single NMR-STAR file or BMRB id.
-        :param list or tuple amino_acids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
-        :param list or tuple atoms: List of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
+        :param amino_acids: Sequence of amino acids three letter codes, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
+        :type amino_acids: :py:class:`list` or :py:class:`tuple`
+        :param atoms: Sequence of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
+        :type atoms: :py:class:`list` or :py:class:`tuple`
         :param str filename: Output filename chemical shifts graph to be saved.
         :param str csview_format: `svg`, `png`, `pdf`. See http://www.graphviz.org/doc/info/output.html for all available formats.
         :param str nmrstar_version: Version of NMR-STAR format to use for look up chemichal shifts loop.
