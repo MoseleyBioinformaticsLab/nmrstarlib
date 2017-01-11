@@ -55,7 +55,19 @@ def transform_text(input_txt):
     while len(inputq) > 0:
         line = inputq.popleft()
 
-        if line.startswith(u";"):
+        if line.lstrip().startswith(u"#"):
+            comment = u"" + line + u"\n"
+            line = inputq.popleft()
+
+            while line.lstrip().startswith(u"#"):
+                comment += line + u"\n"
+                line = inputq.popleft()
+
+            outputq.append(comment)
+            for character in line:
+                outputq.append(character)
+
+        elif line.startswith(u";"):
             multiline = u"\n;\n"
             line = inputq.popleft()
 
@@ -69,8 +81,6 @@ def transform_text(input_txt):
             for character in line[1:]:
                 outputq.append(character)
 
-        elif line.lstrip().startswith(u"#"):
-            continue
         else:
             for character in line:
                 outputq.append(character)
@@ -111,8 +121,8 @@ def bmrblex(text):
             else:
                 nextnextchar = u""
 
-            # Process multiline string
-            if len(nextchar) > 1:
+            # Process multiline string or comment
+            if nextchar.startswith(u"\n;\n") or nextchar.lstrip().startswith(u"#"):
                 state = u" "
                 token = nextchar
                 break  # emit current token

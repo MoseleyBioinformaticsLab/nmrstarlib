@@ -154,6 +154,7 @@ class StarFile(OrderedDict):
         :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
         """
         odict = self
+        comment_count = 0
         lexer = bmrblex(nmrstar_str)
         token = next(lexer)
 
@@ -168,6 +169,9 @@ class StarFile(OrderedDict):
                 elif token[0:5] == u"data_":
                     self.bmrbid = token[5:]
                     self[u"data"] = self.bmrbid
+                elif token.lstrip().startswith(u"#"):
+                    odict[u"comment_{}".format(comment_count)] = token
+                    comment_count += 1
                 else:
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
                     print("In _build_starfile try block", file=sys.stderr)
@@ -190,9 +194,9 @@ class StarFile(OrderedDict):
         :rtype: :py:class:`collections.OrderedDict`
         """
         odict = OrderedDict()
-        loopcount = 0
-
+        loop_count = 0
         token = next(lexer)
+
         while token != u"save_":
             try:
                 if token[0] == u"_":
@@ -205,8 +209,8 @@ class StarFile(OrderedDict):
                             raise SkipSaveFrame()
 
                 elif token == u"loop_":
-                    odict[u"loop_{}".format(loopcount)] = self._build_loop(lexer)
-                    loopcount += 1
+                    odict[u"loop_{}".format(loop_count)] = self._build_loop(lexer)
+                    loop_count += 1
 
                 else:
                     print("Error: Invalid token {}".format(token), file=sys.stderr)
@@ -270,10 +274,12 @@ class StarFile(OrderedDict):
             for saveframe in self.keys():
                 if saveframe == u"data":
                     print(u"{}_{}\n".format(saveframe, self[saveframe]), file=f)
+                elif saveframe.startswith(u"comment"):
+                    print(u"{}".format(self[saveframe]), file=f)
                 else:
                     print(u"{}".format(saveframe), file=f)
                     self.print_saveframe(saveframe, f, format, tw)
-                    print(u"\nsave_\n", file=f)
+                    print(u"\nsave_\n\n", file=f)
 
         elif format is "json":
             print(self._to_json(), file=f)
@@ -307,7 +313,6 @@ class StarFile(OrderedDict):
                         print(u"\n{}stop_".format(tw * u" "), file=f)
                     else:
                         print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
-                        # print(tw * u" " + u"_{}\t {}".format(sftag, self[sf][sftag]), file=f)
 
         elif format is "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
@@ -434,6 +439,8 @@ class StarFile(OrderedDict):
         chains = []
         for saveframe in self:
             if saveframe == u"data":
+                continue
+            elif saveframe.startswith(u"comment"):
                 continue
             else:
                 for ind in self[saveframe].keys():
