@@ -416,19 +416,19 @@ class StarFile(OrderedDict):
         except ValueError:
             return False
 
-    def chem_shifts_by_residue(self, aminoacids=None, atoms=None, nmrstarversion="3"):
+    def chem_shifts_by_residue(self, amino_acids=None, atoms=None, nmrstar_version="3"):
         """Organize chemical shifts by amino acid residue.
 
-        :param list aminoacids: List of aminoacids three-letter codes.
+        :param list amino_acids: List of amino_acids three-letter codes.
         :param list atoms: List of BMRB atom type codes.
-        :param str nmrstarversion: Version of NMR-STAR format to use for look up chemichal shifts loop.
+        :param str nmrstar_version: Version of NMR-STAR format to use for look up chemichal shifts loop.
         :return: List of OrderedDict per each chain
         :rtype: :py:class:`list` of :py:class:`collections.OrderedDict`
         """
         this_directory = os.path.dirname(__file__)
-        if nmrstarversion == "2":
+        if nmrstar_version == "2":
             config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar2.json')
-        elif nmrstarversion == "3":
+        elif nmrstar_version == "3":
             config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
         else:
             config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
@@ -458,10 +458,10 @@ class StarFile(OrderedDict):
                                 chemshifts_dict[residueid][entry[atom_code]] = entry[chemshift_value]
                             chains.append(chemshifts_dict)
 
-        if aminoacids:
+        if amino_acids:
             for chemshifts_dict in chains:
                 for aa in list(chemshifts_dict.values()):
-                    if aa[u"AA3Code"].upper() not in aminoacids:
+                    if aa[u"AA3Code"].upper() not in amino_acids:
                         chemshifts_dict.pop(aa[u"Seq_ID"])
 
         if atoms:

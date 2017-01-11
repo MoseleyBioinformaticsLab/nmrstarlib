@@ -325,6 +325,146 @@ using bracket accessors.
    chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - sequence id,
    `values` - chemical shift data):
 
+      >>> starfile.chem_shifts_by_residue()
+      [OrderedDict([
+          ('1', OrderedDict([('AA3Code', 'MET'),
+                             ('Seq_ID', '1'),
+                             ('H', '8.55'),
+                             ('HA', '4.548'),
+                             ('HB2', '1.994'),
+                             ('HB3', '2.118'),
+                             ('CA', '55.489'),
+                             ('CB', '32.848'),
+                             ('N', '122.221')])),
+          ('2', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '2'),
+                             ('H', '8.225'),
+                             ('HA', '4.420'),
+                             ('HB2', '3.805'),
+                             ('HB3', '3.857'),
+                             ('CA', '58.593'),
+                             ('CB', '64.057'),
+                             ('N', '117.197')])),
+          ('3', OrderedDict([('AA3Code', 'GLU'),
+                             ('Seq_ID', '3'),
+                             ('H', '8.002'),
+                             ('HA', '4.848'),
+                             ('HB2', '1.852'),
+                             ('HB3', '1.963'),
+                             ('HG2', '1.981'),
+                             ('HG3', '2.191'),
+                             ('CA', '55.651'),
+                             ('CB', '32.952'),
+                             ('CG', '37.425'),
+                             ('N', '119.833')])), ...
+      ...
+      ]
+      >>>
+      >>> starfile.chem_shifts_by_residue(amino_acids=["SER"], atoms=["CA", "CB"])
+      [OrderedDict([
+          ('2', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '2'),
+                             ('CA', '58.593'),
+                             ('CB', '64.057')])),
+          ('8', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '8'),
+                             ('CA', '57.456'),
+                             ('CB', '64.863')])),
+          ('9', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '9'),
+                             ('CA', '57.852'),
+                             ('CB', '67.332')])),
+          ('34', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '34'),
+                              ('CA', '59.113'),
+                              ('CB', '66.248')])),
+          ('46', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '46'),
+                              ('CA', '55.939'),
+                              ('CB', '66.829')])),
+          ('95', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '95'),
+                              ('CA', '57.013'),
+                              ('CB', '66.501')])),
+          ('108', OrderedDict([('AA3Code', 'SER'),
+                               ('Seq_ID', '108'),
+                               ('CA', '61.617'),
+                               ('CB', '62.493')]))])
+      ]
+      >>>
+
+
+
+      >>> starfile.chem_shifts_by_residue()
+      [OrderedDict([
+          ('1', OrderedDict([('AA3Code', 'MET'),
+                             ('Seq_ID', '1'),
+                             ('H', '8.55'),
+                             ('HA', '4.548'),
+                             ('HB2', '1.994'),
+                             ('HB3', '2.118'),
+                             ('CA', '55.489'),
+                             ('CB', '32.848'),
+                             ('N', '122.221')])),
+          ('2', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '2'),
+                             ('H', '8.225'),
+                             ('HA', '4.420'),
+                             ('HB2', '3.805'),
+                             ('HB3', '3.857'),
+                             ('CA', '58.593'),
+                             ('CB', '64.057'),
+                             ('N', '117.197')])),
+          ('3', OrderedDict([('AA3Code', 'GLU'),
+                             ('Seq_ID', '3'),
+                             ('H', '8.002'),
+                             ('HA', '4.848'),
+                             ('HB2', '1.852'),
+                             ('HB3', '1.963'),
+                             ('HG2', '1.981'),
+                             ('HG3', '2.191'),
+                             ('CA', '55.651'),
+                             ('CB', '32.952'),
+                             ('CG', '37.425'),
+                             ('N', '119.833')])), ...
+      ...
+      ]
+      >>>
+      >>> starfile.chem_shifts_by_residue(amino_acids=["SER"], atoms=["CA", "CB"])
+      [OrderedDict([
+          ('2', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '2'),
+                             ('CA', '58.593'),
+                             ('CB', '64.057')])),
+          ('8', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '8'),
+                             ('CA', '57.456'),
+                             ('CB', '64.863')])),
+          ('9', OrderedDict([('AA3Code', 'SER'),
+                             ('Seq_ID', '9'),
+                             ('CA', '57.852'),
+                             ('CB', '67.332')])),
+          ('34', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '34'),
+                              ('CA', '59.113'),
+                              ('CB', '66.248')])),
+          ('46', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '46'),
+                              ('CA', '55.939'),
+                              ('CB', '66.829')])),
+          ('95', OrderedDict([('AA3Code', 'SER'),
+                              ('Seq_ID', '95'),
+                              ('CA', '57.013'),
+                              ('CB', '66.501')])),
+          ('108', OrderedDict([('AA3Code', 'SER'),
+                               ('Seq_ID', '108'),
+                               ('CA', '61.617'),
+                               ('CB', '62.493')]))])
+      ]
+      >>>
+
+
+
    >>> starfile.chem_shifts_by_residue()
    [OrderedDict([
        ('1', OrderedDict([('AA3Code', 'MET'),
@@ -360,7 +500,7 @@ using bracket accessors.
    ...
    ]
    >>>
-   >>> starfile.chem_shifts_by_residue(aminoacids=["SER"], atoms=["CA", "CB"])
+   >>> starfile.chem_shifts_by_residue(amino_acids=["SER"], atoms=["CA", "CB"])
    [OrderedDict([
        ('2', OrderedDict([('AA3Code', 'SER'),
                           ('Seq_ID', '2'),
@@ -448,7 +588,7 @@ Chemical Shifts Viewer module.
 >>> csviewer = CSViewer(from_path="18569", filename="18569_chem_shifts_all", csview_format="png")
 >>> csviewer.csview(view=True)
 >>>
->>> csviewer = CSViewer(from_path="18569", aminoacids=["SER", "THR"], atoms=["CA", "CB"],
+>>> csviewer = CSViewer(from_path="18569", amino_acids=["SER", "THR"], atoms=["CA", "CB"],
 ...                     filename="18569_chem_shifts_SER_THR_CA_CB", csview_format="png")
 >>> csviewer.csview(view=True)  # open in a default image viewer or pdf viewer
 >>> csviewer.csview(view=False) # save output file in current working directory
@@ -477,14 +617,14 @@ Command Line Interface functionality:
        nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>]
                                                   [--to_format=<format>]
                                                   [--bmrb_url=<url>]
-                                                  [--nmrstarversion=<version>]
+                                                  [--nmrstar_version=<version>]
                                                   [--verbose]
 
-       nmrstarlib csview <starfile_path> [--aminoacids=<aa>]
+       nmrstarlib csview <starfile_path> [--amino_acids=<aa>]
                                          [--atoms=<at>]
                                          [--csview_outfile=<path>]
                                          [--csview_format=<format>]
-                                         [--nmrstarversion=<version>]
+                                         [--nmrstar_version=<version>]
                                          [--verbose]
 
    Options:
@@ -495,11 +635,11 @@ Command Line Interface functionality:
                                     nmrstar, json [default: nmrstar]
        --to_format=<format>         Output file format, available formats:
                                     nmrstar, json [default: json]
-       --nmrstarversion=<version>   Version of NMR-STAR format to use, available:
+       --nmrstar_version=<version>  Version of NMR-STAR format to use, available:
                                     3, 2 [default: 3]
        --bmrb_url=<url>             URL to BMRB REST interface
                                     [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/]
-       --aminoacids=<aa>            Comma-separated amino acid three-letter codes
+       --amino_acids=<aa>           Comma-separated amino acid three-letter codes
        --atoms=<at>                 Comma-separated BMRB atom codes
        --csview_outfile=<path>      Where to save chemical shifts table
        --csview_format=<format>     Format to which save chamical shift table
@@ -608,7 +748,7 @@ Visualizing chemical shift values
    .. code:: bash
 
       $ python3 -m nmrstarlib csview 18569 \
-                --aminoacids=GLU,THR --atoms=CA,CB,CG,CG2 \
+                --amino_acids=GLU,THR --atoms=CA,CB,CG,CG2 \
                 --csview_outfile=18569_chem_shifts_GLU_THR_CA_CB_CG_CG2 \
                 --csview_format=png
 

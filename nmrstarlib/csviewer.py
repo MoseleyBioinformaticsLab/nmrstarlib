@@ -45,24 +45,24 @@ class CSViewer(object):
     }}
     '''
 
-    def __init__(self, from_path, aminoacids=None, atoms=None, filename=None, csview_format="svg", nmrstarversion="3"):
+    def __init__(self, from_path, amino_acids=None, atoms=None, filename=None, csview_format="svg", nmrstar_version="3"):
         """CSViewer initializer.
 
         :param str from_path: Path to single NMR-STAR file or BMRB id.
-        :param list or tuple aminoacids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
+        :param list or tuple amino_acids: List of atom types, e.g. 'ALA', 'GLY', 'SER', etc. Leave as `None` to include everything.
         :param list or tuple atoms: List of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
         :param str filename: Output filename chemical shifts graph to be saved.
         :param str csview_format: `svg`, `png`, `pdf`. See http://www.graphviz.org/doc/info/output.html for all available formats.
-        :param str nmrstarversion: Version of NMR-STAR format to use for look up chemichal shifts loop.
+        :param str nmrstar_version: Version of NMR-STAR format to use for look up chemichal shifts loop.
         :return: None
         :rtype: :py:obj:`None`
         """
         self.from_path = from_path
-        self.aminoacids = aminoacids
+        self.amino_acids = amino_acids
         self.atoms = atoms
         self.filename = filename
         self.csview_format = csview_format
-        self.nmrstarversion = nmrstarversion
+        self.nmrstar_version = nmrstar_version
 
     def csview(self, view=False):
         """View chemical shift values organized by amino acid residue.
@@ -73,7 +73,7 @@ class CSViewer(object):
         :rtype: :py:obj:`None`
         """
         for starfile in nmrstarlib.read_files(self.from_path):
-            chains = starfile.chem_shifts_by_residue(self.aminoacids, self.atoms, self.nmrstarversion)
+            chains = starfile.chem_shifts_by_residue(self.amino_acids, self.atoms, self.nmrstar_version)
             for idx, chemshifts_dict in enumerate(chains):
                 nodes = []
                 edges = []
@@ -86,17 +86,17 @@ class CSViewer(object):
                     nodes.append(aanode_entry)
                     currnodename = aaname
 
-                    for atomtype in chemshifts_dict[seq_id]:
-                        if atomtype in ["AA3Code", "Seq_ID"]:
+                    for atom_type in chemshifts_dict[seq_id]:
+                        if atom_type in ["AA3Code", "Seq_ID"]:
                             continue
                         else:
-                            atname = "{}_{}".format(aaname, atomtype)
-                            label = '"{{{}|{}}}"'.format(atomtype, chemshifts_dict[seq_id][atomtype])
-                            if atomtype.startswith("H"):
+                            atname = "{}_{}".format(aaname, atom_type)
+                            label = '"{{{}|{}}}"'.format(atom_type, chemshifts_dict[seq_id][atom_type])
+                            if atom_type.startswith("H"):
                                 color = 4
-                            elif atomtype.startswith("C"):
+                            elif atom_type.startswith("C"):
                                 color = 6
-                            elif atomtype.startswith("N"):
+                            elif atom_type.startswith("N"):
                                 color = 10
                             else:
                                 color = 8
