@@ -409,7 +409,7 @@ or in equivalent JSON format using :meth:`~nmrstarlib.nmrstarlib.StarFile.write(
    * Writing into a JSONized NMR-STAR formatted file:
 
    >>> with open("bmr18569_modified.json", "w") as outfile:
-   ...     starfile.write(outfile, fileformat="json")
+   ...     starfile.write(outfile, file_format="json")
    >>>
 
 Converting NMR-STAR files
