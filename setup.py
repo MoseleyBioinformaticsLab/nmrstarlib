@@ -1,5 +1,8 @@
-# setup.py
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
+import os
+import sys
 from setuptools import setup, find_packages, Extension
 
 try:
@@ -8,6 +11,11 @@ try:
 except ImportError:
     from setuptools.command.build_ext import build_ext
     HAVE_CYTHON = False
+
+
+if sys.argv[-1] == 'publish':
+    os.system('python3 setup.py sdist upload')
+    sys.exit()
 
 
 def readme():
