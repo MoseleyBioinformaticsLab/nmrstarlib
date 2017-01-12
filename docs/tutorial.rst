@@ -320,10 +320,12 @@ using bracket accessors.
    '1.994'
    >>>
 
+
    Also the :class:`~nmrstarlib.nmrstarlib.StarFile` class provides a
    :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method that organizes
-   chemical shits into :py:class:`collections.OrderedDict` data structure (`keys` - sequence id,
-   `values` - chemical shift data):
+   chemical shits into :py:class:`list` of :py:class:`collections.OrderedDict` data structures
+   (`keys` - sequence id, `values` - chemical shift data) - one for each protein chain,
+   if multiple chains are present within file:
 
       >>> starfile.chem_shifts_by_residue()
       [OrderedDict([
