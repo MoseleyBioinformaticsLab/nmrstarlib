@@ -104,20 +104,20 @@ class StarFile(OrderedDict):
             raise TypeError("Unknown file format")
         filehandle.close()
 
-    def write(self, filehandle, fileformat):
+    def write(self, filehandle, file_format):
         """Write :class:`~nmrstarlib.nmrstarlib.StarFile` data into file.
 
         :param filehandle: file-like object.
         :type filehandle: :py:class:`io.TextIOWrapper`
-        :param str fileformat: Format to use to write data: `nmrstar` or `json`.
+        :param str file_format: Format to use to write data: `nmrstar` or `json`.
         :return: None
         :rtype: :py:obj:`None`
         """
         try:
-            if fileformat == "json":
+            if file_format == "json":
                 json_str = self._to_json()
                 filehandle.write(json_str)
-            elif fileformat == "nmrstar":
+            elif file_format == "nmrstar":
                 nmrstar_str = self._to_nmrstar()
                 filehandle.write(nmrstar_str)
             else:
@@ -126,18 +126,18 @@ class StarFile(OrderedDict):
             raise IOError('"filehandle" parameter must be writable.')
         filehandle.close()
 
-    def writestr(self, fileformat):
+    def writestr(self, file_format):
         """Write :class:`~nmrstarlib.nmrstarlib.StarFile` data into string.
 
-        :param str fileformat: Format to use to write data: `nmrstar` or `json`.
+        :param str file_format: Format to use to write data: `nmrstar` or `json`.
         :return: String representing the :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
         :rtype: :py:class:`str`
         """
         try:
-            if fileformat == "json":
+            if file_format == "json":
                 json_str = self._to_json()
                 return json_str
-            elif fileformat == "nmrstar":
+            elif file_format == "nmrstar":
                 nmrstar_str = self._to_nmrstar()
                 return nmrstar_str
             else:
@@ -266,16 +266,16 @@ class StarFile(OrderedDict):
         values = [OrderedDict(zip(fields, values[i:i + len(fields)])) for i in range(0, len(values), len(fields))]
         return fields, values
 
-    def print_starfile(self, f=sys.stdout, format="nmrstar", tw=3):
+    def print_starfile(self, f=sys.stdout, file_format="nmrstar", tw=3):
         """Print :class:`~nmrstarlib.nmrstarlib.StarFile` into a file or stdout.
 
         :param io.StringIO f: writable file-like stream.
-        :param str format: Format to use: `nmrstar` or `json`.
+        :param str file_format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
         :rtype: :py:obj:`None`
         """
-        if format is "nmrstar":
+        if file_format is "nmrstar":
             for saveframe in self.keys():
                 if saveframe == u"data":
                     print(u"{}_{}\n".format(saveframe, self[saveframe]), file=f)
@@ -283,25 +283,25 @@ class StarFile(OrderedDict):
                     print(u"{}".format(self[saveframe]), file=f)
                 else:
                     print(u"{}".format(saveframe), file=f)
-                    self.print_saveframe(saveframe, f, format, tw)
+                    self.print_saveframe(saveframe, f, file_format, tw)
                     print(u"\nsave_\n\n", file=f)
 
-        elif format is "json":
+        elif file_format is "json":
             print(self._to_json(), file=f)
 
-    def print_saveframe(self, sf, f=sys.stdout, format="nmrstar", tw=3):
+    def print_saveframe(self, sf, f=sys.stdout, file_format="nmrstar", tw=3):
         """Print saveframe into a file or stdout.
         We need to keep track of how far over everything is tabbed. The "tab width"
         variable tw does this for us.
 
         :param str sf: Saveframe name.
         :param io.StringIO f: writable file-like stream.
-        :param str format: Format to use: `nmrstar` or `json`.
+        :param str file_format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
         :rtype: :py:obj:`None`
         """
-        if format is "nmrstar":
+        if file_format is "nmrstar":
             if sf == u"data":
                 print(u"{}_{}\n".format(sf, self[sf]), file=f)
             else:
@@ -314,26 +314,26 @@ class StarFile(OrderedDict):
                     # handle loops
                     elif sftag[:5] == "loop_":
                         print(u"\n{}loop_".format(tw * u" "), file=f)
-                        self.print_loop(sf, sftag, f, format, tw * 2)
+                        self.print_loop(sf, sftag, f, file_format, tw * 2)
                         print(u"\n{}stop_".format(tw * u" "), file=f)
                     else:
                         print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
 
-        elif format is "json":
+        elif file_format is "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
 
-    def print_loop(self, sf, sftag, f=sys.stdout, format="nmrstar", tw=3):
+    def print_loop(self, sf, sftag, f=sys.stdout, file_format="nmrstar", tw=3):
         """Print loop into a file or stdout.
 
         :param str sf: Saveframe name.
         :param str sftag: Saveframe tag, i.e. field name.
         :param io.StringIO f: writable file-like stream.
-        :param str format: Format to use: `nmrstar` or `json`.
+        :param str file_format: Format to use: `nmrstar` or `json`.
         :param int tw: Tab width.
         :return: None
         :rtype: :py:obj:`None`
         """
-        if format is "nmrstar":
+        if file_format is "nmrstar":
             # First print the fields
             for field in self[sf][sftag][0]:
                 print(u"{}_{}".format(tw * u" ", field), file=f)
@@ -344,7 +344,7 @@ class StarFile(OrderedDict):
             for valuesdict in self[sf][sftag][1]:
                 print(u"{}{}".format(tw * u" ", u" ".join(valuesdict.values())), file=f)
 
-        elif format is "json":
+        elif file_format is "json":
             print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)
 
     def _to_json(self):
@@ -478,7 +478,8 @@ class StarFile(OrderedDict):
 def update_constants(filehandle):
     """Update constants related to NMR-STAR format, e.g. field names.
 
-    :param str filehandle: JSON file that contains information about NMR-STAR format.
+    :param filehandle: JSON file that contains information about NMR-STAR format.
+    :type filehandle: :py:class:`io.TextIOWrapper`
     :return: None
     :rtype: :py:obj:`None`
     """
@@ -489,7 +490,7 @@ def update_constants(filehandle):
 def _generate_filenames(sources):
     """Generate filenames.
 
-    :param list sources: List of strings representing path to file(s).
+    :param tuple sources: Sequence of strings representing path to file(s).
     :return: Path to file(s).
     :rtype: :py:class:`str`
     """
@@ -532,7 +533,7 @@ def _generate_handles(filenames):
 def read_files(*sources):
     """Construct a generator that yields :class:`~nmrstarlib.nmrstarlib.StarFile` instances.
 
-    :param str sources: One or more strings representing path to file(s).
+    :param sources: One or more strings representing path to file(s).
     :return: :class:`~nmrstarlib.nmrstarlib.StarFile` instance(s).
     :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
     """

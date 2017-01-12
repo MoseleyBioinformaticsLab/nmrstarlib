@@ -187,101 +187,101 @@ using bracket accessors.
 
    * Printing a :class:`~nmrstarlib.nmrstarlib.StarFile` and its components (`saveframe` and `loop` data):
 
-   >>> starfile.print_starfile(format="nmrstar")
-   data_18569
-   save_entry_information
-       _Entry.Sf_category	 entry_information
-       _Entry.Sf_framecode	 entry_information
-       _Entry.ID	 18569
-   ...
-   >>>
-   >>> starfile.print_starfile(format="json")
-   {
-    "data": "18569",
-    "save_entry_information": {
-        "Entry.Sf_category": "entry_information",
-        "Entry.Sf_framecode": "entry_information",
-        "Entry.ID": "18569",
-    ...
-   }
-   >>>
-   >>> starfile.print_saveframe("save_entry_information", format="nmrstar")
-   _Entry.Sf_category	 entry_information
-   _Entry.Sf_framecode	 entry_information
-   _Entry.ID	 18569
-   _Entry.Title
-   ;
-   13C, 15N and 1H backbone and sidechain assignments of the
-   ENA-VASP homology 1 (EVH1) domain of the human
-   vasodilator-stimulated phosphoprotein (VASP)
-   ;
-   _Entry.Type	 .
-   _Entry.Version_type	 original
-   _Entry.Submission_date	 2012-07-05
-   _Entry.Accession_date	 2012-07-05
-   _Entry.Last_release_date	 2012-07-18
-   _Entry.Original_release_date	 2012-07-18
-   _Entry.Origination	 author
-   _Entry.NMR_STAR_version	 3.1.1.61
-   _Entry.Original_NMR_STAR_version	 3.1
-   _Entry.Experimental_method	 NMR
-   _Entry.Experimental_method_subtype	 solution
-   _Entry.Details	 'ANSIG v3.3 exported crosspeaks file'
-   _Entry.BMRB_internal_directory_name	 .
-   ...
-   >>>
-   >>> starfile.print_saveframe("save_entry_information", format="json")
-   {
-       "Entry.Sf_category": "entry_information",
-       "Entry.Sf_framecode": "entry_information",
-       "Entry.ID": "18569",
-       "Entry.Title": ";\n13C, 15N and 1H backbone and sidechain assignments of the
-                        ENA-VASP homology 1 (EVH1) domain of the human
-                        vasodilator-stimulated phosphoprotein (VASP)\n;",
-       "Entry.Type": ".",
-       "Entry.Version_type": "original",
-       "Entry.Submission_date": "2012-07-05",
-       "Entry.Accession_date": "2012-07-05",
-       "Entry.Last_release_date": "2012-07-18",
-       "Entry.Original_release_date": "2012-07-18",
-       "Entry.Origination": "author",
-       "Entry.NMR_STAR_version": "3.1.1.61",
-       "Entry.Original_NMR_STAR_version": "3.1",
-       "Entry.Experimental_method": "NMR",
-       "Entry.Experimental_method_subtype": "solution",
-       "Entry.Details": "'ANSIG v3.3 exported crosspeaks file'",
-       "Entry.BMRB_internal_directory_name": ".",
+      >>> starfile.print_starfile(file_format="nmrstar")
+      data_18569
+      save_entry_information
+          _Entry.Sf_category	 entry_information
+          _Entry.Sf_framecode	 entry_information
+          _Entry.ID	 18569
+      ...
+      >>>
+      >>> starfile.print_starfile(file_format="json")
+      {
+       "data": "18569",
+       "save_entry_information": {
+           "Entry.Sf_category": "entry_information",
+           "Entry.Sf_framecode": "entry_information",
+           "Entry.ID": "18569",
        ...
-   }
-   >>>
-   >>> starfile.print_loop("save_entry_information", "loop_1", format="nmrstar")
-   _Data_set.Type
-   _Data_set.Count
-   _Data_set.Entry_ID
-   assigned_chemical_shifts 1 18569
-   spectral_peak_list 1 18569
-   >>>
-   >>> starfile.print_loop("save_entry_information", "loop_1", format="json")
-   [
-       [
-           "Data_set.Type",
-           "Data_set.Count",
-           "Data_set.Entry_ID"
-       ],
-       [
-           {
-               "Data_set.Type": "assigned_chemical_shifts",
-               "Data_set.Count": "1",
-               "Data_set.Entry_ID": "18569"
-           },
-           {
-               "Data_set.Type": "spectral_peak_list",
-               "Data_set.Count": "1",
-               "Data_set.Entry_ID": "18569"
-           }
-       ]
-   ]
-   >>>
+      }
+      >>>
+      >>> starfile.print_saveframe("save_entry_information", file_format="nmrstar")
+      _Entry.Sf_category	 entry_information
+      _Entry.Sf_framecode	 entry_information
+      _Entry.ID	 18569
+      _Entry.Title
+      ;
+      13C, 15N and 1H backbone and sidechain assignments of the
+      ENA-VASP homology 1 (EVH1) domain of the human
+      vasodilator-stimulated phosphoprotein (VASP)
+      ;
+      _Entry.Type	 .
+      _Entry.Version_type	 original
+      _Entry.Submission_date	 2012-07-05
+      _Entry.Accession_date	 2012-07-05
+      _Entry.Last_release_date	 2012-07-18
+      _Entry.Original_release_date	 2012-07-18
+      _Entry.Origination	 author
+      _Entry.NMR_STAR_version	 3.1.1.61
+      _Entry.Original_NMR_STAR_version	 3.1
+      _Entry.Experimental_method	 NMR
+      _Entry.Experimental_method_subtype	 solution
+      _Entry.Details	 'ANSIG v3.3 exported crosspeaks file'
+      _Entry.BMRB_internal_directory_name	 .
+      ...
+      >>>
+      >>> starfile.print_saveframe("save_entry_information", file_format="json")
+      {
+          "Entry.Sf_category": "entry_information",
+          "Entry.Sf_framecode": "entry_information",
+          "Entry.ID": "18569",
+          "Entry.Title": ";\n13C, 15N and 1H backbone and sidechain assignments of the
+                           ENA-VASP homology 1 (EVH1) domain of the human
+                           vasodilator-stimulated phosphoprotein (VASP)\n;",
+          "Entry.Type": ".",
+          "Entry.Version_type": "original",
+          "Entry.Submission_date": "2012-07-05",
+          "Entry.Accession_date": "2012-07-05",
+          "Entry.Last_release_date": "2012-07-18",
+          "Entry.Original_release_date": "2012-07-18",
+          "Entry.Origination": "author",
+          "Entry.NMR_STAR_version": "3.1.1.61",
+          "Entry.Original_NMR_STAR_version": "3.1",
+          "Entry.Experimental_method": "NMR",
+          "Entry.Experimental_method_subtype": "solution",
+          "Entry.Details": "'ANSIG v3.3 exported crosspeaks file'",
+          "Entry.BMRB_internal_directory_name": ".",
+          ...
+      }
+      >>>
+      >>> starfile.print_loop("save_entry_information", "loop_1", file_format="nmrstar")
+      _Data_set.Type
+      _Data_set.Count
+      _Data_set.Entry_ID
+      assigned_chemical_shifts 1 18569
+      spectral_peak_list 1 18569
+      >>>
+      >>> starfile.print_loop("save_entry_information", "loop_1", file_format="json")
+      [
+          [
+              "Data_set.Type",
+              "Data_set.Count",
+              "Data_set.Entry_ID"
+          ],
+          [
+              {
+                  "Data_set.Type": "assigned_chemical_shifts",
+                  "Data_set.Count": "1",
+                  "Data_set.Entry_ID": "18569"
+              },
+              {
+                  "Data_set.Type": "spectral_peak_list",
+                  "Data_set.Count": "1",
+                  "Data_set.Entry_ID": "18569"
+              }
+          ]
+      ]
+      >>>
 
    * Accessing chemical shift data:
 
@@ -401,7 +401,7 @@ or in equivalent JSON format using :meth:`~nmrstarlib.nmrstarlib.StarFile.write(
    * Writing into a NMR-STAR formatted file:
 
    >>> with open("bmr18569_modified.str", "w") as outfile:
-   ...     starfile.write(outfile, fileformat="nmrstar")
+   ...     starfile.write(outfile, file_format="nmrstar")
    >>>
 
    * Writing into a JSONized NMR-STAR formatted file:
