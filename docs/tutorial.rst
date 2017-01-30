@@ -325,7 +325,7 @@ using bracket accessors.
    :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue` method that organizes
    chemical shits into :py:class:`list` of :py:class:`collections.OrderedDict` data structures
    (`keys` - sequence id, `values` - chemical shift data) - one for each protein chain,
-   if multiple chains are present within file:
+   if multiple chains are present within the file:
 
       >>> starfile.chem_shifts_by_residue()
       [OrderedDict([
@@ -494,18 +494,18 @@ Command Line Interface functionality:
        --version                    Show version.
        --verbose                    Print what files are processing.
        --from_format=<format>       Input file format, available formats:
-                                    nmrstar, json [default: nmrstar]
+                                    nmrstar, json [default: nmrstar].
        --to_format=<format>         Output file format, available formats:
-                                    nmrstar, json [default: json]
+                                    nmrstar, json [default: json].
        --nmrstar_version=<version>  Version of NMR-STAR format to use, available:
-                                    3, 2 [default: 3]
+                                    3, 2 [default: 3].
        --bmrb_url=<url>             URL to BMRB REST interface
-                                    [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/]
-       --amino_acids=<aa>           Comma-separated amino acid three-letter codes
-       --atoms=<at>                 Comma-separated BMRB atom codes
-       --csview_outfile=<path>      Where to save chemical shifts table
+                                    [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
+       --amino_acids=<aa>           Comma-separated amino acid three-letter codes.
+       --atoms=<at>                 Comma-separated BMRB atom codes.
+       --csview_outfile=<path>      Where to save chemical shifts table.
        --csview_format=<format>     Format to which save chamical shift table
-                                    [default: svg]
+                                    [default: svg].
 
 Converting NMR-STAR files in bulk
 ---------------------------------
