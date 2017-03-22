@@ -18,6 +18,15 @@ The `nmrstarlib` package can be used in several ways:
    * As a command-line tool to convert between NMR-STAR format and its equivalent JSONized
      NMR-STAR format and also to visualize chemical shift data.
 
+Citation
+~~~~~~~~
+When using `nmrstarlib` in published work, please cite the following paper:
+
+   * Smelter, Andrey, Morgan Astra, and Hunter NB Moseley. "A fast and efficient python
+     library for interfacing with the Biological Magnetic Resonance Data Bank."
+     *BMC Bioinformatics* 18.1 (2017): 175. doi: `10.1186/s12859-017-1580-5`_.
+
+
 Links
 ~~~~~
 
@@ -135,3 +144,5 @@ This package is distributed under the MIT_ `license`.
 .. _PyPI: https://pypi.python.org/pypi/nmrstarlib
 
 .. _MIT: http://opensource.org/licenses/MIT
+
+.. _10.1186/s12859-017-1580-5: http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1580-5
