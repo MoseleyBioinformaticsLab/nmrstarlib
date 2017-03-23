@@ -3,6 +3,7 @@
 
 import os
 import sys
+import re
 from setuptools import setup, find_packages, Extension
 
 try:
@@ -22,12 +23,24 @@ def readme():
     with open('README.rst') as readme_file:
         return readme_file.read()
 
+
+def find_version():
+    with open('nmrstarlib/__init__.py', 'r') as fd:
+        version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                            fd.read(), re.MULTILINE).group(1)
+    if not version:
+        raise RuntimeError('Cannot find version information')
+    return version
+
+
 REQUIRES = [
     'docopt >= 0.6.2',
     'graphviz >= 0.5.2'
 ]
 
+
 EXTENSIONS = []
+
 
 if HAVE_CYTHON:
     EXTENSIONS.append(Extension('nmrstarlib.cbmrblex',
@@ -38,7 +51,7 @@ else:
 
 setup(
     name='nmrstarlib',
-    version='1.1.0',
+    version=find_version(),
     author='Andrey Smelter',
     author_email='andrey.smelter@gmail.com',
     description='Python library for parsing data from NMR-STAR format files',

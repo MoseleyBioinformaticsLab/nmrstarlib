@@ -29,6 +29,7 @@ import docopt
 from . import nmrstarlib
 from .converter import Converter
 from .csviewer import CSViewer
+from nmrstarlib import __version__
 
 
 def main(cmdargs):
@@ -51,5 +52,5 @@ def main(cmdargs):
         csviewer.csview(view=True)
 
 
-args = docopt.docopt(__doc__, version="1.1.0")
+args = docopt.docopt(__doc__, version=__version__)
 main(args)

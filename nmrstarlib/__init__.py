@@ -27,10 +27,12 @@ This package includes the following modules:
     chemical shift values using the Graphviz (http://www.graphviz.org/) DOT Languge description
     and provides code example for utilizing the library.
 """
-from __future__ import print_function
 
 import os
 from . import nmrstarlib
+
+__title__ = "nmrstarlib"
+__version__ = "1.1.0"
 
 this_directory = os.path.dirname(__file__)
 
