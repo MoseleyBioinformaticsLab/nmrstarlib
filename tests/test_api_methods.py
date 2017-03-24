@@ -3,7 +3,7 @@ from collections import OrderedDict
 from nmrstarlib import nmrstarlib
 
 
-def test_chem_shift_by_residue_all():
+def test_chem_shifts_by_residue_all():
     starfile_generator = nmrstarlib.read_files("tests/example_data/NMRSTAR3/bmr18569.str",
                                                "tests/example_data/NMRSTAR2/bmr18569.str")
     starfile1 = next(starfile_generator)
@@ -20,7 +20,7 @@ def test_chem_shift_by_residue_all():
     assert repr(test_chem_shifts2) == repr(model_chem_shifts2)
 
 
-def test_chem_shift_by_residue_specific_amino_acid():
+def test_chem_shifts_by_residue_specific_amino_acid():
     starfile_generator = nmrstarlib.read_files("tests/example_data/NMRSTAR3/bmr18569.str",
                                                "tests/example_data/NMRSTAR2/bmr18569.str")
     starfile1 = next(starfile_generator)
@@ -37,7 +37,7 @@ def test_chem_shift_by_residue_specific_amino_acid():
     assert repr(test_chem_shifts2) == repr(model_chem_shifts2)
 
 
-def test_chem_shift_by_residue_specific_amino_acid_specific_atoms():
+def test_chem_shifts_by_residue_specific_amino_acid_specific_atoms():
     starfile_generator = nmrstarlib.read_files("tests/example_data/NMRSTAR3/bmr18569.str",
                                                "tests/example_data/NMRSTAR2/bmr18569.str")
     starfile1 = next(starfile_generator)
