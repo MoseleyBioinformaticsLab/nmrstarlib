@@ -28,20 +28,4 @@ This package includes the following modules:
     and provides code example for utilizing the library.
 """
 
-import os
-from . import nmrstarlib
-
-__title__ = "nmrstarlib"
 __version__ = "1.1.0"
-
-this_directory = os.path.dirname(__file__)
-
-if nmrstarlib.NMRSTAR_VERSION == "3":
-    config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
-elif nmrstarlib.NMRSTAR_VERSION == "2":
-    config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar2.json')
-else:
-    config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
-
-with open(config_filepath, "r") as infile:
-    nmrstarlib.update_constants(infile)

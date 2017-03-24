@@ -29,7 +29,7 @@ import docopt
 from . import nmrstarlib
 from .converter import Converter
 from .csviewer import CSViewer
-from nmrstarlib import __version__
+from . import __version__
 
 
 def main(cmdargs):
@@ -40,7 +40,7 @@ def main(cmdargs):
         nmrstarlib.NMRSTAR_VERSION = cmdargs["--nmrstar_version"]
 
         nmrstarconverter = Converter(from_path=cmdargs["<from_path>"], to_path=cmdargs["<to_path>"],
-                                     from_format=cmdargs['--from_format'], to_format=cmdargs["--to_format"])
+                                     from_format=cmdargs["--from_format"], to_format=cmdargs["--to_format"])
         nmrstarconverter.convert()
 
     elif cmdargs["csview"]:

@@ -58,10 +58,28 @@ except ImportError:
     from .bmrblex import bmrblex
 
 
+def _update_constants():
+    """Update constants related to NMR-STAR format, e.g. field names.
+
+    :return: NMR-STAR constants dict.
+    :rtype: :py:class:`dict`
+    """
+    nmrstar_constants = {}
+    this_directory = os.path.dirname(__file__)
+    config_filepath_nmrstar2 = os.path.join(this_directory, "conf/constants_nmrstar2.json")
+    config_filepath_nmrstar3 = os.path.join(this_directory, "conf/constants_nmrstar3.json")
+
+    with open(config_filepath_nmrstar2, "r") as nmrstar2config, open(config_filepath_nmrstar3, "r") as nmrstar3config:
+        nmrstar_constants["2"] = json.load(nmrstar2config)
+        nmrstar_constants["3"] = json.load(nmrstar3config)
+
+    return nmrstar_constants
+
+
 BMRB_REST = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
 VERBOSE = False
 NMRSTAR_VERSION = "3"
-NMRSTAR_CONSTANTS = {}
+NMRSTAR_CONSTANTS = _update_constants()
 
 
 class StarFile(OrderedDict):
@@ -425,21 +443,11 @@ class StarFile(OrderedDict):
         :return: List of OrderedDict per each chain
         :rtype: :py:class:`list` of :py:class:`collections.OrderedDict`
         """
-        this_directory = os.path.dirname(__file__)
-        if nmrstar_version == "2":
-            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar2.json')
-        elif nmrstar_version == "3":
-            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
-        else:
-            config_filepath = os.path.join(this_directory, 'conf/constants_nmrstar3.json')
-        with open(config_filepath, "r") as infile:
-            update_constants(infile)
-
-        chemshifts_loop = NMRSTAR_CONSTANTS["chemshifts_loop"]
-        aminoacid_seq_id = NMRSTAR_CONSTANTS["aminoacid_seq_id"]
-        aminoacid_code = NMRSTAR_CONSTANTS["aminoacid_code"]
-        atom_code = NMRSTAR_CONSTANTS["atom_code"]
-        chemshift_value = NMRSTAR_CONSTANTS["chemshift_value"]
+        chemshifts_loop = NMRSTAR_CONSTANTS[nmrstar_version]["chemshifts_loop"]
+        aminoacid_seq_id = NMRSTAR_CONSTANTS[nmrstar_version]["aminoacid_seq_id"]
+        aminoacid_code = NMRSTAR_CONSTANTS[nmrstar_version]["aminoacid_code"]
+        atom_code = NMRSTAR_CONSTANTS[nmrstar_version]["atom_code"]
+        chemshift_value = NMRSTAR_CONSTANTS[nmrstar_version]["chemshift_value"]
 
         chains = []
         for saveframe in self:
@@ -473,18 +481,6 @@ class StarFile(OrderedDict):
                         else:
                             resonances_dict.pop(resonance)
         return chains
-
-
-def update_constants(filehandle):
-    """Update constants related to NMR-STAR format, e.g. field names.
-
-    :param filehandle: JSON file that contains information about NMR-STAR format.
-    :type filehandle: :py:class:`io.TextIOWrapper`
-    :return: None
-    :rtype: :py:obj:`None`
-    """
-    newconstants = json.loads(filehandle.read())
-    NMRSTAR_CONSTANTS.update(newconstants)
 
 
 def _generate_filenames(sources):
