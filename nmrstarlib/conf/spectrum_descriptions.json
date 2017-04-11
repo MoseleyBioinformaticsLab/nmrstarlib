@@ -1,0 +1,226 @@
+{
+    "HSQC": {
+        "Labels": ["H", "N"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N"]}
+        ]
+    },
+
+    "HNCO": {
+        "Labels": ["H", "N", "CO-1"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CO-1"]}
+        ]
+    },
+
+    "HNcaCO": {
+        "Labels": ["H", "N", "CO"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CO"]},
+            {"fraction": 1,    "dimensions": ["H", "N", "CO-1"]}
+        ]
+    },
+
+    "HNCA": {
+        "Labels": ["H", "N", "CA"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CA"]},
+            {"fraction": 1,    "dimensions": ["H", "N", "CA-1"]}
+        ]
+    },
+
+    "HNcoCA": {
+        "Labels": ["H", "N", "CA"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CA-1"]}
+        ]
+    },
+
+    "HNcoCACB": {
+        "Labels": ["H", "N", "CA/CB-1"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CA-1"]},
+            {"fraction": 0.95, "dimensions": ["H", "N", "CB-1"]}
+        ]
+    },
+
+    "CBCAcoNH": {
+        "Labels": ["CA/CB", "H+1", "N+1"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["CA", "H+1", "N+1"]},
+            {"fraction": 0.95, "dimensions": ["CB", "H+1", "N+1"]}
+        ]
+    },
+
+    "HNCACB": {
+        "Labels": ["H", "N", "CA/CB"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["H", "N", "CA"]},
+            {"fraction": 0.95, "dimensions": ["H", "N", "CB"]},
+            {"fraction": 1,    "dimensions": ["H", "N", "CA-1"]},
+            {"fraction": 0.95, "dimensions": ["H", "N", "CB-1"]}
+        ]
+    },
+
+    "CBCANH": {
+        "Labels": ["CA/CB", "H", "N"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1,    "dimensions": ["CA", "H", "N"]},
+            {"fraction": 0.95, "dimensions": ["CB", "H", "N"]},
+            {"fraction": 1,    "dimensions": ["CA", "H+1", "N+1"]},
+            {"fraction": 0.95, "dimensions": ["CB", "H+1", "N+1"]}
+        ]
+    },
+
+    "CCcoNH": {
+        "Labels": ["CX-1", "N", "H"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["CA-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["CB-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["CG-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["CD-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["CE-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["CZ-1", "N", "H"]}
+        ],
+        "ResonanceLimit": {
+            "GLY": ["H", "N", "CA"],
+            "ALA": ["H", "N", "CA", "CB"],
+            "VAL": ["H", "N", "CA", "CB", "CG1", "CG2"],
+            "LEU": ["H", "N", "CA", "CB", "CG", "CD1", "CD2"],
+            "MET": ["H", "N", "CA", "CB", "CG", "CE"],
+            "ILE": ["H", "N", "CA", "CB", "CG1", "CG2", "CD1"],
+            "SER": ["H", "N", "CA", "CB"],
+            "THR": ["H", "N", "CA", "CB", "CG2"],
+            "CYS": ["H", "N", "CA", "CB"],
+            "ASN": ["H", "N", "CA", "CB", "CG"],
+            "GLN": ["H", "N", "CA", "CB", "CG", "CD"],
+            "LYS": ["H", "N", "CA", "CB", "CG", "CD", "CE"],
+            "ARG": ["H", "N", "CA", "CB", "CG", "CD", "CZ"],
+            "HIS": ["H", "N", "CA", "CB"],
+            "ASP": ["H", "N", "CA", "CB", "CG"],
+            "GLU": ["H", "N", "CA", "CB", "CG", "CD"],
+            "PHE": ["H", "N", "CA", "CB"],
+            "TYR": ["H", "N", "CA", "CB"],
+            "TRP": ["H", "N", "CA", "CB"]
+        }
+    },
+
+    "HccoNH": {
+        "Labels": ["HX-1", "N", "H"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["HA-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HB-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HG-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HD-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HE-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HH-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HZ-1", "N", "H"]}
+        ],
+        "ResonanceLimit": {
+            "GLY": ["H", "N", "HA2", "HA3"],
+            "ALA": ["H", "N", "HA", "HB"],
+            "VAL": ["H", "N", "HA", "HB", "HG1", "HG2"],
+            "LEU": ["H", "N", "HA", "HB2", "HB3", "HD1", "HD2"],
+            "MET": ["H", "N", "HA", "HB2", "HB3", "HG2", "HG3", "HE"],
+            "ILE": ["H", "N", "HA", "HB", "HG12", "HG13", "HG2", "HD1"],
+            "SER": ["H", "N", "HA", "HB2", "HB3"],
+            "THR": ["H", "N", "HA", "HB", "HG2"],
+            "CYS": ["H", "N", "HA", "HB2", "HB3"],
+            "ASN": ["H", "N", "HA", "HB2", "HB3"],
+            "GLN": ["H", "N", "HA", "HB2", "HB3", "HG2", "HG3"],
+            "LYS": ["H", "N", "HA", "HB2", "HB3", "HG2", "HG3", "HD2", "HD3", "HE2", "HE3"],
+            "ARG": ["H", "N", "HA", "HB2", "HB3", "HG2", "HG3", "HD2", "HD3"],
+            "HIS": ["H", "N", "HA", "HB2", "HB3"],
+            "ASP": ["H", "N", "HA", "HB2", "HB3"],
+            "GLU": ["H", "N", "HA", "HB2", "HB3", "HG2", "HG3"],
+            "PHE": ["H", "N", "HA", "HB2", "HB3"],
+            "TYR": ["H", "N", "HA", "HB2", "HB3"],
+            "TRP": ["H", "N", "HA", "HB2", "HB3"]
+        }
+    },
+
+    "HBHAcoNH": {
+        "Labels": ["HA/HB-1", "N", "H"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["HA-1", "N", "H"]},
+            {"fraction": 1, "dimensions": ["HB-1", "N", "H"]}
+        ]
+    },
+
+    "NCA": {
+        "Labels": ["N", "CA"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["N", "CA"]}
+        ]
+    },
+
+    "NCO": {
+        "Labels": ["N", "CO-1"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["N", "CO-1"]}
+        ]
+    },
+
+    "NCACX": {
+        "Labels": ["N", "CA", "CX"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["N", "CA", "CO"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CA"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CB"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CG"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CD"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CE"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CZ"]}
+        ]
+    },
+
+    "NCOCX": {
+        "Labels": ["N", "CO-1", "CX-1"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CA-1"]},
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CB-1"]},
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CG-1"]},
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CD-1"]},
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CE-1"]},
+            {"fraction": 1, "dimensions": ["N", "CO-1", "CZ-1"]}
+        ]
+    },
+
+    "CANCO": {
+        "Labels": ["CA", "N", "CO-1"],
+        "MinNumberPeaksPerSpinSystem": 1,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1"]}
+        ]
+    },
+
+    "CANCOCX": {
+        "Labels": ["CA", "N", "CO-1", "CX-1"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CO-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CA-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CB-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CG-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CD-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CE-1"]},
+            {"fraction": 1, "dimensions": ["CA", "N", "CO-1", "CZ-1"]}
+        ]
+    }
+}
