@@ -145,7 +145,6 @@ The :mod:`nmrstarlib` package can be used in several ways:
           as a library and as a command-line tool.
 
 
-
 .. _pip: https://pip.pypa.io/
 .. _virtualenv: https://virtualenv.pypa.io/
 .. _docopt: http://docopt.readthedocs.io/
