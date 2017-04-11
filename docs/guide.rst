@@ -9,18 +9,24 @@ manipulating data stored in NMR-STAR format files used by Biological Magnetic
 Resonance Data Bank (BMRB_) for archival of Nuclear Magnetic Resonance (NMR)
 experimental data.
 
-Also the :mod:`nmrstarlib` package provides facilities to convert NMR-STAR formatted files
+The :mod:`nmrstarlib` package provides facilities to convert NMR-STAR formatted files
 into their equivalent JSONized (JavaScript Object Notation, an open-standard format that
 uses human-readable text to transmit data objects consisting of attribute-value pairs)
 representation and visa versa.
 
-In addition, the nmrstarlib package provides facilities to visualize assigned chemical shift data.
+The :mod:`nmrstarlib` package also provides facilities to create simulated peak lists for
+different types of standard solution and solid-state NMR experiments from chemical
+shifts and assignment information deposited in NMR-STAR files.
+
+In addition, the :mod:`nmrstarlib` package provides facilities to visualize assigned
+chemical shift data.
 
 Installation
 ~~~~~~~~~~~~
 
-The :mod:`nmrstarlib` package runs under Python 2.7 and Python 3.4+. Starting with Python 3.4 pip_ is included by default.
-To install system-wide with pip_ run the following:
+The :mod:`nmrstarlib` package runs under Python 2.7 and Python 3.4+.
+Starting with Python 3.4, pip_ is included by default. To install
+system-wide with pip_ run the following:
 
 Install on Linux, Mac OS X
 --------------------------
@@ -29,30 +35,12 @@ Install on Linux, Mac OS X
 
    python3 -m pip install nmrstarlib
 
-Also make sure that dependencies are installed on the system:
-
-.. code:: bash
-
-   python3 -m pip install docopt
-   python3 -m pip install graphviz
-
-graphviz_ Python library requires a working installation of Graphviz (`download page`_).
-
 Install on Windows
 ------------------
 
 .. code:: bash
 
    py -3 -m pip install nmrstarlib
-
-Also make sure that dependencies are installed on the system:
-
-.. code:: bash
-
-   py -3 -m pip install docopt
-   py -3 -m pip install graphviz
-
-graphviz_ Python library requires a working installation of Graphviz (`download page`_).
 
 Install inside virtualenv
 -------------------------
@@ -98,7 +86,9 @@ or install it into your system site-packages easily:
 Dependencies
 ~~~~~~~~~~~~
 
-:mod:`nmrstarlib` depends on several Python libraries:
+The :mod:`nmrstarlib` package depends on several Python libraries, it will install all
+dependencies automatically, but if you wish to install them manually run the
+following commands:
 
    * docopt_ for creating :mod:`nmrstarlib` command-line interface.
       * To install docopt_ run the following:
@@ -109,21 +99,29 @@ Dependencies
            py -3 -m pip install docopt    # On Windows
 
    * graphviz_ for visualizing assigned chemical shift values.
-      * To install graphviz_ Python library run the following:
+      * To install the graphviz_ Python library run the following:
 
         .. code:: bash
 
            python3 -m pip install graphviz  # On Linux, Mac OS X
            py -3 -m pip install graphviz    # On Windows
 
-      * The only dependency of graphviz_ Python library is a working installation of Graphviz
-        (`download page`_).
+      * The only dependency of the graphviz_ Python library is a working
+        installation of Graphviz (`Graphviz download page`_).
+
+   * numpy_ for generating noise values from random normal distribution during peak list simulation.
+      * To install the numpy_ Python library run the following:
+
+        .. code:: bash
+
+           python3 -m pip install numpy  # On Linux, Mac OS X
+           py -3 -m pip install numpy    # On Windows
 
 
 Basic usage
 ~~~~~~~~~~~
 
-:mod:`nmrstarlib` can be used in several ways:
+The :mod:`nmrstarlib` package can be used in several ways:
 
    * As a library for accessing and manipulating data stored in NMR-STAR format files.
 
@@ -139,10 +137,12 @@ Basic usage
    * As a command-line tool:
 
       * Convert from NMR-STAR file format into its equivalent JSON file format and vice versa.
+      * Create standard solution and solid-state NMR simulated peak lists from chemical shift values and
+        assignment information.
       * Visualize (organize) assigned chemical shift values.
 
-.. note:: Read :doc:`tutorial` to learn more and see code examples on using :mod:`nmrstarlib` as a library
-          and as a command-line tool.
+.. note:: Read :doc:`tutorial` to learn more and see code examples on using the :mod:`nmrstarlib`
+          as a library and as a command-line tool.
 
 
 
@@ -150,5 +150,6 @@ Basic usage
 .. _virtualenv: https://virtualenv.pypa.io/
 .. _docopt: http://docopt.readthedocs.io/
 .. _graphviz: http://graphviz.readthedocs.io/
+.. _numpy: http://www.numpy.org/
 .. _BMRB: http://www.bmrb.wisc.edu
-.. _download page: http://www.graphviz.org/Download.php
+.. _Graphviz download page: http://www.graphviz.org/Download.php
