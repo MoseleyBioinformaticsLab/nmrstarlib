@@ -446,6 +446,7 @@ One-to-one file conversions
                                                from_format="json", to_format="nmrstar"))
       converter.convert()
 
+
 Many-to-many files conversions
 ******************************
 
@@ -695,6 +696,7 @@ examples.
       ASP98H-ASP98N-GLU97CB	7.872260831124177	120.66960671379097	28.533
       ALA99H-ALA99N-ASP98CA	7.1803123000354026	122.76636174425305	57.799
       ALA99H-ALA99N-ASP98CB	7.187801610413494	122.83147347445296	42.138
+
 
 Spectrum description configuration file
 ---------------------------------------
@@ -990,6 +992,7 @@ One-to-one file conversions
                 --from_format=nmrstar --to_format=json
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available conversions.
+
 
 Many-to-many files conversions
 ******************************
