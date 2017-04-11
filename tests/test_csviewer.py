@@ -1,10 +1,13 @@
 import shutil
+import os
 from nmrstarlib.csviewer import CSViewer
 
 
 def teardown_module(module):
-    shutil.rmtree("tests/example_data/NMRSTAR3/tmp")
-    shutil.rmtree("tests/example_data/NMRSTAR2/tmp")
+    if os.path.exists("tests/example_data/NMRSTAR3/tmp"):
+        shutil.rmtree("tests/example_data/NMRSTAR3/tmp")
+    if os.path.exists("tests/example_data/NMRSTAR2/tmp"):
+        shutil.rmtree("tests/example_data/NMRSTAR2/tmp")
 
 
 def test_csviewer_all():
