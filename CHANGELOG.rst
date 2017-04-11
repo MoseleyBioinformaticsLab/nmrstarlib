@@ -3,8 +3,25 @@
 Release History
 ===============
 
+2.0.0 (2017-04-11)
+~~~~~~~~~~~~~~~~~~
+**New features**
+
+- Added ability to create simulated peak lists from assigned chemical shifts values.
+
+**Improvements**
+
+- Added new `User Guide` and `Tutorial` documentation.
+
+
 1.1.0 (2017-01-11)
 ~~~~~~~~~~~~~~~~~~
+**New features**
+
+- Added support for Python 2.7.
+- Added support for ``ujson`` library.
+- Added ability to preserve comments.
+
 **Improvements**
 
 - New faster ``bmrblex.py`` lexical analyzer module based on Python generators.
@@ -14,11 +31,6 @@ Release History
 - Improved printing layout for original NMR-STAR format when printing from ``StarFile`` object.
 - Added automated tests for ``pytest`` framework.
 
-**New features**
-
-- Added support for Python 2.7.
-- Added support for ``ujson`` library.
-- Added ability to preserve comments.
 
 1.0.4 (2016-10-06)
 ~~~~~~~~~~~~~~~~~~
