@@ -54,4 +54,3 @@ The nmrstarlib API Reference
    :members:
    :special-members:
    :private-members:
-
