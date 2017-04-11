@@ -114,26 +114,13 @@ from . import nmrstarlib
 class Converter(object):
     """Converter class to convert BMRB NMR-STAR files from NMR-STAR to JSON or from JSON to NMR-STAR format."""
 
-    nmrstar_extension = {"json":    ".json",
-                         "nmrstar": ".str"}
-
-    def __init__(self, from_path, to_path, from_format="nmrstar", to_format="json"):
+    def __init__(self, file_generator):
         """Converter initializer.
 
-        :param str from_path: Path to input file(s).
-        :param str to_path: Path to output file(s).
-        :param str from_format: Input format: `nmrstar` or `json`.
-        :param str to_format: Output format: `nmrstar` or `json`.
-        :return: None
-        :rtype: :py:obj:`None`
+        :param file_generator:
+        :type file_generator: :class:`nmrstarlib.converter.Translator`
         """
-        self.from_path = os.path.normpath(from_path)
-        self.to_path = os.path.normpath(to_path)
-        self.from_format = from_format
-        self.to_format = to_format
-
-        self.from_path_compression = nmrstarlib.GenericFilePath.is_compressed(from_path)
-        self.to_path_compression = nmrstarlib.GenericFilePath.is_compressed(to_path)
+        self.file_generator = file_generator
 
     def convert(self):
         """Convert file(s) from NMR-STAR format to JSON format or from JSON format to NMR-STAR format.
@@ -141,24 +128,24 @@ class Converter(object):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if not os.path.exists(os.path.dirname(self.to_path)):
-            dirname = os.path.dirname(self.to_path)
+        if not os.path.exists(os.path.dirname(self.file_generator.to_path)):
+            dirname = os.path.dirname(self.file_generator.to_path)
             if dirname:
                 os.makedirs(dirname)
 
-        if os.path.isdir(self.from_path):
+        if os.path.isdir(self.file_generator.from_path):
             self._many_to_many()
-        elif os.path.isfile(self.from_path) or nmrstarlib.GenericFilePath.is_url(self.from_path):
-            if self.from_path_compression in ("zip", "tar", "tar.gz", "tar.bz2"):
+        elif os.path.isfile(self.file_generator.from_path) or nmrstarlib.GenericFilePath.is_url(self.file_generator.from_path):
+            if self.file_generator.from_path_compression in ("zip", "tar", "tar.gz", "tar.bz2"):
                 self._many_to_many()
-            elif self.from_path_compression in ("gz", "bz2"):
+            elif self.file_generator.from_path_compression in ("gz", "bz2"):
                 self._one_to_one()
-            elif not self.from_path_compression:
+            elif not self.file_generator.from_path_compression:
                 self._one_to_one()
-        elif self.from_path.isdigit():
+        elif self.file_generator.from_path.isdigit():
             self._one_to_one()
         else:
-            raise TypeError('Unknown input file format: "{}"'.format(self.from_path))
+            raise TypeError('Unknown input file format: "{}"'.format(self.file_generator.from_path))
 
     def _many_to_many(self):
         """Perform many-to-many files conversion.
@@ -166,17 +153,17 @@ class Converter(object):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if not self.to_path_compression:
-            self._to_dir()
-        elif self.to_path_compression == "zip":
-            self._to_zipfile()
-        elif self.to_path_compression in ("tar", "tar.gz", "tar.bz2"):
-            self._to_tarfile()
-        elif self.to_path_compression in ("gz", "bz2"):
-            raise TypeError('Many-to-one conversion, cannot convert "{}" into "{}"'.format(self.from_path,
-                                                                                           self.to_path))
+        if not self.file_generator.to_path_compression:
+            self._to_dir(self.file_generator)
+        elif self.file_generator.to_path_compression == "zip":
+            self._to_zipfile(self.file_generator)
+        elif self.file_generator.to_path_compression in ("tar", "tar.gz", "tar.bz2"):
+            self._to_tarfile(self.file_generator)
+        elif self.file_generator.to_path_compression in ("gz", "bz2"):
+            raise TypeError('Many-to-one conversion, cannot convert "{}" into "{}"'.format(self.file_generator.from_path,
+                                                                                           self.file_generator.to_path))
         else:
-            raise TypeError('Unknown output file format: "{}"'.format(self.to_path))
+            raise TypeError('Unknown output file format: "{}"'.format(self.file_generator.to_path))
 
     def _one_to_one(self):
         """Perform one-to-one file conversion.
@@ -184,100 +171,102 @@ class Converter(object):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if not self.to_path_compression:
-            self._to_textfile()
-        elif self.to_path_compression == "gz":
-            self._to_gzipfile()
-        elif self.to_path_compression == "bz2":
-            self._to_bz2file()
-        elif self.to_path_compression in ("tar", "tar.gz", "tar.bz2", "zip"):
-            raise TypeError('One-to-many conversion, cannot convert "{}" into "{}"'.format(self.from_path,
-                                                                                           self.to_path))
+        if not self.file_generator.to_path_compression:
+            self._to_textfile(self.file_generator)
+        elif self.file_generator.to_path_compression == "gz":
+            self._to_gzipfile(self.file_generator)
+        elif self.file_generator.to_path_compression == "bz2":
+            self._to_bz2file(self.file_generator)
+        elif self.file_generator.to_path_compression in ("tar", "tar.gz", "tar.bz2", "zip"):
+            raise TypeError('One-to-many conversion, cannot convert "{}" into "{}"'.format(self.file_generator.from_path,
+                                                                                           self.file_generator.to_path))
         else:
-            raise TypeError('Unknown format: "{}"'.format(self.to_path))
+            raise TypeError('Unknown format: "{}"'.format(self.file_generator.to_path))
 
-    def _to_dir(self):
+    def _to_dir(self, file_generator):
         """Convert files to directory.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        for starfile in nmrstarlib.read_files(self.from_path):
-            outpath = self._outputpath(starfile.source)
+        for f in file_generator:
+            outpath = self._output_path(f.source, file_generator.to_format)
 
             if not os.path.exists(os.path.dirname(outpath)):
                 os.makedirs(os.path.dirname(outpath))
 
             with open(outpath, mode="w") as outfile:
-                starfile.write(outfile, self.to_format)
+                f.write(outfile, file_generator.to_format)
 
-    def _to_zipfile(self):
+    def _to_zipfile(self, file_generator):
         """Convert files to zip archive.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        with zipfile.ZipFile(self.to_path, mode="w", compression=zipfile.ZIP_DEFLATED) as outfile:
-            for starfile in nmrstarlib.read_files(self.from_path):
-                outpath = self._outputpath(starfile.source, archive=True)
-                outfile.writestr(outpath, starfile.writestr(self.to_format))
+        with zipfile.ZipFile(file_generator.to_path, mode="w", compression=zipfile.ZIP_DEFLATED) as outfile:
+            for f in file_generator:
+                outpath = self._output_path(f.source, file_generator.to_format, archive=True)
+                outfile.writestr(outpath, f.writestr(file_generator.to_format))
 
-    def _to_tarfile(self):
+    def _to_tarfile(self, file_generator):
         """Convert files to tar archive.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        if self.to_path_compression == "tar":
+        if file_generator.to_path_compression == "tar":
             tar_mode = "w"
-        elif self.to_path_compression == "tar.gz":
+        elif file_generator.to_path_compression == "tar.gz":
             tar_mode = "w:gz"
-        elif self.to_path_compression == 'tar.bz2':
+        elif file_generator.to_path_compression == 'tar.bz2':
             tar_mode = "w:bz2"
         else:
             tar_mode = "w"
 
-        with tarfile.open(self.to_path, mode=tar_mode) as outfile:
-            for starfile in nmrstarlib.read_files(self.from_path):
-                outpath = self._outputpath(starfile.source, archive=True)
+        with tarfile.open(file_generator.to_path, mode=tar_mode) as outfile:
+            for f in file_generator:
+                outpath = self._output_path(f.source, file_generator.to_format, archive=True)
                 info = tarfile.TarInfo(outpath)
-                data = starfile.writestr(self.to_format).encode()
+                data = f.writestr(file_generator.to_format).encode()
                 info.size = len(data)
                 outfile.addfile(tarinfo=info, fileobj=io.BytesIO(data))
 
-    def _to_bz2file(self):
+    def _to_bz2file(self, file_generator):
         """Convert file to bz2-compressed file.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        with bz2.BZ2File(self.to_path, mode="wb") as outfile:
-            for starfile in nmrstarlib.read_files(self.from_path):
-                outfile.write(starfile.writestr(self.to_format).encode())
+        with bz2.BZ2File(file_generator.to_path, mode="wb") as outfile:
+            for f in file_generator:
+                outfile.write(f.writestr(file_generator.to_format).encode())
 
-    def _to_gzipfile(self):
+    def _to_gzipfile(self, file_generator):
         """Convert file to gzip-compressed file.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        with gzip.GzipFile(self.to_path, mode="wb") as outfile:
-            for starfile in nmrstarlib.read_files(self.from_path):
-                outfile.write(starfile.writestr(self.to_format).encode())
+        with gzip.GzipFile(file_generator.to_path, mode="wb") as outfile:
+            for f in file_generator:
+                outfile.write(f.writestr(file_generator.to_format).encode())
 
-    def _to_textfile(self):
+    def _to_textfile(self, file_generator):
         """Convert file to regular text file.
 
         :return: None
         :rtype: :py:obj:`None`
         """
-        to_path = self.to_path if self.to_path.endswith(self.nmrstar_extension[self.to_format]) \
-            else self.to_path + self.nmrstar_extension[self.to_format]
-        with open(to_path, mode="w") as outfile:
-            for starfile in nmrstarlib.read_files(self.from_path):
-                outfile.write(starfile.writestr(self.to_format))
+        to_path = file_generator.to_path \
+            if file_generator.to_path.endswith(file_generator.file_extension[file_generator.to_format]) \
+            else file_generator.to_path + file_generator.file_extension[file_generator.to_format]
 
-    def _outputpath(self, inputpath, archive=False):
+        with open(to_path, mode="w") as outfile:
+            for f in file_generator:
+                outfile.write(f.writestr(file_generator.to_format))
+
+    def _output_path(self, inputpath, to_format, archive=False):
         """Construct an output path string from an input path string.
 
         :param str inputpath: Input path string.
@@ -286,7 +275,7 @@ class Converter(object):
         """
         indirpath, fname = os.path.split(os.path.abspath(os.path.normpath(inputpath)))
 
-        commonprefix = os.path.commonprefix([os.path.abspath(self.from_path),
+        commonprefix = os.path.commonprefix([os.path.abspath(self.file_generator.from_path),
                                              os.path.abspath(indirpath)])
 
         commonparts = commonprefix.split(os.sep)
@@ -296,6 +285,6 @@ class Converter(object):
         if archive:
             outdirpath = os.path.join(*outparts) if outparts else ""
         else:
-            outdirpath = os.path.join(self.to_path, *outparts)
+            outdirpath = os.path.join(self.file_generator.to_path, *outparts)
 
-        return os.path.join(outdirpath, fname + self.nmrstar_extension[self.to_format])
+        return os.path.join(outdirpath, fname + self.file_generator.file_extension[to_format])

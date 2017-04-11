@@ -75,7 +75,10 @@ class CSViewer(object):
         :rtype: :py:obj:`None`
         """
         for starfile in nmrstarlib.read_files(self.from_path):
-            chains = starfile.chem_shifts_by_residue(self.amino_acids, self.atoms, self.nmrstar_version)
+            chains = starfile.chem_shifts_by_residue(amino_acids=self.amino_acids,
+                                                     atoms=self.atoms,
+                                                     nmrstar_version=self.nmrstar_version)
+
             for idx, chemshifts_dict in enumerate(chains):
                 nodes = []
                 edges = []

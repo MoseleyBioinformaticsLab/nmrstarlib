@@ -32,6 +32,8 @@ import bz2
 import gzip
 import tarfile
 from collections import OrderedDict
+import pprint
+
 
 UJSON = False
 
@@ -58,28 +60,62 @@ except ImportError:
     from .bmrblex import bmrblex
 
 
-def _update_constants():
-    """Update constants related to NMR-STAR format, e.g. field names.
-
-    :return: NMR-STAR constants dict.
-    :rtype: :py:class:`dict`
-    """
-    nmrstar_constants = {}
-    this_directory = os.path.dirname(__file__)
-    config_filepath_nmrstar2 = os.path.join(this_directory, "conf/constants_nmrstar2.json")
-    config_filepath_nmrstar3 = os.path.join(this_directory, "conf/constants_nmrstar3.json")
-
-    with open(config_filepath_nmrstar2, "r") as nmrstar2config, open(config_filepath_nmrstar3, "r") as nmrstar3config:
-        nmrstar_constants["2"] = json.load(nmrstar2config)
-        nmrstar_constants["3"] = json.load(nmrstar3config)
-
-    return nmrstar_constants
-
-
 BMRB_REST = "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/"
 VERBOSE = False
 NMRSTAR_VERSION = "3"
-NMRSTAR_CONSTANTS = _update_constants()
+NMRSTAR_CONSTANTS = {}
+RESONANCE_CLASSES = {}
+SPECTRUM_DESCRIPTIONS = {}
+
+
+def update_constants(nmrstar2cfg="", nmrstar3cfg="", resonance_classes_cfg="", spectrum_descriptions_cfg=""):
+    """Update constant variables.
+
+    :return: None
+    :rtype: :py:obj:`None`
+    """
+    nmrstar_constants = {}
+    resonance_classes = {}
+    spectrum_descriptions = {}
+
+    this_directory = os.path.dirname(__file__)
+
+    nmrstar2_config_filepath = os.path.join(this_directory, "conf/constants_nmrstar2.json")
+    nmrstar3_config_filepath = os.path.join(this_directory, "conf/constants_nmrstar3.json")
+    resonance_classes_config_filepath = os.path.join(this_directory, "conf/resonance_classes.json")
+    spectrum_descriptions_config_filepath = os.path.join(this_directory, "conf/spectrum_descriptions.json")
+
+    with open(nmrstar2_config_filepath, "r") as nmrstar2config, open(nmrstar3_config_filepath, "r") as nmrstar3config:
+        nmrstar_constants["2"] = json.load(nmrstar2config)
+        nmrstar_constants["3"] = json.load(nmrstar3config)
+
+    with open(resonance_classes_config_filepath, "r") as config:
+        resonance_classes.update(json.load(config))
+
+    with open(spectrum_descriptions_config_filepath, "r") as config:
+        spectrum_descriptions.update(json.load(config))
+
+    if nmrstar2cfg:
+        with open(nmrstar2cfg, "r") as nmrstar2config:
+            nmrstar_constants["2"].update(json.load(nmrstar2config))
+
+    if nmrstar3cfg:
+        with open(nmrstar2cfg, "r") as nmrstar3config:
+            nmrstar_constants["3"].update(json.load(nmrstar3config))
+
+    if resonance_classes_cfg:
+        with open(nmrstar2cfg, "r") as config:
+            resonance_classes.update(json.load(config))
+
+    if spectrum_descriptions_cfg:
+        with open(spectrum_descriptions_cfg, "r") as config:
+            spectrum_descriptions.update(json.load(config))
+
+    NMRSTAR_CONSTANTS.update(nmrstar_constants)
+    RESONANCE_CLASSES.update(resonance_classes)
+    SPECTRUM_DESCRIPTIONS.update(spectrum_descriptions)
+
+update_constants()
 
 
 class StarFile(OrderedDict):
@@ -434,15 +470,20 @@ class StarFile(OrderedDict):
         except ValueError:
             return False
 
-    def chem_shifts_by_residue(self, amino_acids=None, atoms=None, nmrstar_version="3"):
+    def chem_shifts_by_residue(self, amino_acids=None, atoms=None, amino_acids_and_atoms=None, nmrstar_version="3"):
         """Organize chemical shifts by amino acid residue.
 
-        :param list amino_acids: List of amino_acids three-letter codes.
+        :param list amino_acids: List of amino acids three-letter codes.
         :param list atoms: List of BMRB atom type codes.
-        :param str nmrstar_version: Version of NMR-STAR format to use for look up chemichal shifts loop.
+        :param dict amino_acids_and_atoms: Amino acid and its atoms key-value pairs. 
+        :param str nmrstar_version: Version of NMR-STAR format to use for look up chemical shifts loop.
         :return: List of OrderedDict per each chain
         :rtype: :py:class:`list` of :py:class:`collections.OrderedDict`
         """
+        if (amino_acids_and_atoms and amino_acids) or (amino_acids_and_atoms and atoms):
+            raise ValueError('"amino_acids_and_atoms" parameter cannot be used simultaneously with '
+                             '"amino_acids" and "atoms" parameters, one or another must be provided.')
+
         chemshifts_loop = NMRSTAR_CONSTANTS[nmrstar_version]["chemshifts_loop"]
         aminoacid_seq_id = NMRSTAR_CONSTANTS[nmrstar_version]["aminoacid_seq_id"]
         aminoacid_code = NMRSTAR_CONSTANTS[nmrstar_version]["aminoacid_code"]
@@ -457,29 +498,41 @@ class StarFile(OrderedDict):
                 for ind in self[saveframe].keys():
                     if ind.startswith(u"loop_"):
                         if list(self[saveframe][ind][0]) == chemshifts_loop:
-                            chemshifts_dict = OrderedDict()
+                            chem_shifts_dict = OrderedDict()
                             for entry in self[saveframe][ind][1]:
-                                residueid = entry[aminoacid_seq_id]
-                                chemshifts_dict.setdefault(residueid, OrderedDict())
-                                chemshifts_dict[residueid][u"AA3Code"] = entry[aminoacid_code]
-                                chemshifts_dict[residueid][u"Seq_ID"] = residueid
-                                chemshifts_dict[residueid][entry[atom_code]] = entry[chemshift_value]
-                            chains.append(chemshifts_dict)
+                                residue_id = entry[aminoacid_seq_id]
+                                chem_shifts_dict.setdefault(residue_id, OrderedDict())
+                                chem_shifts_dict[residue_id][u"AA3Code"] = entry[aminoacid_code]
+                                chem_shifts_dict[residue_id][u"Seq_ID"] = residue_id
+                                chem_shifts_dict[residue_id][entry[atom_code]] = entry[chemshift_value]
+                            chains.append(chem_shifts_dict)
 
-        if amino_acids:
-            for chemshifts_dict in chains:
-                for aa in list(chemshifts_dict.values()):
-                    if aa[u"AA3Code"].upper() not in amino_acids:
-                        chemshifts_dict.pop(aa[u"Seq_ID"])
+        if amino_acids_and_atoms:
+            for chem_shifts_dict in chains:
+                for aa_dict in list(chem_shifts_dict.values()):
+                    if aa_dict[u"AA3Code"].upper() not in list(amino_acids_and_atoms.keys()):
+                        chem_shifts_dict.pop(aa_dict[u"Seq_ID"])
+                    else:
+                        for resonance in list(aa_dict.keys()):
+                            if resonance in (u"AA3Code", u"Seq_ID") or resonance.upper() in amino_acids_and_atoms[aa_dict[u"AA3Code"]]:
+                                continue
+                            else:
+                                aa_dict.pop(resonance)
+        else:
+            if amino_acids:
+                for chem_shifts_dict in chains:
+                    for aa_dict in list(chem_shifts_dict.values()):
+                        if aa_dict[u"AA3Code"].upper() not in amino_acids:
+                            chem_shifts_dict.pop(aa_dict[u"Seq_ID"])
 
-        if atoms:
-            for chemshifts_dict in chains:
-                for resonances_dict in chemshifts_dict.values():
-                    for resonance in list(resonances_dict.keys()):
-                        if resonance in (u"AA3Code", u"Seq_ID") or resonance.upper() in atoms:
-                            continue
-                        else:
-                            resonances_dict.pop(resonance)
+            if atoms:
+                for chem_shifts_dict in chains:
+                    for aa_dict in chem_shifts_dict.values():
+                        for resonance in list(aa_dict.keys()):
+                            if resonance in (u"AA3Code", u"Seq_ID") or resonance.upper() in atoms:
+                                continue
+                            else:
+                                aa_dict.pop(resonance)
         return chains
 
 
@@ -659,3 +712,27 @@ class SkipSaveFrame(Exception):
 
     def __str__(self):
         return "Skipping save frame"
+
+
+def list_spectrums():
+    """List all available spectrum names that can be used for peak list simulation.
+
+    :return: None
+    :rtype: :py:obj:`None`
+    """
+    for spectrum_name in sorted(SPECTRUM_DESCRIPTIONS.keys()):
+        print(spectrum_name)
+
+
+def list_spectrum_descriptions(*args):
+    """List all available spectrum descriptions that can be used for peak list simulation.
+
+    :param str args: Spectrum name(s), e.g. list_spectrum_descriptions("HNCO", "HNcoCACB"), leave empty to list everything.
+    :return: None
+    :rtype: :py:obj:`None`
+    """
+    if args:
+        for spectrum_name in args:
+            pprint.pprint({spectrum_name: SPECTRUM_DESCRIPTIONS.get(spectrum_name, None)}, width=120)
+    else:
+        pprint.pprint(SPECTRUM_DESCRIPTIONS, width=120)
