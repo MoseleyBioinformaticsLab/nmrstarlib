@@ -10,16 +10,22 @@ their equivalent JSONized (JavaScript Object Notation, an open-standard format t
 uses human-readable text to transmit data objects consisting of attribute-value pairs)
 representation and vice versa.
 
-In addition, the nmrstarlib package provides methods to visualize chemical shift data.
+The `nmrstarlib` package also provides facilities to create simulated peak lists for
+different types of standard solution and solid-state NMR experiments from chemical
+shifts and assignment information deposited in NMR-STAR files.
+
+In addition, the `nmrstarlib` package provides methods to visualize chemical shift data.
 
 The `nmrstarlib` package can be used in several ways:
 
    * As a library for accessing and manipulating data stored in NMR-STAR format files.
    * As a command-line tool to convert between NMR-STAR format and its equivalent JSONized
-     NMR-STAR format and also to visualize chemical shift data.
+     NMR-STAR format, to create a large number of simulated peak lists,
+     and also to visualize chemical shift data.
 
 Citation
 ~~~~~~~~
+
 When using `nmrstarlib` in published work, please cite the following paper:
 
    * Smelter, Andrey, Morgan Astra, and Hunter NB Moseley. "A fast and efficient python
@@ -37,8 +43,8 @@ Links
 Installation
 ~~~~~~~~~~~~
 
-The `nmrstarlib` package runs under Python 2.7 and Python 3.4+, use pip_ to install. Starting with Python 3.4
-pip_ is included by default.
+The `nmrstarlib` package runs under Python 2.7 and Python 3.4+, use pip_ to install.
+Starting with Python 3.4, pip_ is included by default.
 
 Install on Linux, Mac OS X
 --------------------------
@@ -47,31 +53,12 @@ Install on Linux, Mac OS X
 
    python3 -m pip install nmrstarlib
 
-Also make sure that dependencies are installed on the system:
-
-.. code:: bash
-
-   python3 -m pip install docopt
-   python3 -m pip install graphviz
-
-graphviz_ Python library requires a working installation of Graphviz (`download page`_).
-
 Install on Windows
 ------------------
 
 .. code:: bash
 
    py -3 -m pip install nmrstarlib
-
-Also make sure that dependencies are installed on the system:
-
-.. code:: bash
-
-   py -3 -m pip install docopt
-   py -3 -m pip install graphviz
-
-graphviz_ Python library requires a working installation of Graphviz (`download page`_).
-
 
 Quickstart
 ~~~~~~~~~~
@@ -101,8 +88,9 @@ Import `nmrstarlib` library and create generator function that will yield
    >>>
 
 
-.. note:: Read `User Guide`_ and `The nmrstarlib Tutorial`_ on ReadTheDocs_ to learn more and see code examples on using
-          `nmrstarlib` as a library and as a command-line tool.
+.. note:: Read the `User Guide`_ and `The nmrstarlib Tutorial`_ on ReadTheDocs_
+          to learn more and to see code examples on using the `nmrstarlib` as a
+          library and as a command-line tool.
 
 License
 ~~~~~~~
@@ -113,7 +101,7 @@ This package is distributed under the MIT_ `license`.
 .. _docopt: http://docopt.readthedocs.io/
 .. _graphviz: http://graphviz.readthedocs.io/
 .. _BMRB: http://www.bmrb.wisc.edu
-.. _download page: http://www.graphviz.org/Download.php
+.. _Graphviz download page: http://www.graphviz.org/Download.php
 
 .. _GitHub: https://github.com/MoseleyBioinformaticsLab/nmrstarlib
 .. _ReadTheDocs: http://nmrstarlib.readthedocs.io/
