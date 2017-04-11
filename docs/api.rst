@@ -1,5 +1,5 @@
 The nmrstarlib API Reference
-=============================
+============================
 
 .. automodule:: nmrstarlib
 
