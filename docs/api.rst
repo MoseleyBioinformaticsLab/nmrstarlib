@@ -14,30 +14,18 @@ The nmrstarlib API Reference
 .. autofunction:: bmrblex
 
 .. automodule:: nmrstarlib.converter
-
-.. autoclass:: Converter
    :member-order: bysource
    :members:
    :special-members:
    :private-members:
 
 .. automodule:: nmrstarlib.csviewer
-
-.. autoclass:: CSViewer
    :member-order: bysource
    :members:
    :special-members:
    :private-members:
 
 .. automodule:: nmrstarlib.noise
-
-.. autoclass:: NoiseGenerator
-   :member-order: bysource
-   :members:
-   :special-members:
-   :private-members:
-
-.. autoclass:: RandomNormalNoiseGenerator
    :member-order: bysource
    :members:
    :special-members:
