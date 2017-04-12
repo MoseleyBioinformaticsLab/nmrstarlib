@@ -74,7 +74,7 @@ class StarFileToPeakList(Translator):
                       "sparky": ".txt",
                       "autoassign": ".pks"}
 
-    def __init__(self, from_path, to_path, from_format, to_format, spectrum_name, plsplit=None, noise_generator=None):
+    def __init__(self, from_path, to_path, from_format, to_format, spectrum_name, plsplit=None, noise_generator=None, nmrstar_version="3"):
         """StarFileToPeakList initializer.
 
         :param str from_path: Path to input file(s).
@@ -83,6 +83,7 @@ class StarFileToPeakList(Translator):
         :param str to_format: Output format: `json` or `sparky`.
         :param str spectrum_name: Name of spectrum from which to simulate peak list.
         :param tuple plsplit: How to split peak list in order to account for multiple sources of variance.
+        :param str nmrstar_version: Version of NMR-STAR format to use for look up chemical shifts loop.
         :param noise_generator: Subclasses of :class:`~nmrstarlib.noise.NoiseGenerator` object.
         :type noise_generator: :class:`~nmrstarlib.noise.NoiseGenerator`
         """
@@ -113,6 +114,7 @@ class StarFileToPeakList(Translator):
         self.plsplit = plsplit
         self.noise_generator = noise_generator
         self.spectrum = self.create_spectrum(spectrum_name)
+        self.nmrstar_version = nmrstar_version
 
     @staticmethod
     def create_spectrum(spectrum_name):
@@ -247,7 +249,8 @@ class StarFileToPeakList(Translator):
         :rtype: :class:`~nmrstarlib.plsimulator.PeakList`
         """
         for starfile in nmrstarlib.read_files(self.from_path):
-            chains = starfile.chem_shifts_by_residue(amino_acids_and_atoms=self.spectrum.amino_acids_and_atoms)
+            chains = starfile.chem_shifts_by_residue(amino_acids_and_atoms=self.spectrum.amino_acids_and_atoms,
+                                                     nmrstar_version=self.nmrstar_version)
 
             for chain_idx, chain in enumerate(chains):
                 peaklist = self.create_peaklist(self.spectrum, chain, chain_idx, starfile.source)
