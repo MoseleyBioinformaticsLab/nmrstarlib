@@ -1,6 +1,10 @@
 nmrstarlib
 ==========
 
+.. image:: _static/images/nmrstarlib_logo.png
+  :width: 50%
+  :align: center
+
 The `nmrstarlib` package is a Python library that facilitates reading and writing
 NMR-STAR formatted files used by the Biological Magnetic Resonance Data Bank (BMRB_)
 for archival of Nuclear Magnetic Resonance (NMR) data.
