@@ -1,7 +1,7 @@
 nmrstarlib
 ==========
 
-.. image:: _static/images/nmrstarlib_logo.png
+.. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
   :width: 50%
   :align: center
 
