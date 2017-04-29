@@ -962,7 +962,7 @@ static const char __pyx_k__5[] = "#";
 static const char __pyx_k__7[] = "";
 static const char __pyx_k__9[] = ";";
 static const char __pyx_k__10[] = "\n;\n";
-static const char __pyx_k__11[] = " \t\r\n";
+static const char __pyx_k__11[] = " \t\013\r\n";
 static const char __pyx_k__12[] = " ";
 static const char __pyx_k__13[] = "'";
 static const char __pyx_k__14[] = "\"";
@@ -2084,7 +2084,7 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
   /* "nmrstarlib/cbmrblex.pyx":114
  *                               u""
  *                               u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
- *     cdef unicode whitespace = u" \t\r\n"             # <<<<<<<<<<<<<<
+ *     cdef unicode whitespace = u" \t\v\r\n"             # <<<<<<<<<<<<<<
  *     cdef unicode state = u" "
  *     cdef unicode token = u""
  */
@@ -2094,7 +2094,7 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
 
   /* "nmrstarlib/cbmrblex.pyx":115
  *                               u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
- *     cdef unicode whitespace = u" \t\r\n"
+ *     cdef unicode whitespace = u" \t\v\r\n"
  *     cdef unicode state = u" "             # <<<<<<<<<<<<<<
  *     cdef unicode token = u""
  *     cdef unicode nextchar
@@ -2104,7 +2104,7 @@ static PyObject *__pyx_gb_10nmrstarlib_8cbmrblex_4generator(__pyx_CoroutineObjec
   __pyx_cur_scope->__pyx_v_state = __pyx_kp_u__12;
 
   /* "nmrstarlib/cbmrblex.pyx":116
- *     cdef unicode whitespace = u" \t\r\n"
+ *     cdef unicode whitespace = u" \t\v\r\n"
  *     cdef unicode state = u" "
  *     cdef unicode token = u""             # <<<<<<<<<<<<<<
  *     cdef unicode nextchar

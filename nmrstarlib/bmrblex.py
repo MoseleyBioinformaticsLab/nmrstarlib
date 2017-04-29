@@ -107,7 +107,7 @@ def bmrblex(text):
                  u"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ"
                  u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
 
-    whitespace = u" \t\r\n"
+    whitespace = u" \t\v\r\n"
     state = u" "
     token = u""
 

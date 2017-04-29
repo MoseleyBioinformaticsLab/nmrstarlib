@@ -111,7 +111,7 @@ def bmrblex(text):
                               u"ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"
                               u"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ"
                               u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
-    cdef unicode whitespace = u" \t\r\n"
+    cdef unicode whitespace = u" \t\v\r\n"
     cdef unicode state = u" "
     cdef unicode token = u""
     cdef unicode nextchar
