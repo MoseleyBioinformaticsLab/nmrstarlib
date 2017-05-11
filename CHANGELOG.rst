@@ -2,6 +2,13 @@
 
 Release History
 ===============
+2.0.1 (2017-05-11)
+
+**Bugfixes**
+
+- Fixed issue #4: https://github.com/MoseleyBioinformaticsLab/nmrstarlib/issues/4
+- Fixed issue #7: https://github.com/MoseleyBioinformaticsLab/nmrstarlib/issues/7
+
 
 2.0.0 (2017-04-11)
 ~~~~~~~~~~~~~~~~~~
@@ -38,6 +45,7 @@ Release History
 **Bugfixes**
 
 - Fixed broken configuration file path.
+
 
 1.0.0 (2016-05-25)
 ~~~~~~~~~~~~~~~~~~
