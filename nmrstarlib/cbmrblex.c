@@ -1075,12 +1075,12 @@ static PyObject *__pyx_codeobj__18;
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
- *     multiline strings, and removes comments.
+ *     multiline strings.
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_10nmrstarlib_8cbmrblex_1transform_text(PyObject *__pyx_self, PyObject *__pyx_v_input_txt); /*proto*/
-static char __pyx_doc_10nmrstarlib_8cbmrblex_transform_text[] = "Transforms text into :py:class:`~collections.deque`, pre-processes\n    multiline strings, and removes comments.\n\n    :param str or bytes input_txt: Input text.\n    :return: Double-ended queue of single characters and multiline strings.\n    :rtype: :py:class:`~collections.deque`\n    ";
+static char __pyx_doc_10nmrstarlib_8cbmrblex_transform_text[] = "Transforms text into :py:class:`~collections.deque`, pre-processes\n    multiline strings.\n\n    :param str or bytes input_txt: Input text.\n    :return: Double-ended queue of single characters and multiline strings.\n    :rtype: :py:class:`~collections.deque`\n    ";
 static PyMethodDef __pyx_mdef_10nmrstarlib_8cbmrblex_1transform_text = {"transform_text", (PyCFunction)__pyx_pw_10nmrstarlib_8cbmrblex_1transform_text, METH_O, __pyx_doc_10nmrstarlib_8cbmrblex_transform_text};
 static PyObject *__pyx_pw_10nmrstarlib_8cbmrblex_1transform_text(PyObject *__pyx_self, PyObject *__pyx_v_input_txt) {
   PyObject *__pyx_r = 0;
@@ -1907,7 +1907,7 @@ static PyObject *__pyx_pf_10nmrstarlib_8cbmrblex_transform_text(CYTHON_UNUSED Py
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
- *     multiline strings, and removes comments.
+ *     multiline strings.
  */
 
   /* function exit code */
@@ -3281,7 +3281,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
- *     multiline strings, and removes comments.
+ *     multiline strings.
  */
   __pyx_tuple__15 = PyTuple_Pack(8, __pyx_n_s_input_txt, __pyx_n_s_text, __pyx_n_s_inputq, __pyx_n_s_outputq, __pyx_n_s_line, __pyx_n_s_character, __pyx_n_s_multiline, __pyx_n_s_comment); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
@@ -3435,7 +3435,7 @@ PyMODINIT_FUNC PyInit_cbmrblex(void)
  * 
  * def transform_text(input_txt):             # <<<<<<<<<<<<<<
  *     """Transforms text into :py:class:`~collections.deque`, pre-processes
- *     multiline strings, and removes comments.
+ *     multiline strings.
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10nmrstarlib_8cbmrblex_1transform_text, NULL, __pyx_n_s_nmrstarlib_cbmrblex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

@@ -36,7 +36,7 @@ from collections import deque
 
 def transform_text(input_txt):
     """Transforms text into :py:class:`~collections.deque`, pre-processes
-    multiline strings, and removes comments.
+    multiline strings.
 
     :param str or bytes input_txt: Input text.
     :return: Double-ended queue of single characters and multiline strings.

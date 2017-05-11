@@ -23,6 +23,7 @@ are simply loop_0, loop_1, etc.
 """
 
 from __future__ import print_function, division
+from collections import OrderedDict
 
 import sys
 import os
@@ -31,7 +32,6 @@ import zipfile
 import bz2
 import gzip
 import tarfile
-from collections import OrderedDict
 import pprint
 
 
@@ -312,10 +312,6 @@ class StarFile(OrderedDict):
 
         assert float(len(values)/len(fields)).is_integer(), \
             "Error in loop construction: number of fields must be equal to number of values."
-
-        # divide list of loop values into chunks corresponding to fields
-        # values = [values[i:i+len(fields)] for i in range(0, len(values), len(fields))]
-        # return fields, values
 
         values = [OrderedDict(zip(fields, values[i:i + len(fields)])) for i in range(0, len(values), len(fields))]
         return fields, values
