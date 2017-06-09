@@ -3,6 +3,17 @@
 Release History
 ===============
 
+2.0.2 (2017-06-09)
+~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Fixed bug related to sorting of the sequence ids which caused
+  problems during sequence sites creation in peak list simulation.
+  Sorting is based on integer sequence id value instead of its string
+  representation. 
+
+
 2.0.1 (2017-05-11)
 ~~~~~~~~~~~~~~~~~~
 
