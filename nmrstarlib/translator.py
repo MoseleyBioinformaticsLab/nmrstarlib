@@ -147,7 +147,7 @@ class StarFileToPeakList(Translator):
         :return: List of sequence sites.
         :rtype: :py:class:`list`
         """
-        seq_ids = sorted(list(chain.keys()))  # make sure that sequence is sorted by sequence id
+        seq_ids = sorted(list(chain.keys()), key=int)  # make sure that sequence is sorted by sequence id
         slices = [itertools.islice(seq_ids, i, None) for i in range(seq_site_length)]
         seq_site_ids = list(zip(*slices))
 
