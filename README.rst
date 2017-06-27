@@ -4,6 +4,8 @@ nmrstarlib
 .. image:: https://img.shields.io/pypi/l/nmrstarlib.svg
     :target: https://pypi.python.org/pypi/nmrstarlib
 
+|
+
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
     :width: 50%
     :align: center
