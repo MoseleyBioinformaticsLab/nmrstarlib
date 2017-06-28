@@ -2,14 +2,20 @@ nmrstarlib
 ==========
 
 .. image:: https://img.shields.io/pypi/l/nmrstarlib.svg
-    :target: https://pypi.python.org/pypi/nmrstarlib
+   :target: https://pypi.python.org/pypi/nmrstarlib
+
+.. image:: https://img.shields.io/pypi/v/nmrstarlib.svg
+   :target: https://pypi.python.org/pypi/nmrstarlib
+
+.. image:: https://img.shields.io/pypi/pyversions/nmrstarlib.svg
+   :target: https://pypi.python.org/pypi/nmrstarlib
 
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
-    :width: 50%
-    :align: center
-    :target: http://nmrstarlib.readthedocs.io/
+   :width: 50%
+   :align: center
+   :target: http://nmrstarlib.readthedocs.io/
 
 The `nmrstarlib` package is a Python library that facilitates reading and writing
 NMR-STAR formatted files used by the Biological Magnetic Resonance Data Bank (BMRB_)
