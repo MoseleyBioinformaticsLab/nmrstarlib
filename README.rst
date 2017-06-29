@@ -10,6 +10,9 @@ nmrstarlib
 .. image:: https://img.shields.io/pypi/pyversions/nmrstarlib.svg
    :target: https://pypi.python.org/pypi/nmrstarlib
 
+.. image:: https://readthedocs.org/projects/docs/badge/?version=latest
+    :target: https://nmrstarlib.readthedocs.io/en/latest/?badge=latest
+
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
