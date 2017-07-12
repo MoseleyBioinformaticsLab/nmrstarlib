@@ -737,6 +737,7 @@ Creating simulated peak lists variance drawn from other distribution types
 
    .. code-block:: python
 
+      {
       distribution_name: 'beta', parameters: ['a', 'b']
       distribution_name: 'binomial', parameters: ['n', 'p']
       distribution_name: 'chisquare', parameters: ['df']
@@ -764,6 +765,7 @@ Creating simulated peak lists variance drawn from other distribution types
       distribution_name: 'wald', parameters: ['mean', 'scale']
       distribution_name: 'weibull', parameters: ['a']
       distribution_name: 'zipf', parameters: ['a']
+      }
 
 
 Spectrum description configuration file
