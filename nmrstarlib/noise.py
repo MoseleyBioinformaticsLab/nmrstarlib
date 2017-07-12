@@ -14,15 +14,60 @@ dimensions within a :class:`~nmrstarlib.plsimulator.PeakList`.
 import numpy as np
 
 
-class NoiseGenerator(object):
-    """Noise generator abstract class."""
+distributions = {"normal": {"function": np.random.normal, "parameters": ["loc", "scale"]},
+                 "beta": {"function": np.random.beta, "parameters": ["a", "b"]},
+                 "binomial": {"function": np.random.binomial, "parameters": ["n", "p"]},
+                 "chisquare": {"function": np.random.chisquare, "parameters": ["df"]},
+                 "exponential": {"function": np.random.exponential, "parameters": ["scale"]},
+                 "f": {"function": np.random.f, "parameters": ["dfnum", "dfden"]},
+                 "gamma": {"function": np.random.gamma, "parameters": ["shape", "scale"]},
+                 "geometric": {"function": np.random.geometric, "parameters": ["p"]},
+                 "gumbel": {"function": np.random.gumbel, "parameters": ["loc", "scale"]},
+                 "hypergeometric": {"function": np.random.hypergeometric, "parameters": ["ngood", "nbad", "nsample"]},
+                 "laplace": {"function": np.random.laplace, "parameters": ["loc", "scale"]},
+                 "logistic": {"function": np.random.logistic, "parameters": ["loc", "scale"]},
+                 "lognormal": {"function": np.random.lognormal, "parameters": ["mean", "sigma"]},
+                 "logseries": {"function": np.random.logseries, "parameters": ["p"]},
+                 "negative_binomial": {"function": np.random.negative_binomial, "parameters": ["n", "p"]},
+                 "noncentral_chisquare": {"function": np.random.noncentral_chisquare, "parameters": ["df", "nonc"]},
+                 "noncentral_f": {"function": np.random.noncentral_f, "parameters": ["dfnum", "dfden", "nonc"]},
+                 "pareto": {"function": np.random.pareto, "parameters": ["a"]},
+                 "poisson": {"function": np.random.poisson, "parameters": ["lam"]},
+                 "power": {"function": np.random.power, "parameters": ["a"]},
+                 "rayleigh": {"function": np.random.rayleigh, "parameters": ["scale"]},
+                 "triangular": {"function": np.random.triangular, "parameters": ["left", "mode", "right"]},
+                 "uniform": {"function": np.random.uniform, "parameters": ["low", "high"]},
+                 "vonmises": {"function": np.random.vonmises, "parameters": ["mu", "kappa"]},
+                 "wald": {"function": np.random.wald, "parameters": ["mean", "scale"]},
+                 "weibull": {"function": np.random.weibull, "parameters": ["a"]},
+                 "zipf": {"function": np.random.zipf, "parameters": ["a"]}}
 
-    def __init__(self, parameters):
+
+class NoiseGenerator(object):
+    """Noise generator class."""
+
+    def __init__(self, parameters=None, distribution_name="normal"):
         """Noise generator initializer.
 
-        :param parameters: Statistical distribution parameters per each peak list split.
+        :param dict parameters: Statistical distribution parameters per each peak list split.
+        :param str distribution_name: Name of the statistical distribution function.
         """
+        if parameters is None:
+            parameters = dict()
+
+        if distribution_name not in distributions:
+            raise KeyError('Distribution: "{}" not in a list of allowed distributions'.format(distribution_name))
+
+        self.parameter_names = {name[2:] for name in parameters.keys()}
+        self.distribution_parameter_names = distributions[distribution_name]["parameters"]
+
+        if set(self.distribution_parameter_names) != self.parameter_names:
+            raise ValueError('Parameter names not consistent with the chosen distribution, parameters needed: {},'
+                             'parameters provided: {}'.format(repr(self.distribution_parameter_names),
+                                                              repr(self.parameter_names)))
+
         self.parameters = parameters
+        self.distribution_name = distribution_name
 
     def generate(self, labels, split_idx):
         """Generate peak-specific noise abstract method, must be reimplemented in a subclass.
@@ -32,30 +77,22 @@ class NoiseGenerator(object):
         :return: List of noise values for dimensions ordered as they appear in a peak.
         :rtype: :py:class:`list`
         """
-        raise NotImplementedError()
-
-
-class RandomNormalNoiseGenerator(NoiseGenerator):
-    """Random normal noise generator concrete class."""
-
-    def __init__(self, parameters):
-        """Random normal noise generator initializer.
-
-        :param parameters: Statistical distribution parameters from random normal distribution per each peak list split.
-        """
-        super(RandomNormalNoiseGenerator, self).__init__(parameters)
-        self.parameters_per_split = list(map(dict, zip(*[[(k, v) for v in value] for k, value in parameters.items()])))
-
-    def generate(self, labels, split_idx):
-        """Generate peak-specific random noise from normal distribution.
-
-        :param tuple labels: Dimension labels of a peak.
-        :param int split_idx: Index specifying which peak list split parameters to use.
-        :return: List of noise values for dimensions ordered as they appear in a peak.
-        :rtype: :py:class:`list`
-        """
         atom_labels = [label[0] for label in labels]
-        mean_values = [self.parameters_per_split[split_idx]["{}_{}".format(label, "mean")] for label in atom_labels]
-        std_values = [self.parameters_per_split[split_idx]["{}_{}".format(label, "std")] for label in atom_labels]
-        noise = [np.random.normal(mean, std) if std > 0 else 0.0 for mean, std in zip(mean_values, std_values)]
+
+        noise = []
+        distribution_function = distributions[self.distribution_name]["function"]
+        for label in atom_labels:
+            params = [self.parameters["{}_{}".format(label, param)][split_idx]
+                      for param in self.distribution_parameter_names]
+
+            if None in params:
+                dim_noise = 0.0
+            else:
+                try:
+                    dim_noise = distribution_function(*params)
+                except ValueError:
+                    raise ValueError
+
+            noise.append(dim_noise)
+
         return noise

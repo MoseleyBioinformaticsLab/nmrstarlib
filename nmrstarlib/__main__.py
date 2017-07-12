@@ -9,7 +9,7 @@ Usage:
     nmrstarlib --version
     nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>] [--to_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose]
     nmrstarlib csview <starfile_path> [--amino_acids=<aa>] [--atoms=<at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose]
-    nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--H_std=<std>] [--C_std=<std>] [--N_std=<std>] [--H_mean=<mean>] [--C_mean=<mean>] [--N_mean=<mean>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
+    nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--distribution=<func>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
 
 Options:
     -h, --help                      Show this screen.
@@ -24,15 +24,15 @@ Options:
     --csview_outfile=<path>         Where to save chemical shifts table.
     --csview_format=<format>        Format to which save chemical shift table [default: svg].
     --plsplit=<%>                   How to split peak list into chunks by percent [default: 100].
-    --H_std=<ppm>                   Standard deviation for H dimensions [default: 0].
-    --C_std=<ppm>                   Standard deviation for C dimensions [default: 0].
-    --N_std=<ppm>                   Standard deviation for N dimensions [default: 0].
-    --H_mean=<ppm>                  Mean for H dimensions [default: 0].
-    --C_mean=<ppm>                  Mean for C dimensions [default: 0].
-    --N_mean=<ppm>                  Mean for N dimensions [default: 0].
     --spectrum_descriptions=<path>  Path to custom spectrum descriptions file.
+    --distribution=<func>           Statistical distribution function [default: normal].
+    --H=<value>                     Statistical distribution parameter(s) for H dimension.
+    --C=<value>                     Statistical distribution parameter(s) for C dimension.
+    --N=<value>                     Statistical distribution parameter(s) for N dimension.
 """
 
+import itertools
+import collections
 import docopt
 
 from . import nmrstarlib
@@ -75,21 +75,35 @@ def main(cmdargs):
             nmrstarlib.update_constants(spectrum_descriptions_cfg=cmdargs["--spectrum_descriptions"])
 
         plsplit = tuple(float(i) for i in cmdargs["--plsplit"].split(","))
-        parameters = {"H_mean": tuple(float(i) for i in cmdargs["--H_mean"].split(",")),
-                      "C_mean": tuple(float(i) for i in cmdargs["--C_mean"].split(",")),
-                      "N_mean": tuple(float(i) for i in cmdargs["--N_mean"].split(",")),
-                      "H_std": tuple(float(i) for i in cmdargs["--H_std"].split(",")),
-                      "C_std": tuple(float(i) for i in cmdargs["--C_std"].split(",")),
-                      "N_std": tuple(float(i) for i in cmdargs["--N_std"].split(","))}
+        distribution_name = cmdargs["--distribution"]
+        distribution_parameter_names = noise.distributions[distribution_name]["parameters"]
 
-        # fill with zeros values for parameters that have missing values
-        for param_name, param_values in parameters.items():
-            given_values = list(param_values)
-            missing_values = [0.0 for _ in range(len(plsplit) - len(param_values))]
-            param_values = given_values + missing_values
-            parameters[param_name] = tuple(param_values)
+        if not distribution_parameter_names:
+            parameters = None
+        else:
+            parameters = collections.defaultdict(list)
 
-        noise_generator = noise.RandomNormalNoiseGenerator(parameters)
+            for dim in ("H", "N", "C"):
+                params = cmdargs["--{}".format(dim)]
+                if params is None:
+                    for param_name in distribution_parameter_names:
+                        parameters["{}_{}".format(dim, param_name)].append(None)
+                else:
+                    params = params.split(",")
+                    if len(params) > len(distribution_parameter_names):
+                        raise ValueError("Inconsistent number of parameters provided.")
+
+                    for param, param_name in zip(params, distribution_parameter_names):
+                        parameters["{}_{}".format(dim, param_name)].extend([float(val) if val else None for val in param.split(":")])
+
+            # fill with None values for parameters that have missing values
+            for param_name, param_values in parameters.items():
+                given_values = list(param_values)
+                missing_values = [None for _ in range(len(plsplit) - len(param_values))]
+                param_values = given_values + missing_values
+                parameters[param_name] = tuple(param_values)
+
+        noise_generator = noise.NoiseGenerator(parameters=parameters, distribution_name=distribution_name)
 
         peaklist_file_translator = translator.StarFileToPeakList(from_path=cmdargs["<from_path>"],
                                                                  to_path=cmdargs["<to_path>"],
