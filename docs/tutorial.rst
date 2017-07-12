@@ -486,6 +486,9 @@ Many-to-many files conversions
 Creating simulated peak lists from NMR-STAR formatted files
 -----------------------------------------------------------
 
+Creating simulated peak lists without variance
+**********************************************
+
 Chemical shift values and assignment information deposited in NMR-STAR formatted
 files can be used to generate a large number of simulated peak lists for different
 types of solution and solid-state NMR experiments. Many different types
@@ -558,6 +561,9 @@ examples.
        ...
       ]
 
+Creating simulated peak lists variance drawn from random normal distribution
+****************************************************************************
+
    * Creating a `HNcoCACB` peak list file in `sparky`-like format and adding
      noise values to peak dimensions from a single source of variance, i.e.
      100% of peaks will have chemical shift values adjusted using noise values
@@ -567,14 +573,14 @@ examples.
 
       from nmrstarlib.converter import Converter
       from nmrstarlib.translator import StarFileToPeakList
-      from nmrstarlib.noise import RandomNormalNoiseGenerator
+      from nmrstarlib.noise import NoiseGenerator
 
       # create parameters dictionary for random normal distribution
-      parameters = {"H_mean": [0], "C_mean": [0], "N_mean": [0],
-                    "H_std": [0.001], "C_std": [0.01], "N_std": [0.01]}
+      parameters = {"H_loc": [0], "C_loc": [0], "N_loc": [0],
+                    "H_scale": [0.001], "C_scale": [0.01], "N_scale": [0.01]}
 
       # create random normal noise generator
-      random_normal_noise_generator = RandomNormalNoiseGenerator(parameters)
+      random_normal_noise_generator = NoiseGenerator(parameters)
 
       # Using valid BMRB id to access file from URL: from_path="18569"
       converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
@@ -612,14 +618,14 @@ examples.
 
       from nmrstarlib.converter import Converter
       from nmrstarlib.translator import StarFileToPeakList
-      from nmrstarlib.noise import RandomNormalNoiseGenerator
+      from nmrstarlib.noise import NoiseGenerator
 
       # create parameters dictionary for random normal distribution
-      parameters = {"H_mean": [0], "C_mean": [0], "N_mean": [0],
-                    "H_std": [0.001], "C_std": [0], "N_std": [0.01]}
+      parameters = {"H_loc": [0], "C_loc": [None], "N_loc": [0],
+                    "H_scale": [0.001], "C_scale": [None], "N_scale": [0.01]}
 
       # create random normal noise generator
-      random_normal_noise_generator = RandomNormalNoiseGenerator(parameters)
+      random_normal_noise_generator = NoiseGenerator(parameters)
 
       # Using valid BMRB id to access file from URL: from_path="18569"
       converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
@@ -660,21 +666,21 @@ examples.
 
       from nmrstarlib.converter import Converter
       from nmrstarlib.translator import StarFileToPeakList
-      from nmrstarlib.noise import RandomNormalNoiseGenerator
+      from nmrstarlib.noise import NoiseGenerator
 
       # create parameters dictionary for random normal distribution
-      parameters = {"H_mean": [0, 0], "C_mean": [0, 0], "N_mean": [0, 0],
-                    "H_std": [0.001, 0.005], "C_std": [0, 0], "N_std": [0.01, 0.05]}
+      parameters = {"H_loc": [0, 0], "C_loc": [None, None], "N_loc": [0, 0],
+                    "H_scale": [0.001, 0.005], "C_scale": [None, None], "N_scale": [0.01, 0.05]}
 
       # create random normal noise generator
-      noise_generator = RandomNormalNoiseGenerator(parameters)
+      random_normal_noise_generator = NoiseGenerator(parameters)
 
       # Using valid BMRB id to access file from URL: from_path="18569"
       converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
                                                from_format="nmrstar", to_format="sparky",
                                                spectrum_name="HNcoCACB",
                                                plsplit=(70,30),
-                                               noise_generator=noise_generator))
+                                               noise_generator=random_normal_noise_generator))
       converter.convert()
 
 
@@ -696,6 +702,68 @@ examples.
       ASP98H-ASP98N-GLU97CB	7.872260831124177	120.66960671379097	28.533
       ALA99H-ALA99N-ASP98CA	7.1803123000354026	122.76636174425305	57.799
       ALA99H-ALA99N-ASP98CB	7.187801610413494	122.83147347445296	42.138
+
+
+Creating simulated peak lists variance drawn from other distribution types
+**************************************************************************
+
+   * It is also possible to generate the simulated peak lists using other
+     types of statistical distribution functions. For example, let's
+     simulate the peak list using noise values drawn from ``chisquare``
+     distribution for 5 degrees of freedom for `H` and `N` dimensions
+     from single source of variance.
+
+   .. code-block:: python
+
+      from nmrstarlib.converter import Converter
+      from nmrstarlib.translator import StarFileToPeakList
+      from nmrstarlib.noise import NoiseGenerator
+
+      # create parameters dictionary for distribution
+      parameters = {"H_df": [5], "C_df": [None], "N_df": [5]}
+
+      # create chisquare noise generator
+      chisquare_noise_generator = NoiseGenerator(parameters, distribution_name="chisquare")
+
+      # Using valid BMRB id to access file from URL: from_path="18569"
+      converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
+                                               from_format="nmrstar", to_format="sparky",
+                                               spectrum_name="HNcoCACB",
+                                               noise_generator=chisquare_noise_generator))
+      converter.convert()
+
+
+   * Below is the list of all supported distribution functions along with their parameters:
+
+   .. code-block:: python
+
+      distribution_name: 'beta', parameters: ['a', 'b']
+      distribution_name: 'binomial', parameters: ['n', 'p']
+      distribution_name: 'chisquare', parameters: ['df']
+      distribution_name: 'exponential', parameters: ['scale']
+      distribution_name: 'f', parameters: ['dfnum', 'dfden']
+      distribution_name: 'gamma', parameters: ['shape', 'scale']
+      distribution_name: 'geometric', parameters: ['p']
+      distribution_name: 'gumbel', parameters: ['loc', 'scale']
+      distribution_name: 'hypergeometric', parameters: ['ngood', 'nbad', 'nsample']
+      distribution_name: 'laplace', parameters: ['loc', 'scale']
+      distribution_name: 'logistic', parameters: ['loc', 'scale']
+      distribution_name: 'lognormal', parameters: ['mean', 'sigma']
+      distribution_name: 'logseries', parameters: ['p']
+      distribution_name: 'negative_binomial', parameters: ['n', 'p']
+      distribution_name: 'noncentral_chisquare', parameters: ['df', 'nonc']
+      distribution_name: 'noncentral_f', parameters: ['dfnum', 'dfden', 'nonc']
+      distribution_name: 'normal', parameters: ['loc', 'scale']
+      distribution_name: 'pareto', parameters: ['a']
+      distribution_name: 'poisson', parameters: ['lam']
+      distribution_name: 'power', parameters: ['a']
+      distribution_name: 'rayleigh', parameters: ['scale']
+      distribution_name: 'triangular', parameters: ['left', 'mode', 'right']
+      distribution_name: 'uniform', parameters: ['low', 'high']
+      distribution_name: 'vonmises', parameters: ['mu', 'kappa']
+      distribution_name: 'wald', parameters: ['mean', 'scale']
+      distribution_name: 'weibull', parameters: ['a']
+      distribution_name: 'zipf', parameters: ['a']
 
 
 Spectrum description configuration file
@@ -751,6 +819,7 @@ descriptions for standard solution and solid-state NMR experiments.
    * List specific spectrum descriptions:
 
    >>> from nmrstarlib import nmrstarlib
+   >>> from nmrstarlib import nmrstarlib
    >>> nmrstarlib.list_spectrum_descriptions("HNcoCACB", "NCACX")
    {'HNcoCACB': {'Labels': ['H', 'N', 'CA/CB-1'],
                  'MinNumberPeaksPerSpinSystem': 2,
@@ -797,17 +866,17 @@ descriptions for standard solution and solid-state NMR experiments.
          from nmrstarlib import nmrstarlib
          from nmrstarlib.converter import Converter
          from nmrstarlib.translator import StarFileToPeakList
-         from nmrstarlib.noise import RandomNormalNoiseGenerator
+         from nmrstarlib.noise import NoiseGenerator
 
          # update SPECTRUM_DESCRIPTIONS
          nmrstarlib.update_constants(spectrum_descriptions_cfg="path/to/custom_spectrum_description.json")
 
          # create parameters dictionary for random normal distribution
-         parameters = {"H_mean": [0, 0], "C_mean": [0, 0], "N_mean": [0, 0],
-                       "H_std": [0, 0], "C_std": [0.01, 0.05], "N_std": [0.01, 0.05]}
+         parameters = {"H_loc": [None, None], "C_loc": [0, 0], "N_loc": [0, 0],
+                       "H_scale": [None, None], "C_scale": [0.01, 0.05], "N_scale": [0.01, 0.05]}
 
          # create random normal noise generator
-         random_normal_noise_generator = RandomNormalNoiseGenerator(parameters)
+         random_normal_noise_generator = NoiseGenerator(parameters)
 
          converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
                                                   from_format="nmrstar", to_format="sparky",
@@ -825,7 +894,7 @@ descriptions for standard solution and solid-state NMR experiments.
          from nmrstarlib import nmrstarlib
          from nmrstarlib.converter import Converter
          from nmrstarlib.translator import StarFileToPeakList
-         from nmrstarlib.noise import RandomNormalNoiseGenerator
+         from nmrstarlib.noise import NoiseGenerator
 
          custom_experiment_type = {
             "NCACX_custom": {
@@ -845,11 +914,11 @@ descriptions for standard solution and solid-state NMR experiments.
          nmrstarlib.SPECTRUM_DESCRIPTIONS.update(custom_experiment_type)
 
          # create parameters dictionary for random normal distribution
-         parameters = {"H_mean": [0, 0], "C_mean": [0, 0], "N_mean": [0, 0],
-                       "H_std": [0.001, 0.005], "C_std": [0, 0], "N_std": [0.01, 0.05]}
+         parameters = {"H_loc": [0, 0], "C_loc": [None, None], "N_loc": [0, 0],
+                       "H_scale": [0.001, 0.005], "C_scale": [None, None], "N_scale": [0.01, 0.05]}
 
          # create random normal noise generator
-         random_normal_noise_generator = RandomNormalNoiseGenerator(parameters)
+         random_normal_noise_generator = NoiseGenerator(parameters)
 
          # Using valid BMRB id to access file from URL: from_path="18569"
          converter = Converter(StarFileToPeakList(from_path="18569", to_path="18569.txt",
@@ -913,12 +982,10 @@ Command Line Interface functionality:
        nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>]
                                                                 [--to_plformat=<format>]
                                                                 [--split=<%>]
-                                                                [--H_std=<std>]
-                                                                [--C_std=<std>]
-                                                                [--N_std=<std>]
-                                                                [--H_mean=<mean>]
-                                                                [--C_mean=<mean>]
-                                                                [--N_mean=<mean>]
+                                                                [--H=<value>]
+                                                                [--C=<value>]
+                                                                [--N=<value>]
+                                                                [--distribution=<func>]
                                                                 [--bmrb_url=<url>]
                                                                 [--nmrstar_version=<version>]
                                                                 [--verbose]
@@ -941,13 +1008,11 @@ Command Line Interface functionality:
        --csview_format=<format>        Format to which save chamical shift table
                                        [default: svg].
        --split=<%>                     How to split peak list into chunks by percent [default: 100].
-       --H_std=<ppm>                   Standard deviation for H dimensions [default: 0].
-       --C_std=<ppm>                   Standard deviation for C dimensions [default: 0].
-       --N_std=<ppm>                   Standard deviation for N dimensions [default: 0].
-       --H_mean=<ppm>                  Mean for H dimensions [default: 0].
-       --C_mean=<ppm>                  Mean for C dimensions [default: 0].
-       --N_mean=<ppm>                  Mean for N dimensions [default: 0].
        --spectrum_descriptions=<path>  Path to custom spectrum descriptions file.
+       --distribution=<func>           Statistical distribution function [default: normal].
+       --H=<value>                     Statistical distribution parameter(s) for H dimension.
+       --C=<value>                     Statistical distribution parameter(s) for C dimension.
+       --N=<value>                     Statistical distribution parameter(s) for N dimension.
 
 
 Converting NMR-STAR files in bulk
@@ -1060,7 +1125,18 @@ One-to-one file simulations
 
       $ python3 -m nmrstarlib plsimulate 18569 18569_peaklist.txt HNcoCACB \
                 --from_format=nmrstar --to_format=sparky \
-                --H_std=0.001 --N_std=0.01 --C_std=0.01
+                --H=0,0.001 --N=0,0.01 --C=0,0.01
+
+   * Creating a `HNcoCACB` peak list file in `sparky`-like format and adding
+     noise values to peak dimensions from a single source of variance, i.e.
+     100% of peaks will have chemical shift values adjusted using noise values
+     from the defined chisquare distribution for degrees of freedom equal to 5:
+
+   .. code:: bash
+
+      $ python3 -m nmrstarlib plsimulate 18569 18569_peaklist.txt HNcoCACB \
+                --from_format=nmrstar --to_format=sparky \
+                --H=5 --N=5 --C=5 --distribution=chisquare
 
    * Creating a `HNcoCACB` peak list file in `sparky`-like format and adding
      noise values to `H` and `N` peak dimensions but not `C` peak dimension
@@ -1072,7 +1148,7 @@ One-to-one file simulations
 
       $ python3 -m nmrstarlib plsimulate bmr18569.str.gz 18569_peaklist.txt HNcoCACB \
                 --from_format=nmrstar --to_format=sparky \
-                --H_std=0.001 --N_std=0.01
+                --H=0,0.001 --N=0,0.01
 
    * Creating a `HNcoCACB` peak list file in `sparky`-like format and adding
      noise values to peak dimensions from two sources of variance, i.e.
@@ -1081,13 +1157,16 @@ One-to-one file simulations
      of variance, we need to provide how we want to split our peak list and
      provide statistical distribution parameters for both distributions. Let's
      say we want 70 % of peaks to have a smaller variance in `H` and `N` dimensions
-     and 30 % of peaks to have a larger variance in `H` and `N` dimensions:
+     and 30 % of peaks to have a larger variance in `H` and `N` dimensions. Note
+     that values per split are separated by ``,`` and then each value for each split
+     is separated by ``:``.
 
    .. code:: bash
 
       $ python3 -m nmrstarlib plsimulate 18569 18569_peaklist.txt HNcoCACB \
                 --from_format=nmrstar --to_format=sparky \
-                --plsplit=70,30 --H_std=0.001,0.005 --N_std=0.01,0.05
+                --plsplit=70,30 --H=0:0,0.001:0.005 --N=0:0,0.01:0.05
+
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available one-to-one and many-to-many
              input and output formats.
@@ -1111,7 +1190,7 @@ Many-to-many files simulations
    .. code:: bash
 
       $ python3 -m nmrstarlib plsimulate starfiles_dir peaklists.zip HNcoCACB \
-                --from_format=nmrstar --to_format=sparky --H_std=0.001 --N_std=0.01
+                --from_format=nmrstar --to_format=sparky --H=0,0.001 --N=0,0.01
 
    * Simulate `NCACX` peak lists from a directory of NMR-STAR formatted files
      to a tar.gz archive of peak list files, add random normal noise values to
@@ -1122,7 +1201,7 @@ Many-to-many files simulations
 
       $ python3 -m nmrstarlib plsimulate starfiles_dir peaklists.tar.gz NCACX \
                 --from_format=nmrstar --to_format=sparky --plsplit=70,30
-                --C_std=0.01,0.05 --N_std=0.01,0.07
+                --C=0:0,0.01:0.05 --N=0:0,0.01:0.07
 
    .. note:: See :mod:`nmrstarlib.converter` for full list of available one-to-one and many-to-many
              input and output formats.
