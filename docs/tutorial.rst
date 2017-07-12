@@ -561,8 +561,8 @@ examples.
        ...
       ]
 
-Creating simulated peak lists variance drawn from random normal distribution
-****************************************************************************
+Creating simulated peak lists with variance drawn from random normal distribution
+*********************************************************************************
 
    * Creating a `HNcoCACB` peak list file in `sparky`-like format and adding
      noise values to peak dimensions from a single source of variance, i.e.
@@ -704,8 +704,8 @@ Creating simulated peak lists variance drawn from random normal distribution
       ALA99H-ALA99N-ASP98CB	7.187801610413494	122.83147347445296	42.138
 
 
-Creating simulated peak lists variance drawn from other distribution types
-**************************************************************************
+Creating simulated peak lists with variance drawn from other distribution types
+*******************************************************************************
 
    * It is also possible to generate the simulated peak lists using other
      types of statistical distribution functions. For example, let's
