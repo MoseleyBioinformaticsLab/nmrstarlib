@@ -6,8 +6,7 @@ nmrstarlib.noise
 ~~~~~~~~~~~~~~~~
 
 This module provides the :class:`~nmrstarlib.noise.NoiseGenerator`
-abstract class and :class:`~nmrstarlib.noise.RandomNormalNoiseGenerator`
-for adding noise values to :class:`~nmrstarlib.plsimulator.Peak`
+class for adding noise values to :class:`~nmrstarlib.plsimulator.Peak`
 dimensions within a :class:`~nmrstarlib.plsimulator.PeakList`.
 """
 
