@@ -27,9 +27,8 @@ This package includes the following modules:
     and provides code example for utilizing the library.
 
 ``noise``
-    This module provides the :class:`~nmrstarlib.noise.NoiseGenerator` abstract class and derived
-    :class:`~nmrstarlib.noise.RandomNormalNoiseGenerator` for adding random normal noise values
-    to peaks in simulated peak list.
+    This module provides the :class:`~nmrstarlib.noise.NoiseGenerator` class 
+    for adding random normal noise values to peaks in simulated peak list.
 
 ``plsimulator``
     This module provides necessary interfaces in order to create a simulated
