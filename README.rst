@@ -2,16 +2,20 @@ nmrstarlib
 ==========
 
 .. image:: https://img.shields.io/pypi/l/nmrstarlib.svg
-   :target: https://pypi.python.org/pypi/nmrstarlib
+   :target: https://choosealicense.com/licenses/mit/
+   :alt: License information
 
 .. image:: https://img.shields.io/pypi/v/nmrstarlib.svg
    :target: https://pypi.python.org/pypi/nmrstarlib
+   :alt: Current library version
 
 .. image:: https://img.shields.io/pypi/pyversions/nmrstarlib.svg
    :target: https://pypi.python.org/pypi/nmrstarlib
+   :alt: Supported Python versions
 
 .. image:: https://readthedocs.org/projects/nmrstarlib/badge/?version=latest
-    :target: https://nmrstarlib.readthedocs.io/en/latest/?badge=latest
+   :target: http://nmrstarlib.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation status
 
 |
 
