@@ -4,7 +4,7 @@ import pytest
 
 from nmrstarlib.converter import Converter
 from nmrstarlib.translator import StarFileToPeakList
-from nmrstarlib.noise import RandomNormalNoiseGenerator
+from nmrstarlib.noise import NoiseGenerator
 
 
 def teardown_module(module):
@@ -17,11 +17,11 @@ def teardown_module(module):
 spectrum_names = ("CANCO", "CANCOCX", "CBCANH", "CBCAcoNH", "CCcoNH", "HBHAcoNH", "HNCA", "HNCACB", "HNCO", "HNcaCO",
                   "HNcoCA", "HNcoCACB", "HSQC", "HccoNH", "NCA", "NCACX", "NCO", "NCOCX")
 
-noise_generator = RandomNormalNoiseGenerator({"H_mean": [0], "C_mean": [0], "N_mean": [0],
-                                              "H_std": [0], "C_std": [0], "N_std": [0]})
+noise_generator = NoiseGenerator({"H_loc": [0], "C_loc": [0], "N_loc": [0],
+                                  "H_scale": [None], "C_scale": [None], "N_scale": [None]})
 
-noise_generator_with_split = RandomNormalNoiseGenerator({"H_mean": [0, 0], "C_mean": [0, 0], "N_mean": [0, 0],
-                                                         "H_std": [0, 0], "C_std": [0, 0], "N_std": [0, 0]})
+noise_generator_with_split = NoiseGenerator({"H_loc": [0, 0], "C_loc": [0, 0], "N_loc": [0, 0],
+                                             "H_scale": [None, None], "C_scale": [None, None], "N_scale": [None, None]})
 
 
 @pytest.mark.parametrize("spectrum_names_tuple,noise_generator,plsplit", [
