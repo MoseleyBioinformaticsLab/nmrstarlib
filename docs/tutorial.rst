@@ -733,38 +733,59 @@ Creating simulated peak lists with variance drawn from other distribution types
       converter.convert()
 
 
-   * Below is the list of all supported distribution functions along with their parameters:
+   * Below is the list of all supported distribution functions along with their parameters
+     if the numpy_ library is not installed:
+
 
    .. code-block:: python
 
       {
-      distribution_name: 'beta', parameters: ['a', 'b']
-      distribution_name: 'binomial', parameters: ['n', 'p']
-      distribution_name: 'chisquare', parameters: ['df']
-      distribution_name: 'exponential', parameters: ['scale']
-      distribution_name: 'f', parameters: ['dfnum', 'dfden']
-      distribution_name: 'gamma', parameters: ['shape', 'scale']
-      distribution_name: 'geometric', parameters: ['p']
-      distribution_name: 'gumbel', parameters: ['loc', 'scale']
-      distribution_name: 'hypergeometric', parameters: ['ngood', 'nbad', 'nsample']
-      distribution_name: 'laplace', parameters: ['loc', 'scale']
-      distribution_name: 'logistic', parameters: ['loc', 'scale']
-      distribution_name: 'lognormal', parameters: ['mean', 'sigma']
-      distribution_name: 'logseries', parameters: ['p']
-      distribution_name: 'negative_binomial', parameters: ['n', 'p']
-      distribution_name: 'noncentral_chisquare', parameters: ['df', 'nonc']
-      distribution_name: 'noncentral_f', parameters: ['dfnum', 'dfden', 'nonc']
-      distribution_name: 'normal', parameters: ['loc', 'scale']
-      distribution_name: 'pareto', parameters: ['a']
-      distribution_name: 'poisson', parameters: ['lam']
-      distribution_name: 'power', parameters: ['a']
-      distribution_name: 'rayleigh', parameters: ['scale']
-      distribution_name: 'triangular', parameters: ['left', 'mode', 'right']
-      distribution_name: 'uniform', parameters: ['low', 'high']
-      distribution_name: 'vonmises', parameters: ['mu', 'kappa']
-      distribution_name: 'wald', parameters: ['mean', 'scale']
-      distribution_name: 'weibull', parameters: ['a']
-      distribution_name: 'zipf', parameters: ['a']
+          {"function": "uniform", "parameters": ["low", "high"]},
+          {"function": "triangular", "parameters": ["left", "right", "mode"]},
+          {"function": "beta", "parameters": ["a", "b"]},
+          {"function": "exponential", "parameters": ["scale"]},
+          {"function": "gamma", "parameters": ["shape", "scale"]},
+          {"function": "gauss", "parameters": ["mu", "sigma"]},
+          {"function": "normal", "parameters": ["loc", "scale"]},
+          {"function": "lognormal", "parameters": ["mean", "sigma"]},
+          {"function": "vonmises", "parameters": ["mu", "kappa"]},
+          {"function": "pareto", "parameters": ["a"]}
+      }
+
+
+   * And the list of all supported distribution functions along with their parameters
+     if the numpy_ library is installed:
+
+   .. code-block:: python
+
+      {
+          {"function": "beta", "parameters": ["a", "b"]},
+          {"function": "binomial", "parameters": ["n", "p"]},
+          {"function": "chisquare", "parameters": ["df"]},
+          {"function": "exponential", "parameters": ["scale"]},
+          {"function": "f", "parameters": ["dfnum", "dfden"]},
+          {"function": "gamma", "parameters": ["shape", "scale"]},
+          {"function": "geometric", "parameters": ["p"]},
+          {"function": "gumbel", "parameters": ["loc", "scale"]},
+          {"function": "hypergeometric", "parameters": ["ngood", "nbad", "nsample"]},
+          {"function": "laplace", "parameters": ["loc", "scale"]},
+          {"function": "logistic", "parameters": ["loc", "scale"]},
+          {"function": "lognormal", "parameters": ["mean", "sigma"]},
+          {"function": "logseries", "parameters": ["p"]},
+          {"function": "negative_binomial", "parameters": ["n", "p"]},
+          {"function": "noncentral_chisquare", "parameters": ["df", "nonc"]},
+          {"function": "noncentral_f", "parameters": ["dfnum", "dfden", "nonc"]},
+          {"function": "normal", "parameters": ["loc", "scale"]},
+          {"function": "pareto", "parameters": ["a"]},
+          {"function": "poisson", "parameters": ["lam"]},
+          {"function": "power", "parameters": ["a"]},
+          {"function": "rayleigh", "parameters": ["scale"]},
+          {"function": "triangular", "parameters": ["left", "mode", "right"]},
+          {"function": "uniform", "parameters": ["low", "high"]},
+          {"function": "vonmises", "parameters": ["mu", "kappa"]},
+          {"function": "wald", "parameters": ["mean", "scale"]},
+          {"function": "weibull", "parameters": ["a"]},
+          {"function": "zipf", "parameters": ["a"]}
       }
 
 
@@ -1160,8 +1181,8 @@ One-to-one file simulations
      provide statistical distribution parameters for both distributions. Let's
      say we want 70 % of peaks to have a smaller variance in `H` and `N` dimensions
      and 30 % of peaks to have a larger variance in `H` and `N` dimensions. Note
-     that values per split are separated by ``,`` and then each value for each split
-     is separated by ``:``.
+     that values per split are separated by ``:`` and then parameters are separated
+     by ``,``.
 
    .. code:: bash
 
@@ -1235,3 +1256,5 @@ Visualizing chemical shift values
    .. image:: _static/images/18569_chem_shifts_GLU_THR_CA_CB_CG_CG2.png
       :width: 60%
       :align: center
+
+.. _numpy: http://www.numpy.org/

@@ -109,13 +109,18 @@ following commands:
       * The only dependency of the graphviz_ Python library is a working
         installation of Graphviz (`Graphviz download page`_).
 
-   * numpy_ for generating noise values from random normal distribution during peak list simulation.
+Optional dependencies
+~~~~~~~~~~~~~~~~~~~~~
+
+   * numpy_ for generating noise values from random distribution during peak list simulation.
       * To install the numpy_ Python library run the following:
 
         .. code:: bash
 
            python3 -m pip install numpy  # On Linux, Mac OS X
            py -3 -m pip install numpy    # On Windows
+
+      * If the numpy_ is not installed distributions from the :py:mod:`random` will be used.
 
 
 Basic usage
