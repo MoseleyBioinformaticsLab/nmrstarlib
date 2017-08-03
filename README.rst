@@ -6,11 +6,11 @@ nmrstarlib
    :alt: License information
 
 .. image:: https://img.shields.io/pypi/v/nmrstarlib.svg
-   :target: https://pypi.python.org/pypi/nmrstarlib
+   :target: https://pypi.org/project/nmrstarlib/
    :alt: Current library version
 
 .. image:: https://img.shields.io/pypi/pyversions/nmrstarlib.svg
-   :target: https://pypi.python.org/pypi/nmrstarlib
+   :target: https://pypi.org/project/nmrstarlib/
    :alt: Supported Python versions
 
 .. image:: https://readthedocs.org/projects/nmrstarlib/badge/?version=latest
