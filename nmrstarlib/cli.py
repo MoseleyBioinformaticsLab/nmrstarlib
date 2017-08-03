@@ -113,7 +113,3 @@ def cli(cmdargs):
 
         nmrstar_to_peaklist_converter = converter.Converter(file_generator=peaklist_file_translator)
         nmrstar_to_peaklist_converter.convert()
-
-#
-# args = docopt.docopt(__doc__, version=__version__)
-# cli(args)
