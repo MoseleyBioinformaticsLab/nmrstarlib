@@ -21,6 +21,10 @@ nmrstarlib
    :target: https://travis-ci.org/MoseleyBioinformaticsLab/nmrstarlib
    :alt: Travis CI status
 
+.. image:: https://codecov.io/gh/MoseleyBioinformaticsLab/nmrstarlib/branch/master/graphs/badge.svg?branch=master
+   :target: https://codecov.io/gh/MoseleyBioinformaticsLab/nmrstarlib
+   :alt: Code coverage information
+
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
