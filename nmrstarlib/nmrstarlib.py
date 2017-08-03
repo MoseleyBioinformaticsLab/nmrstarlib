@@ -369,7 +369,8 @@ class StarFile(OrderedDict):
                         print(u";\n{};\n".format(self[sf][sftag]), file=f)
 
                     elif len(self[sf][sftag].split()) > 1:
-                        print(u"{}_{}\t {}".format(tw * u" ", sftag, repr(self[sf][sftag])), file=f)
+                        # need to escape value with quotes (i.e. u"'{}'".format()) if value consists of two or more words
+                        print(u"{}_{}\t {}".format(tw * u" ", sftag, u"'{}'".format(self[sf][sftag])), file=f)
 
                     else:
                         print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
@@ -397,8 +398,8 @@ class StarFile(OrderedDict):
 
             # Then print the values
             for valuesdict in self[sf][sftag][1]:
-                # need to escape value with quotes (i.e. repr(value)) if value consists of two or more words
-                print(u"{}{}".format(tw * u" ", u" ".join([repr(value) if len(value.split()) > 1 else value for value
+                # need to escape value with quotes (i.e. u"'{}'".format()) if value consists of two or more words
+                print(u"{}{}".format(tw * u" ", u" ".join([u"'{}'".format(value) if len(value.split()) > 1 else value for value
                                                            in valuesdict.values()])), file=f)
         elif file_format is "json":
             print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)
