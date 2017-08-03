@@ -17,6 +17,10 @@ nmrstarlib
    :target: http://nmrstarlib.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation status
 
+.. image:: https://api.travis-ci.org/MoseleyBioinformaticsLab/nmrstarlib.svg?branch=master
+   :target: https://travis-ci.org/MoseleyBioinformaticsLab/nmrstarlib
+   :alt: Travis CI status
+
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
