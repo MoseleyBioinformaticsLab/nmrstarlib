@@ -95,7 +95,7 @@ Quickstart
 ~~~~~~~~~~
 
 Import `nmrstarlib` library and create generator function that will yield
-`nmrstarlib.nmrstarlib.StarFile` instance(s):
+`StarFile` instance(s):
 
 .. code:: python
 
@@ -138,8 +138,8 @@ This package is distributed under the MIT_ `license`.
 .. _ReadTheDocs: http://nmrstarlib.readthedocs.io/
 .. _User Guide: http://nmrstarlib.readthedocs.io/en/latest/guide.html
 .. _The nmrstarlib Tutorial: http://nmrstarlib.readthedocs.io/en/latest/tutorial.html
-.. _PyPI: https://pypi.python.org/pypi/nmrstarlib
+.. _PyPI: https://pypi.org/project/nmrstarlib/
 
-.. _MIT: http://opensource.org/licenses/MIT
+.. _MIT: https://choosealicense.com/licenses/mit/
 
 .. _10.1186/s12859-017-1580-5: http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1580-5
