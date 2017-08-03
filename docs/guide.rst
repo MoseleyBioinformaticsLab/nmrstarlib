@@ -120,7 +120,8 @@ Optional dependencies
            python3 -m pip install numpy  # On Linux, Mac OS X
            py -3 -m pip install numpy    # On Windows
 
-      * If the numpy_ is not installed distributions from the :py:mod:`random` will be used.
+      * If the numpy_ is not installed distributions from the Python standard library
+        :py:mod:`random` module will be used.
 
 
 Basic usage
