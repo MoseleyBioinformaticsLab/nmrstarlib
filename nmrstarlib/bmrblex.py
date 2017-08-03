@@ -77,7 +77,7 @@ def transform_text(input_txt):
                 line = inputq.popleft()
 
             multiline += line[:1]
-            outputq.append(multiline)
+            outputq.append(multiline[3:-1])  # remove NMR-STAR syntax from multiline string
 
             for character in line[1:]:
                 outputq.append(character)
@@ -108,8 +108,10 @@ def bmrblex(text):
                  u"!@$%^&*()_+:;?/>.<,~`|\{[}]-=")
 
     whitespace = u" \t\v\r\n"
+    comment = u"#"
     state = u" "
     token = u""
+    single_line_comment = u""
 
     while len(stream) > 0:
         nextnextchar = stream.popleft()
@@ -122,11 +124,15 @@ def bmrblex(text):
             else:
                 nextnextchar = u""
 
-            # Process multiline string or comment
+            # Process multiline string, comment, or single line comment
             if len(nextchar) > 1:
                 state = u" "
                 token = nextchar
                 break  # emit current token
+
+            elif nextchar in whitespace and nextnextchar in comment and state not in (u"'", u'"'):
+                single_line_comment = u""
+                state = u"#"
 
             if state is None:
                 token = u""  # past end of file
@@ -166,7 +172,15 @@ def bmrblex(text):
                 if nextchar == state:
                     if nextnextchar in whitespace:
                         state = u" "
+                        token = token[1:-1]  # remove single or double quotes from the ends
                         break
+
+            # Process single line comment
+            elif state == u"#":
+                single_line_comment += nextchar
+                if nextchar == u"\n":
+                    state = u" "
+                    break
 
             # Process regular (unquoted) token
             elif state == u"a":

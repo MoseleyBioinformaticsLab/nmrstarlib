@@ -356,16 +356,21 @@ class StarFile(OrderedDict):
                 print(u"{}_{}\n".format(sf, self[sf]), file=f)
             else:
                 for sftag in self[sf].keys():
-                    # handle the NMR-Star "multiline string"
-                    if self[sf][sftag][0] == u";":
-                        print(u"{}_{}".format(tw * u" ", sftag), file=f)
-                        print(u"{}".format(self[sf][sftag]), file=f)
-
                     # handle loops
-                    elif sftag[:5] == "loop_":
+                    if sftag[:5] == "loop_":
                         print(u"\n{}loop_".format(tw * u" "), file=f)
                         self.print_loop(sf, sftag, f, file_format, tw * 2)
                         print(u"\n{}stop_".format(tw * u" "), file=f)
+
+                    # handle the NMR-Star "multiline string"
+                    # if self[sf][sftag][0] == u";":
+                    elif self[sf][sftag].endswith(u"\n"):
+                        print(u"{}_{}".format(tw * u" ", sftag), file=f)
+                        print(u";\n{};\n".format(self[sf][sftag]), file=f)
+
+                    elif len(self[sf][sftag].split()) > 1:
+                        print(u"{}_{}\t {}".format(tw * u" ", sftag, repr(self[sf][sftag])), file=f)
+
                     else:
                         print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
 
@@ -392,8 +397,9 @@ class StarFile(OrderedDict):
 
             # Then print the values
             for valuesdict in self[sf][sftag][1]:
-                print(u"{}{}".format(tw * u" ", u" ".join(valuesdict.values())), file=f)
-
+                # need to escape value with quotes (i.e. repr(value)) if value consists of two or more words
+                print(u"{}{}".format(tw * u" ", u" ".join([repr(value) if len(value.split()) > 1 else value for value
+                                                           in valuesdict.values()])), file=f)
         elif file_format is "json":
             print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)
 
