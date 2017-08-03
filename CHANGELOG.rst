@@ -3,6 +3,27 @@
 Release History
 ===============
 
+2.0.3 (2017-08-03)
+~~~~~~~~~~~~~~~~~~
+
+**New features**
+
+- Added additional statistical distributions that can be used to generate per-dimension
+  noise values during peak list simulations (if numpy is installed additional statistical
+  distributions can be used).
+
+**Improvements**
+
+- Added continuous integration with Travis CI.
+- Added code coverage reports with Codecov.
+
+**Bugfixes**
+
+- Fixed issue #2: https://github.com/MoseleyBioinformaticsLab/nmrstarlib/issues/2
+- Fixed issue #5: https://github.com/MoseleyBioinformaticsLab/nmrstarlib/issues/5
+- Fixed issue #6: https://github.com/MoseleyBioinformaticsLab/nmrstarlib/issues/6
+
+
 2.0.2 (2017-06-09)
 ~~~~~~~~~~~~~~~~~~
 
@@ -11,7 +32,7 @@ Release History
 - Fixed bug related to sorting of the sequence ids which caused
   problems during sequence sites creation in peak list simulation.
   Sorting is based on integer sequence id value instead of its string
-  representation. 
+  representation.
 
 
 2.0.1 (2017-05-11)
