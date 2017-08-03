@@ -22,7 +22,7 @@ class DimensionComponent(object):
         """Dimension component.
 
         :param str label: Label of a dimension.
-        :param int position: Position of dimensions within a peak according to sequence site position, e.g. -1, 0, or +1.
+        :param int position: Position of dimensions within a peak according to sequence site position (-1, 0, or +1).
         """
         self.label = label
         self.position = position
@@ -35,7 +35,7 @@ class DimensionGroup(DimensionComponent):
         """Dimension group.
 
         :param str label: Label of a dimension.
-        :param int position: Position of dimensions within a peak according to sequence site position, e.g. -1, 0, or +1.
+        :param int position: Position of dimensions within a peak according to sequence site position, (-1, 0, or +1).
         """
         super(DimensionGroup, self).__init__(label, position)
         self.dimensions = []
@@ -48,7 +48,7 @@ class Dimension(DimensionComponent):
         """Concrete dimension intializer.
 
         :param str label: Label of a dimension.
-        :param int position: Position of dimensions within a peak according to sequence site position, e.g. -1, 0, or +1.
+        :param int position: Position of dimensions within a peak according to sequence site position, (-1, 0, or +1).
         :param str assignment: Chemical shift assignment of a dimension.
         :param float chemshift: Chemical shift value of a dimension.
         """
@@ -277,7 +277,7 @@ class PeakDescription(list):
         elif all(position >= 0 for position in self.relative_positions):
             seq_site_positions = self.relative_positions
         else:
-            # TODO: take min and max and detemine window size
+            # TODO: take min and max and determine window size
             raise NotImplementedError
 
         dimension_groups = self.create_dimension_groups(zip(dimensions, seq_site_positions))
@@ -317,7 +317,6 @@ class Spectrum(list):
         self.labels = labels
         self.min_spin_system_peaks = min_spin_system_peaks
         self.amino_acids_and_atoms = amino_acids_and_atoms
-
 
     @property
     def peak_templates(self):
