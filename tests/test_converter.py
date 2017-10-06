@@ -13,34 +13,81 @@ def teardown_module(module):
     if os.path.exists("tests/example_data/NMRSTAR2/tmp"):
         shutil.rmtree("tests/example_data/NMRSTAR2/tmp")
 
-
 @pytest.mark.parametrize("from_path,to_path,from_format,to_format", [
-    ("tests/example_data/NMRSTAR3/bmr18569.str", "tests/example_data/NMRSTAR3/tmp/bmr18569.json", "nmrstar", "json"),
-    ("tests/example_data/NMRSTAR2/bmr18569.str", "tests/example_data/NMRSTAR2/tmp/bmr18569.json", "nmrstar", "json"),
-    ("tests/example_data/NMRSTAR3/tmp/bmr18569.json", "tests/example_data/NMRSTAR3/tmp/bmr18569.str", "json", "nmrstar"),
-    ("tests/example_data/NMRSTAR2/tmp/bmr18569.json", "tests/example_data/NMRSTAR2/tmp/bmr18569.str", "json", "nmrstar")
+    # one-to-one file conversions
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "tests/example_data/NMRSTAR3/tmp/json/bmr18569.json", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "tests/example_data/NMRSTAR2/tmp/json/bmr18569.json", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.gz", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.gz", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.bz2", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.bz2", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json", "tests/example_data/NMRSTAR3/tmp/nmrstar/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json", "tests/example_data/NMRSTAR2/tmp/nmrstar/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/gz/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/gz/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/gz/bmr18569.str.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/gz/bmr18569.str.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/gz/bmr18569.str.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/gz/bmr18569.str.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/bz2/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/bz2/bmr18569.str", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/bz2/bmr18569.str.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/bz2/bmr18569.str.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/bz2/bmr18569.str.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/bmr18569.json.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/bz2/bmr18569.str.bz2", "json", "nmrstar"),
+    # many-to-many file conversions
+    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "nmrstar", "json"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR3/tmp/nmrstar/zip/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR2/tmp/nmrstar/zip/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR3/tmp/nmrstar/zip/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR2/tmp/nmrstar/zip/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR3/tmp/nmrstar/zip/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR2/tmp/nmrstar/zip/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR3/tmp/nmrstar/zip/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR2/tmp/nmrstar/zip/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR3/tmp/nmrstar/zip/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.zip", "tests/example_data/NMRSTAR2/tmp/nmrstar/zip/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR2/tmp/nmrstar/tar/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR2/tmp/nmrstar/tar/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR2/tmp/nmrstar/tar/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR2/tmp/nmrstar/tar/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar", "tests/example_data/NMRSTAR2/tmp/nmrstar/tar/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/tar/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/targz/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/targz/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/targz/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/targz/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/targz/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/targz/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/targz/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR3/tmp/nmrstar/targz/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.gz", "tests/example_data/NMRSTAR2/tmp/nmrstar/targz/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/tarbz2/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/tarbz2/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.zip", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.gz", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR3/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR3/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.bz2", "json", "nmrstar"),
+    ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.bz2", "json", "nmrstar")
 ])
-def test_one_to_one_conversion(from_path, to_path, from_format, to_format):
-    nmrstar_file_translator = StarFileToStarFile(from_path=from_path,
-                                                 to_path=to_path,
-                                                 from_format=from_format,
-                                                 to_format=to_format)
-    converter = Converter(file_generator=nmrstar_file_translator)
-    converter.convert()
-
-    starfile_generator = nmrstarlib.read_files(to_path)
-    starfile = next(starfile_generator)
-    assert starfile.bmrbid == "18569"
-
-
-@pytest.mark.parametrize("from_path,to_path,from_format,to_format", [
-    ("tests/example_data/NMRSTAR3/starfiles_directory", "tests/example_data/NMRSTAR3/tmp/starfiles_directory_json", "nmrstar", "json"),
-    ("tests/example_data/NMRSTAR2/starfiles_directory", "tests/example_data/NMRSTAR2/tmp/starfiles_directory_json", "nmrstar", "json"),
-    ("tests/example_data/NMRSTAR3/tmp/starfiles_directory_json", "tests/example_data/NMRSTAR3/tmp/starfiles_directory_nmrstar", "json", "nmrstar"),
-    ("tests/example_data/NMRSTAR2/tmp/starfiles_directory_json", "tests/example_data/NMRSTAR2/tmp/starfiles_directory_nmrstar", "json", "nmrstar")
-
-])
-def test_many_to_many_conversion(from_path, to_path, from_format, to_format):
+def test_converter_module(from_path, to_path, from_format, to_format):
     nmrstar_file_translator = StarFileToStarFile(from_path=from_path,
                                                  to_path=to_path,
                                                  from_format=from_format,
@@ -51,4 +98,4 @@ def test_many_to_many_conversion(from_path, to_path, from_format, to_format):
     starfile_generator = nmrstarlib.read_files(to_path)
     starfiles_list = list(starfile_generator)
     starfiles_ids_set = set(sf.bmrbid for sf in starfiles_list)
-    assert starfiles_ids_set == {"15000", "18569"}
+    assert starfiles_ids_set.issubset({"15000", "18569"})
