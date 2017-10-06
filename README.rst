@@ -25,6 +25,10 @@ nmrstarlib
    :target: https://codecov.io/gh/MoseleyBioinformaticsLab/nmrstarlib
    :alt: Code coverage information
 
+.. image:: https://img.shields.io/badge/DOI-10.1186%2Fs12859--017--1580--5-brightgreen.svg
+   :target: http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1580-5
+   :alt: Citation link
+
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
