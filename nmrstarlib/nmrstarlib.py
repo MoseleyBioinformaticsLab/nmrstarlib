@@ -155,7 +155,8 @@ class StarFile(OrderedDict):
             self.update(json_str)
             self.bmrbid = self[u"data"]
         else:
-            raise TypeError("Unknown file format")
+            print("Unknown file format")
+            # raise TypeError("Unknown file format")
         filehandle.close()
 
     def write(self, filehandle, file_format):
@@ -550,6 +551,7 @@ def _generate_filenames(sources):
         if os.path.isdir(source):
             for path, dirlist, filelist in os.walk(source):
                 for fname in filelist:
+                    print("Processing...", fname)
                     if GenericFilePath.is_compressed(fname):
                         if VERBOSE:
                             print("Skipping compressed file: {}".format(os.path.abspath(fname)))
@@ -653,7 +655,7 @@ class GenericFilePath(object):
                         filehandle.close()
 
             elif compressiontype == "bz2":
-                filehandle = bz2.open(io.BytesIO(path)) if is_url else bz2.open(path)
+                filehandle = bz2.BZ2File(io.BytesIO(path)) if is_url else bz2.BZ2File(path)
                 source = self.path
                 yield filehandle, source
                 filehandle.close()
