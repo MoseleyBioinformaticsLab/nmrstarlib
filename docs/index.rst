@@ -13,6 +13,7 @@ Documentation index:
    tutorial
    api
    license
+   multiply
 
 
 Indices and tables
