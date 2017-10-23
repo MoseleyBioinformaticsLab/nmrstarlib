@@ -22,7 +22,7 @@ Options:
     --bmrb_url=<url>                URL to BMRB REST interface [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
     --aa=<aa>                       Comma-separated amino acid three-letter codes (e.g. --aa=ALA,SER).
     --at=<at>                       Comma-separated BMRB atom codes (e.g. --at=CA,CB).
-    --aa_at=<aa:at>                 Comma-separated amino acid three-letter codes and corresponding atoms (e.g. --aa_at=ALA:CA,CB;SER:CA,CB).
+    --aa_at=<aa:at>                 Comma-separated amino acid three-letter codes and corresponding atoms (e.g. --aa_at=ALA-CA,CB:LYS-CB,CG,CD).
     --csview_outfile=<path>         Where to save chemical shifts table.
     --csview_format=<format>        Format to which save chemical shift table [default: svg].
     --plsplit=<%>                   How to split peak list into chunks by percent [default: 100].
@@ -61,10 +61,10 @@ def cli(cmdargs):
     elif cmdargs["csview"]:
         amino_acids = cmdargs["--aa"].split(",") if cmdargs["--aa"] else None
         atoms = cmdargs["--at"].split(",") if cmdargs["--at"] else None
-
         amino_acids_and_atoms = cmdargs["--aa_at"]
+
         if amino_acids_and_atoms:
-            amino_acids_and_atoms_list = [pair.split(':') for pair in amino_acids_and_atoms.split(';')]
+            amino_acids_and_atoms_list = [pair.split('-') for pair in amino_acids_and_atoms.split(':')]
             amino_acids_and_atoms = {aa: at.split(",") for aa, at in amino_acids_and_atoms_list}
         else:
             amino_acids_and_atoms = None

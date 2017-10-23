@@ -95,25 +95,23 @@ def test_convert_command(from_path, to_path, from_format, to_format):
     assert starfiles_ids_set.issubset({"15000", "18569"})
 
 
-@pytest.mark.parametrize("from_path,amino_acids,atoms,nmrstar_version", [
-    ("tests/example_data/NMRSTAR3/bmr18569.str", None, None, "3"),
-    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", None, "3"),
-    ("tests/example_data/NMRSTAR3/bmr18569.str", None, "CA,CB", "3"),
-    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", "CA,CB", "3"),
-    ("tests/example_data/NMRSTAR2/bmr18569.str", None, None, "2"),
-    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", None, "2"),
-    ("tests/example_data/NMRSTAR2/bmr18569.str", None, "CA,CB", "2"),
-    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", "CA,CB", "2")
+@pytest.mark.parametrize("from_path,amino_acids,atoms,amino_acids_and_atoms,nmrstar_version", [
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "", "", "", "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", "", "", "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "", "CA,CB", "", "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", "CA,CB", "", "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "", "", "ALA-CA,CB:LYS-CB,CG,CD", "3"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "", "", "", "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", "", "", "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "", "CA,CB", "", "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", "CA,CB", "", "2"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "", "", "ALA-CA,CB:LYS-CB,CG,CD", "2"),
 ])
-def test_csview_command(from_path, amino_acids, atoms, nmrstar_version):
+def test_csview_command(from_path, amino_acids, atoms, amino_acids_and_atoms, nmrstar_version):
 
-    if amino_acids == None and atoms == None:
-        command = "python -m nmrstarlib csview {} --nmrstar_version={}".format(from_path, nmrstar_version)
-    elif amino_acids == None and atoms != None:
-        command = "python -m nmrstarlib csview {} --at={} --nmrstar_version={}".format(from_path, atoms, nmrstar_version)
-    elif atoms == None and amino_acids != None:
-        command = "python -m nmrstarlib csview {} --aa={} --nmrstar_version={}".format(from_path, amino_acids, nmrstar_version)
-    else:
-        command = "python -m nmrstarlib csview {} --aa={} --at={} --nmrstar_version={}".format(from_path, amino_acids, atoms, nmrstar_version)
-
+    command = "python -m nmrstarlib csview {} --aa={} --at={} --aa_at={} --nmrstar_version={}".format(from_path,
+                                                                                           amino_acids,
+                                                                                           atoms,
+                                                                                           amino_acids_and_atoms,
+                                                                                           nmrstar_version)
     assert os.system(command) == 0
