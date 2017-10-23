@@ -44,7 +44,7 @@ class CSViewer(object):
     }}
     '''
 
-    def __init__(self, from_path, amino_acids=None, atoms=None, filename=None, csview_format="svg", nmrstar_version="3"):
+    def __init__(self, from_path, amino_acids=None, atoms=None, amino_acids_and_atoms=None, filename=None, csview_format="svg", nmrstar_version="3"):
         """CSViewer initializer.
 
         :param str from_path: Path to single NMR-STAR file or BMRB id.
@@ -52,6 +52,7 @@ class CSViewer(object):
         :type amino_acids: :py:class:`list` or :py:class:`tuple`
         :param atoms: Sequence of atom types, e.g. 'CA', 'CB', 'HA', etc. Leave as `None` to include everything.
         :type atoms: :py:class:`list` or :py:class:`tuple`
+        :param dict amino_acids_and_atoms: Amino acid and its atoms key-value pairs.
         :param str filename: Output filename chemical shifts graph to be saved.
         :param str csview_format: `svg`, `png`, `pdf`. See http://www.graphviz.org/doc/info/output.html for all available formats.
         :param str nmrstar_version: Version of NMR-STAR format to use for look up chemichal shifts loop.
@@ -61,6 +62,7 @@ class CSViewer(object):
         self.from_path = from_path
         self.amino_acids = amino_acids
         self.atoms = atoms
+        self.amino_acids_and_atoms = amino_acids_and_atoms
         self.filename = filename
         self.csview_format = csview_format
         self.nmrstar_version = nmrstar_version
@@ -76,6 +78,7 @@ class CSViewer(object):
         for starfile in fileio.read_files(self.from_path):
             chains = starfile.chem_shifts_by_residue(amino_acids=self.amino_acids,
                                                      atoms=self.atoms,
+                                                     amino_acids_and_atoms=self.amino_acids_and_atoms,
                                                      nmrstar_version=self.nmrstar_version)
 
             for idx, chemshifts_dict in enumerate(chains):

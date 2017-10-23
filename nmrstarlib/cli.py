@@ -8,7 +8,7 @@ Usage:
     nmrstarlib -h | --help
     nmrstarlib --version
     nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>] [--to_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose]
-    nmrstarlib csview <starfile_path> [--amino_acids=<aa>] [--atoms=<at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose] [--show]
+    nmrstarlib csview <starfile_path> [--aa=<aa>] [--at=<at>] [--aa_at=<aa:at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose] [--show]
     nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--distribution=<func>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
 
 Options:
@@ -20,8 +20,9 @@ Options:
     --to_format=<format>            Output file format, available formats: nmrstar, json [default: json].
     --nmrstar_version=<version>     Version of NMR-STAR format to use, available: 2, 3 [default: 3].
     --bmrb_url=<url>                URL to BMRB REST interface [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
-    --amino_acids=<aa>              Comma-separated amino acid three-letter codes.
-    --atoms=<at>                    Comma-separated BMRB atom codes.
+    --aa=<aa>                       Comma-separated amino acid three-letter codes (e.g. --aa=ALA,SER).
+    --at=<at>                       Comma-separated BMRB atom codes (e.g. --at=CA,CB).
+    --aa_at=<aa:at>                 Comma-separated amino acid three-letter codes and corresponding atoms (e.g. --aa_at=ALA:CA,CB;SER:CA,CB).
     --csview_outfile=<path>         Where to save chemical shifts table.
     --csview_format=<format>        Format to which save chemical shift table [default: svg].
     --plsplit=<%>                   How to split peak list into chunks by percent [default: 100].
@@ -58,12 +59,20 @@ def cli(cmdargs):
         nmrstar_converter.convert()
 
     elif cmdargs["csview"]:
-        aminoacids = cmdargs["--amino_acids"].split(",") if cmdargs["--amino_acids"] else []
-        atoms = cmdargs["--atoms"].split(",") if cmdargs["--atoms"] else []
+        amino_acids = cmdargs["--aa"].split(",") if cmdargs["--aa"] else None
+        atoms = cmdargs["--at"].split(",") if cmdargs["--at"] else None
+
+        amino_acids_and_atoms = cmdargs["--aa_at"]
+        if amino_acids_and_atoms:
+            amino_acids_and_atoms_list = [pair.split(':') for pair in amino_acids_and_atoms.split(';')]
+            amino_acids_and_atoms = {aa: at.split(",") for aa, at in amino_acids_and_atoms_list}
+        else:
+            amino_acids_and_atoms = None
 
         chemshift_viewer = csviewer.CSViewer(from_path=cmdargs["<starfile_path>"],
-                                             amino_acids=aminoacids,
+                                             amino_acids=amino_acids,
                                              atoms=atoms,
+                                             amino_acids_and_atoms=amino_acids_and_atoms,
                                              filename=cmdargs["--csview_outfile"],
                                              csview_format=cmdargs["--csview_format"],
                                              nmrstar_version=cmdargs["--nmrstar_version"])
