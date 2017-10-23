@@ -2,7 +2,7 @@ import os
 import shutil
 import pytest
 
-from nmrstarlib import nmrstarlib
+import nmrstarlib
 from nmrstarlib.converter import Converter
 from nmrstarlib.translator import StarFileToStarFile
 

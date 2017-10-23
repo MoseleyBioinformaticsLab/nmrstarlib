@@ -2,7 +2,7 @@ import json
 import collections
 import pytest
 
-from nmrstarlib import nmrstarlib
+import nmrstarlib
 
 
 @pytest.mark.parametrize("test_input,test_output,amino_acids,atoms,amino_acids_and_atoms", [

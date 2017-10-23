@@ -1,5 +1,5 @@
 import pytest
-from nmrstarlib import nmrstarlib
+import nmrstarlib
 
 
 @pytest.mark.parametrize("source", [

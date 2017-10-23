@@ -2,7 +2,7 @@ import os
 import shutil
 import pytest
 
-from nmrstarlib import nmrstarlib
+import nmrstarlib
 
 
 def teardown_module(module):
@@ -86,13 +86,34 @@ def teardown_module(module):
     ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.bz2", "json", "nmrstar")
 ])
 def test_convert_command(from_path, to_path, from_format, to_format):
-    command = "python -m nmrstarlib convert {} {} --from_format={} --to_format={}".format(from_path,
-                                                                                           to_path,
-                                                                                           from_format,
-                                                                                           to_format)
+    command = "python -m nmrstarlib convert {} {} --from_format={} --to_format={}".format(from_path, to_path, from_format, to_format)
     assert os.system(command) == 0
 
     starfile_generator = nmrstarlib.read_files(to_path)
     starfiles_list = list(starfile_generator)
     starfiles_ids_set = set(sf.bmrbid for sf in starfiles_list)
     assert starfiles_ids_set.issubset({"15000", "18569"})
+
+
+@pytest.mark.parametrize("from_path,amino_acids,atoms,nmrstar_version", [
+    ("tests/example_data/NMRSTAR3/bmr18569.str", None, None, "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", None, "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", None, "CA,CB", "3"),
+    ("tests/example_data/NMRSTAR3/bmr18569.str", "SER,MET", "CA,CB", "3"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", None, None, "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", None, "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", None, "CA,CB", "2"),
+    ("tests/example_data/NMRSTAR2/bmr18569.str", "SER,MET", "CA,CB", "2")
+])
+def test_csview_command(from_path, amino_acids, atoms, nmrstar_version):
+
+    if amino_acids == None and atoms == None:
+        command = "python3 -m nmrstarlib csview {} --nmrstar_version={}".format(from_path, nmrstar_version)
+    elif amino_acids == None and atoms != None:
+        command = "python3 -m nmrstarlib csview {} --atoms={} --nmrstar_version={}".format(from_path, atoms, nmrstar_version)
+    elif atoms == None and amino_acids != None:
+        command = "python3 -m nmrstarlib csview {} --amino_acids={} --nmrstar_version={}".format(from_path, amino_acids, nmrstar_version)
+    else:
+        command = "python3 -m nmrstarlib csview {} --amino_acids={} --atoms={} --nmrstar_version={}".format(from_path, amino_acids, atoms, nmrstar_version)
+
+    assert os.system(command) == 0
