@@ -108,12 +108,12 @@ def test_convert_command(from_path, to_path, from_format, to_format):
 def test_csview_command(from_path, amino_acids, atoms, nmrstar_version):
 
     if amino_acids == None and atoms == None:
-        command = "python3 -m nmrstarlib csview {} --nmrstar_version={}".format(from_path, nmrstar_version)
+        command = "python -m nmrstarlib csview {} --nmrstar_version={}".format(from_path, nmrstar_version)
     elif amino_acids == None and atoms != None:
-        command = "python3 -m nmrstarlib csview {} --atoms={} --nmrstar_version={}".format(from_path, atoms, nmrstar_version)
+        command = "python -m nmrstarlib csview {} --at={} --nmrstar_version={}".format(from_path, atoms, nmrstar_version)
     elif atoms == None and amino_acids != None:
-        command = "python3 -m nmrstarlib csview {} --amino_acids={} --nmrstar_version={}".format(from_path, amino_acids, nmrstar_version)
+        command = "python -m nmrstarlib csview {} --aa={} --nmrstar_version={}".format(from_path, amino_acids, nmrstar_version)
     else:
-        command = "python3 -m nmrstarlib csview {} --amino_acids={} --atoms={} --nmrstar_version={}".format(from_path, amino_acids, atoms, nmrstar_version)
+        command = "python -m nmrstarlib csview {} --aa={} --at={} --nmrstar_version={}".format(from_path, amino_acids, atoms, nmrstar_version)
 
     assert os.system(command) == 0
