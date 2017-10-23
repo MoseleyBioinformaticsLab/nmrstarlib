@@ -40,6 +40,14 @@ This package includes the following modules:
     :class:`~nmrstarlib.translator.StarFileToPeakList` for conversion of NMR-STAR
     formatted files into peak list files using chemical shift values and assignment
     information.
+
+``fileio``
+    This module provides the :func:`~nmrstarlib.fileio.read_files` generator
+    to open files from different sources (single file/multiple files on a local 
+    machine, directory/archive of files, URL address of a file).
 """
 
-__version__ = "2.0.3"
+__version__ = "2.0.4"
+
+
+from .fileio import read_files

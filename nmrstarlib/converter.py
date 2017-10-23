@@ -108,8 +108,7 @@ import tarfile
 import bz2
 import gzip
 
-from . import nmrstarlib
-
+from . import fileio
 
 class Converter(object):
     """Converter class to convert BMRB NMR-STAR files from NMR-STAR to JSON or from JSON to NMR-STAR format."""
@@ -135,7 +134,7 @@ class Converter(object):
 
         if os.path.isdir(self.file_generator.from_path):
             self._many_to_many()
-        elif os.path.isfile(self.file_generator.from_path) or nmrstarlib.GenericFilePath.is_url(self.file_generator.from_path):
+        elif os.path.isfile(self.file_generator.from_path) or fileio.GenericFilePath.is_url(self.file_generator.from_path):
             if self.file_generator.from_path_compression in ("zip", "tar", "tar.gz", "tar.bz2"):
                 self._many_to_many()
             elif self.file_generator.from_path_compression in ("gz", "bz2"):

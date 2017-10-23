@@ -14,6 +14,7 @@ for converting NMR-STAR formatted file into simulated peak list file.
 import itertools
 
 from . import nmrstarlib
+from . import fileio
 from . import plsimulator
 
 
@@ -32,8 +33,8 @@ class Translator(object):
         self.to_path = to_path
         self.from_format = from_format
         self.to_format = to_format
-        self.from_path_compression = nmrstarlib.GenericFilePath.is_compressed(from_path)
-        self.to_path_compression = nmrstarlib.GenericFilePath.is_compressed(to_path)
+        self.from_path_compression = fileio.GenericFilePath.is_compressed(from_path)
+        self.to_path_compression = fileio.GenericFilePath.is_compressed(to_path)
 
     def __iter__(self):
         """Abstract iterator must be implemented in a subclass."""
@@ -62,7 +63,7 @@ class StarFileToStarFile(Translator):
         :return: instance of :class:`~nmrstarlib.nmrstarlib.StarFile` object instance.
         :rtype: :class:`~nmrstarlib.nmrstarlib.StarFile`
         """
-        for starfile in nmrstarlib.read_files(self.from_path):
+        for starfile in fileio.read_files(self.from_path):
             yield starfile
 
 
@@ -248,7 +249,7 @@ class StarFileToPeakList(Translator):
         :return: instance of :class:`~nmrstarlib.plsimulator.PeakList` object instance.
         :rtype: :class:`~nmrstarlib.plsimulator.PeakList`
         """
-        for starfile in nmrstarlib.read_files(self.from_path):
+        for starfile in fileio.read_files(self.from_path):
             chains = starfile.chem_shifts_by_residue(amino_acids_and_atoms=self.spectrum.amino_acids_and_atoms,
                                                      nmrstar_version=self.nmrstar_version)
 

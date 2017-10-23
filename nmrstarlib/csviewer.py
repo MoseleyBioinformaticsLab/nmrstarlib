@@ -10,8 +10,7 @@ that visualizes chemical shifts values.
 """
 
 from graphviz import Source
-from . import nmrstarlib
-
+from . import fileio
 
 class CSViewer(object):
     """Chemical Shifts Viewer uses :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue`
@@ -74,7 +73,7 @@ class CSViewer(object):
         :return: None
         :rtype: :py:obj:`None`
         """
-        for starfile in nmrstarlib.read_files(self.from_path):
+        for starfile in fileio.read_files(self.from_path):
             chains = starfile.chem_shifts_by_residue(amino_acids=self.amino_acids,
                                                      atoms=self.atoms,
                                                      nmrstar_version=self.nmrstar_version)
