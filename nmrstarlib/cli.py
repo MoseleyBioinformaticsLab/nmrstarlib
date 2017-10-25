@@ -8,7 +8,7 @@ Usage:
     nmrstarlib -h | --help
     nmrstarlib --version
     nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>] [--to_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose]
-    nmrstarlib csview <starfile_path> [--aa=<aa>] [--at=<at>] [--aa_at=<aa:at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose] [--show]
+    nmrstarlib csview <starfile_path> [--aa=<aa>] [--at=<at>] [--aa_at=<aa-at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose] [--show]
     nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--distribution=<func>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
 
 Options:
@@ -22,7 +22,7 @@ Options:
     --bmrb_url=<url>                URL to BMRB REST interface [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
     --aa=<aa>                       Comma-separated amino acid three-letter codes (e.g. --aa=ALA,SER).
     --at=<at>                       Comma-separated BMRB atom codes (e.g. --at=CA,CB).
-    --aa_at=<aa:at>                 Comma-separated amino acid three-letter codes and corresponding atoms (e.g. --aa_at=ALA-CA,CB:LYS-CB,CG,CD).
+    --aa_at=<aa-at>                 Amino acid three-letter codes (keys) and corresponding atoms (values) (e.g. --aa_at=ALA-CA,CB:LYS-CB,CG,CD).
     --csview_outfile=<path>         Where to save chemical shifts table.
     --csview_format=<format>        Format to which save chemical shift table [default: svg].
     --plsplit=<%>                   How to split peak list into chunks by percent [default: 100].
@@ -93,7 +93,7 @@ def cli(cmdargs):
 
             for dim in ("H", "N", "C"):
                 params = cmdargs["--{}".format(dim)]
-                if params is None:
+                if params in (None, ""):
                     for param_name in distribution_parameter_names:
                         parameters["{}_{}".format(dim, param_name)].append(None)
                 else:
