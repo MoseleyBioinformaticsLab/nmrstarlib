@@ -37,6 +37,8 @@ distributions = {"uniform": {"function": random.uniform,
 try:
     import numpy as np
 
+    NUMPY_AVAILABLE = True
+
     np_distributions = {"normal": {"function": np.random.normal,
                                    "parameters": ["loc", "scale"]},
                         "beta": {"function": np.random.beta,
@@ -101,7 +103,7 @@ except ImportError:
 class NoiseGenerator(object):
     """Noise generator class."""
 
-    def __init__(self, parameters=None, distribution_name="normal"):
+    def __init__(self, parameters=None, distribution_name="normal", seed=None):
         """Noise generator initializer.
 
         :param dict parameters: Statistical distribution parameters per each peak list split.
@@ -112,6 +114,12 @@ class NoiseGenerator(object):
 
         if distribution_name not in distributions:
             raise KeyError('Distribution: "{}" not in a list of allowed distributions'.format(distribution_name))
+
+        if seed is not None:
+            random.seed(seed)
+
+            if NUMPY_AVAILABLE:
+                np.random.seed(seed)
 
         self.parameter_names = {name[2:] for name in parameters.keys()}
         self.distribution_parameter_names = distributions[distribution_name]["parameters"]

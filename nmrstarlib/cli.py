@@ -9,7 +9,7 @@ Usage:
     nmrstarlib --version
     nmrstarlib convert (<from_path> <to_path>) [--from_format=<format>] [--to_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose]
     nmrstarlib csview <starfile_path> [--aa=<aa>] [--at=<at>] [--aa_at=<aa-at>] [--csview_outfile=<path>] [--csview_format=<format>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--verbose] [--show]
-    nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--distribution=<func>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
+    nmrstarlib plsimulate (<from_path> <to_path> <spectrum>) [--from_format=<format>] [--to_format=<format>] [--plsplit=<%>] [--distribution=<func>] [--seed=<value>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb_url=<url>] [--nmrstar_version=<version>] [--spectrum_descriptions=<path>] [--verbose]
 
 Options:
     -h, --help                      Show this screen.
@@ -28,6 +28,7 @@ Options:
     --plsplit=<%>                   How to split peak list into chunks by percent [default: 100].
     --spectrum_descriptions=<path>  Path to custom spectrum descriptions file.
     --distribution=<func>           Statistical distribution function [default: normal].
+    --seed=<value>                  Integer value used to initialize a pseudorandom number generator during peak list simulation.
     --H=<value>                     Statistical distribution parameter(s) for H dimension.
     --C=<value>                     Statistical distribution parameter(s) for C dimension.
     --N=<value>                     Statistical distribution parameter(s) for N dimension.
@@ -84,6 +85,7 @@ def cli(cmdargs):
 
         plsplit = tuple(float(i) for i in cmdargs["--plsplit"].split(","))
         distribution_name = cmdargs["--distribution"]
+        seed = int(cmdargs["--seed"])
         distribution_parameter_names = noise.distributions[distribution_name]["parameters"]
 
         if not distribution_parameter_names:
@@ -111,7 +113,7 @@ def cli(cmdargs):
                 param_values = given_values + missing_values
                 parameters[param_name] = tuple(param_values)
 
-        noise_generator = noise.NoiseGenerator(parameters=parameters, distribution_name=distribution_name)
+        noise_generator = noise.NoiseGenerator(parameters=parameters, distribution_name=distribution_name, seed=seed)
 
         peaklist_file_translator = translator.StarFileToPeakList(from_path=cmdargs["<from_path>"],
                                                                  to_path=cmdargs["<to_path>"],

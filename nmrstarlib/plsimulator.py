@@ -86,7 +86,7 @@ class Peak(list):
         """
         return [dim.chemshift for dim in self]
 
-    def apply_noise(self, noise_generator, split_idx):
+    def apply_noise(self, noise_generator, split_idx, ndigits=6):
         """Apply noise to dimensions within a peak.
 
         :param noise_generator: Noise generator object.
@@ -96,7 +96,7 @@ class Peak(list):
         """
         noise = noise_generator.generate(self.labels, split_idx)
         for dim, noise_value in zip(self, noise):
-            dim.chemshift += noise_value
+            dim.chemshift = round(dim.chemshift + noise_value, ndigits)
 
 
 class PeakList(list):
