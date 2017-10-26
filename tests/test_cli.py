@@ -87,7 +87,7 @@ def teardown_module(module):
     ("tests/example_data/NMRSTAR2/tmp/json/dir/starfiles_files_json.tar.bz2", "tests/example_data/NMRSTAR2/tmp/nmrstar/tarbz2/starfiles_nmrstar.tar.bz2", "json", "nmrstar")
 ])
 def test_convert_command(from_path, to_path, from_format, to_format):
-    command = "python -m nmrstarlib convert {} {} --from_format={} --to_format={}".format(from_path, to_path, from_format, to_format)
+    command = "python -m nmrstarlib convert {} {} --from-format={} --to-format={}".format(from_path, to_path, from_format, to_format)
     assert os.system(command) == 0
 
     starfile_generator = nmrstarlib.read_files(to_path)
@@ -110,11 +110,11 @@ def test_convert_command(from_path, to_path, from_format, to_format):
 ])
 def test_csview_command(from_path, amino_acids, atoms, amino_acids_and_atoms, nmrstar_version):
 
-    command = "python -m nmrstarlib csview {} --aa={} --at={} --aa_at={} --nmrstar_version={}".format(from_path,
-                                                                                           amino_acids,
-                                                                                           atoms,
-                                                                                           amino_acids_and_atoms,
-                                                                                           nmrstar_version)
+    command = "python -m nmrstarlib csview {} --aa={} --at={} --aa-at={} --nmrstar-version={}".format(from_path,
+                                                                                                      amino_acids,
+                                                                                                      atoms,
+                                                                                                      amino_acids_and_atoms,
+                                                                                                      nmrstar_version)
     assert os.system(command) == 0
 
 
@@ -237,8 +237,8 @@ def test_plsimulate_command(from_path, to_path, test_path, spectrum_name, from_f
     to_path = to_path.format(nmrstar_version, spectrum_name)
     test_path = test_path.format(nmrstar_version, spectrum_name)
 
-    command = "python -m nmrstarlib plsimulate {} {} {} --from_format={} --to_format={} --plsplit={} " \
-              "--distribution={} --H={} --C={} --N={} --seed={} --nmrstar_version={}".\
+    command = "python -m nmrstarlib plsimulate {} {} {} --from-format={} --to-format={} --plsplit={} " \
+              "--distribution={} --H={} --C={} --N={} --seed={} --nmrstar-version={}".\
         format(from_path, to_path, spectrum_name, from_format, to_format, plsplit, distribution, H_dim, C_dim, N_dim, seed, nmrstar_version)
 
     assert os.system(command) == 0
