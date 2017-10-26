@@ -3,6 +3,18 @@
 Release History
 ===============
 
+2.0.4 (2017-10-26)
+~~~~~~~~~~~~~~~~~~
+
+**New features**
+
+- Added seed optional parameter to keep simulated peak lists reproducible from run to run.
+
+**Improvements**
+- Improved cli option names.
+- Additional unit tests.
+
+
 2.0.3 (2017-08-03)
 ~~~~~~~~~~~~~~~~~~
 
