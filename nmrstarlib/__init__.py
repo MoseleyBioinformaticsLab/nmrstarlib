@@ -47,7 +47,7 @@ This package includes the following modules:
     machine, directory/archive of files, URL address of a file).
 """
 
-__version__ = "2.0.4"
+__version__ = "2.0.5"
 
 
 from .fileio import read_files

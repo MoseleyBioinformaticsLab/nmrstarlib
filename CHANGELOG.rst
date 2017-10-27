@@ -3,6 +3,16 @@
 Release History
 ===============
 
+
+2.0.5 (2017-10-27)
+~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Fixed bug for files that does not end with '\n'.
+- Cleaned up file printing functionality.
+
+
 2.0.4 (2017-10-26)
 ~~~~~~~~~~~~~~~~~~
 
@@ -11,6 +21,7 @@ Release History
 - Added seed optional parameter to keep simulated peak lists reproducible from run to run.
 
 **Improvements**
+- Exposed `read_files` method at the `nmrstarlib` package-level.
 - Improved cli option names.
 - Additional unit tests.
 
