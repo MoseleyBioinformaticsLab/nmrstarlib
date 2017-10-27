@@ -103,7 +103,7 @@ Import `nmrstarlib` library and create generator function that will yield
 
 .. code:: python
 
-   >>> from nmrstarlib import nmrstarlib
+   >>> import nmrstarlib
    >>>
    >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
    >>> starfile_gen = nmrstarlib.read_files("path")
