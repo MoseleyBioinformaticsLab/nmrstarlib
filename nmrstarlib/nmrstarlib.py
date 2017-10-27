@@ -327,6 +327,7 @@ class StarFile(OrderedDict):
                     self.print_saveframe(saveframe, f, file_format, tw)
                     print(u"\nsave_\n\n", file=f)
 
+
         elif file_format is "json":
             print(self._to_json(), file=f)
 
@@ -343,28 +344,24 @@ class StarFile(OrderedDict):
         :rtype: :py:obj:`None`
         """
         if file_format is "nmrstar":
-            if sf == u"data":
-                print(u"{}_{}\n".format(sf, self[sf]), file=f)
-            else:
-                for sftag in self[sf].keys():
-                    # handle loops
-                    if sftag[:5] == "loop_":
-                        print(u"\n{}loop_".format(tw * u" "), file=f)
-                        self.print_loop(sf, sftag, f, file_format, tw * 2)
-                        print(u"\n{}stop_".format(tw * u" "), file=f)
+            for sftag in self[sf].keys():
+                # handle loops
+                if sftag[:5] == "loop_":
+                    print(u"\n{}loop_".format(tw * u" "), file=f)
+                    self.print_loop(sf, sftag, f, file_format, tw * 2)
+                    print(u"\n{}stop_".format(tw * u" "), file=f)
 
-                    # handle the NMR-Star "multiline string"
-                    # if self[sf][sftag][0] == u";":
-                    elif self[sf][sftag].endswith(u"\n"):
-                        print(u"{}_{}".format(tw * u" ", sftag), file=f)
-                        print(u";\n{};\n".format(self[sf][sftag]), file=f)
+                # handle the NMR-Star "multiline string"
+                elif self[sf][sftag].endswith(u"\n"):
+                    print(u"{}_{}".format(tw * u" ", sftag), file=f)
+                    print(u";\n{};".format(self[sf][sftag]), file=f)
 
-                    elif len(self[sf][sftag].split()) > 1:
-                        # need to escape value with quotes (i.e. u"'{}'".format()) if value consists of two or more words
-                        print(u"{}_{}\t {}".format(tw * u" ", sftag, u"'{}'".format(self[sf][sftag])), file=f)
+                elif len(self[sf][sftag].split()) > 1:
+                    # need to escape value with quotes (i.e. u"'{}'".format()) if value consists of two or more words
+                    print(u"{}_{}\t {}".format(tw * u" ", sftag, u"'{}'".format(self[sf][sftag])), file=f)
 
-                    else:
-                        print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
+                else:
+                    print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
 
         elif file_format is "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
