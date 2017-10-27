@@ -88,6 +88,8 @@ def transform_text(input_txt):
 
         outputq.append(u"\n")
 
+    outputq.extend([u"\n", u""])  # end of file signal
+
     return outputq
 
 
