@@ -7,6 +7,7 @@ nmrstarlib.fileio
 
 This module provides routines for reading ``NMR-STAR`` formatted files
 from difference kinds of sources:
+
    * Single ``NMR-STAR`` formatted file on a local machine.
    * Directory containing multiple ``NMR-STAR`` formatted files.
    * Compressed zip/tar archive of ``NMR-STAR`` formatted files.
@@ -43,7 +44,8 @@ def _generate_filenames(sources):
         if os.path.isdir(source):
             for path, dirlist, filelist in os.walk(source):
                 for fname in filelist:
-                    print("Processing...", fname)
+                    if nmrstarlib.VERBOSE:
+                        print("Processing file: {}".format(os.path.abspath(fname)))
                     if GenericFilePath.is_compressed(fname):
                         if nmrstarlib.VERBOSE:
                             print("Skipping compressed file: {}".format(os.path.abspath(fname)))
