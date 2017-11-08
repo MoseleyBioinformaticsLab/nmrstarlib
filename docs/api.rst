@@ -42,3 +42,9 @@ The nmrstarlib API Reference
    :members:
    :special-members:
    :private-members:
+
+.. automodule:: nmrstarlib.fileio
+   :member-order: bysource
+   :members:
+   :special-members:
+   :private-members:
