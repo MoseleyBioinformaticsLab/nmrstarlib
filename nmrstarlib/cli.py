@@ -85,7 +85,7 @@ def cli(cmdargs):
 
         plsplit = tuple(float(i) for i in cmdargs["--plsplit"].split(","))
         distribution_name = cmdargs["--distribution"]
-        seed = int(cmdargs["--seed"])
+        seed = int(cmdargs["--seed"]) if cmdargs["--seed"] else None
         distribution_parameter_names = noise.distributions[distribution_name]["parameters"]
 
         if not distribution_parameter_names:
