@@ -113,8 +113,8 @@ Import `nmrstarlib` library and create generator function that will yield
    >>>
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_demo.gif
-   :width: 50%
    :align: center
+
 
 .. note:: Read the `User Guide`_ and `The nmrstarlib Tutorial`_ on ReadTheDocs_
           to learn more and to see code examples on using the `nmrstarlib` as a
