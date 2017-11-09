@@ -1,0 +1,129 @@
+data_15000
+
+#######################
+#  Entry information  #
+#######################
+
+save_entry_information
+   _Entry.Sf_category                    entry_information
+   _Entry.Sf_framecode                   entry_information
+   _Entry.ID                             15000
+   _Entry.Title                         
+;
+Solution structure of chicken villin headpiece subdomain containing a fluorinated side chain in the core
+;
+   _Entry.Type                           macromolecule
+   _Entry.Version_type                   original
+   _Entry.Submission_date                2006-09-07
+   _Entry.Accession_date                 2006-09-07
+   _Entry.Last_release_date              .
+   _Entry.Original_release_date          .
+   _Entry.Origination                    author
+   _Entry.NMR_STAR_version               3.1.1.61
+   _Entry.Original_NMR_STAR_version      .
+   _Entry.Experimental_method            NMR
+   _Entry.Experimental_method_subtype    solution
+   _Entry.Details                        .
+   _Entry.BMRB_internal_directory_name   .
+
+   loop_
+      _Entry_author.Ordinal
+      _Entry_author.Given_name
+      _Entry_author.Family_name
+      _Entry_author.First_initial
+      _Entry_author.Middle_initials
+      _Entry_author.Family_title
+      _Entry_author.Entry_ID
+
+      1 Claudia Cornilescu . C. . 15000 
+      2 Gabriel Cornilescu . .  . 15000 
+      3 Erik    Hadley     . B. . 15000 
+      4 Samuel  Gellman    . H. . 15000 
+      5 John    Markley    . L. . 15000 
+
+   stop_
+
+   loop_
+      _Datum.Type
+      _Datum.Count
+      _Datum.Entry_ID
+
+      '13C chemical shifts'  77 15000 
+      '15N chemical shifts'  40 15000 
+      '1H chemical shifts'  223 15000 
+
+   stop_
+
+save_
+
+
+save_assigned_chem_shift_list_1
+   _Assigned_chem_shift_list.Sf_category                   assigned_chemical_shifts
+   _Assigned_chem_shift_list.Sf_framecode                  assigned_chem_shift_list_1
+   _Assigned_chem_shift_list.Entry_ID                      15000
+   _Assigned_chem_shift_list.ID                            1
+   _Assigned_chem_shift_list.Sample_condition_list_ID      1
+   _Assigned_chem_shift_list.Sample_condition_list_label  $sample_conditions
+   _Assigned_chem_shift_list.Chem_shift_reference_ID       1
+   _Assigned_chem_shift_list.Chem_shift_reference_label   $chemical_shift_reference_1
+   _Assigned_chem_shift_list.Chem_shift_1H_err             .
+   _Assigned_chem_shift_list.Chem_shift_13C_err            .
+   _Assigned_chem_shift_list.Chem_shift_15N_err            .
+   _Assigned_chem_shift_list.Chem_shift_31P_err            .
+   _Assigned_chem_shift_list.Chem_shift_2H_err             .
+   _Assigned_chem_shift_list.Chem_shift_19F_err            .
+   _Assigned_chem_shift_list.Error_derivation_method       .
+   _Assigned_chem_shift_list.Details                       .
+   _Assigned_chem_shift_list.Text_data_format              .
+   _Assigned_chem_shift_list.Text_data                     .
+
+   loop_
+      _Atom_chem_shift.ID
+      _Atom_chem_shift.Assembly_atom_ID
+      _Atom_chem_shift.Entity_assembly_ID
+      _Atom_chem_shift.Entity_ID
+      _Atom_chem_shift.Comp_index_ID
+      _Atom_chem_shift.Seq_ID
+      _Atom_chem_shift.Comp_ID
+      _Atom_chem_shift.Atom_ID
+      _Atom_chem_shift.Atom_type
+      _Atom_chem_shift.Atom_isotope_number
+      _Atom_chem_shift.Val
+      _Atom_chem_shift.Val_err
+      _Atom_chem_shift.Assign_fig_of_merit
+      _Atom_chem_shift.Ambiguity_code
+      _Atom_chem_shift.Occupancy
+      _Atom_chem_shift.Resonance_ID
+      _Atom_chem_shift.Auth_entity_assembly_ID
+      _Atom_chem_shift.Auth_asym_ID
+      _Atom_chem_shift.Auth_seq_ID
+      _Atom_chem_shift.Auth_comp_ID
+      _Atom_chem_shift.Auth_atom_ID
+      _Atom_chem_shift.Details
+      _Atom_chem_shift.Entry_ID
+      _Atom_chem_shift.Assigned_chem_shift_list_ID
+
+        1 . 1 1  2  2 SER H    H  1   9.3070 0.01 . . . . . .  2 SER H   . 15000 1 
+        2 . 1 1  2  2 SER HA   H  1   4.5970 0.01 . . . . . .  2 SER HA  . 15000 1 
+        3 . 1 1  2  2 SER HB2  H  1   4.3010 0.01 . . . . . .  2 SER HB2 . 15000 1 
+        4 . 1 1  2  2 SER HB3  H  1   4.0550 0.01 . . . . . .  2 SER HB3 . 15000 1 
+        5 . 1 1  2  2 SER CB   C 13  64.6000 0.1  . . . . . .  2 SER CB  . 15000 1 
+        6 . 1 1  2  2 SER N    N 15 121.5800 0.1  . . . . . .  2 SER N   . 15000 1 
+        7 . 1 1  3  3 ASP H    H  1   8.0740 0.01 . . . . . .  3 ASP H   . 15000 1 
+        8 . 1 1  3  3 ASP HA   H  1   4.5580 0.01 . . . . . .  3 ASP HA  . 15000 1 
+        9 . 1 1  3  3 ASP HB2  H  1   2.835  0.01 . . . . . .  3 ASP HB2 . 15000 1 
+       10 . 1 1  3  3 ASP HB3  H  1   2.754  0.01 . . . . . .  3 ASP HB3 . 15000 1 
+       11 . 1 1  3  3 ASP CA   C 13  57.6400 0.1  . . . . . .  3 ASP CA  . 15000 1 
+       12 . 1 1  3  3 ASP N    N 15 121.1040 0.1  . . . . . .  3 ASP N   . 15000 1 
+       13 . 1 1  4  4 GLU H    H  1   8.6520 0.01 . . . . . .  4 GLU H   . 15000 1 
+       14 . 1 1  4  4 GLU HA   H  1   4.1420 0.01 . . . . . .  4 GLU HA  . 15000 1 
+       15 . 1 1  4  4 GLU HB2  H  1   2.0520 0.01 . . . . . .  4 GLU HB2 . 15000 1 
+       16 . 1 1  4  4 GLU HB3  H  1   2.0320 0.01 . . . . . .  4 GLU HB3 . 15000 1 
+       17 . 1 1  4  4 GLU HG2  H  1   2.4540 0.01 . . . . . .  4 GLU HG2 . 15000 1 
+       18 . 1 1  4  4 GLU CB   C 13  28.1200 0.1  . . . . . .  4 GLU CB  . 15000 1 
+       19 . 1 1  4  4 GLU CG   C 13  33.2720 0.1  . . . . . .  4 GLU CG  . 15000 1 
+       20 . 1 1  4  4 GLU N    N 15 119.8900 0.1  . . . . . .  4 GLU N   . 15000 1 
+
+   stop_
+
+save_

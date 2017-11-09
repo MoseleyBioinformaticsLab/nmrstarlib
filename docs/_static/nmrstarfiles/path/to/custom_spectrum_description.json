@@ -1,0 +1,11 @@
+{
+    "NCACX_custom": {
+        "Labels": ["N", "CA", "CX"],
+        "MinNumberPeaksPerSpinSystem": 2,
+        "PeakDescriptions": [
+            {"fraction": 1, "dimensions": ["N", "CA", "CO"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CA"]},
+            {"fraction": 1, "dimensions": ["N", "CA", "CB"]}
+        ]
+    }
+}
