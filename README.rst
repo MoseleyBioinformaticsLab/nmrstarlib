@@ -106,22 +106,15 @@ Import `nmrstarlib` library and create generator function that will yield
    >>> import nmrstarlib
    >>>
    >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
-   >>> starfile_gen = nmrstarlib.read_files("path")
-   >>>
-   >>> for starfile in starfile_gen:
+   >>> for starfile in nmrstarlib.read_files("path"):
    ...     print(starfile.bmrbid)         # print BMRB id of StarFile
    ...     print(starfile.source)         # print source of StarFile
    ...     print(list(starfile.keys()))   # print StarFile saveframe categories
    >>>
-   >>> # For example, let's read two files: one using BMRB id and the other one using URL:
-   >>> starfile_gen = nmrstarlib.read_files("15000", "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/18569")
-   >>>
-   >>> for starfile in starfile_gen:
-   ...     print("BMRB id:", starfile.bmrbid)
-   ...     print("Source:", starfile.source)
-   ...     print("List of saveframes and comments:", list(starfile.keys()))
-   >>>
 
+.. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_demo.gif
+   :width: 50%
+   :align: center
 
 .. note:: Read the `User Guide`_ and `The nmrstarlib Tutorial`_ on ReadTheDocs_
           to learn more and to see code examples on using the `nmrstarlib` as a
