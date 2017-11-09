@@ -3,6 +3,18 @@
 Release History
 ===============
 
+2.0.6 (2017-11-08)
+~~~~~~~~~~~~~~~~~~
+
+**Improvements**
+
+- Converted `Tutorial` from regular rst file to jupyter notebook file.
+- Updated API documentation.
+
+**Bugfixes**
+
+- Fixed bug for '--seed' option converting `None` to `int`.
+
 
 2.0.5 (2017-10-27)
 ~~~~~~~~~~~~~~~~~~
