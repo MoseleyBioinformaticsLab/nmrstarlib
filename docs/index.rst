@@ -13,7 +13,6 @@ Documentation index:
    tutorial
    api
    license
-   notebooks/multiply
 
 
 Indices and tables
