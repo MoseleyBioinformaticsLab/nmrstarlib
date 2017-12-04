@@ -41,9 +41,9 @@ NMR-STAR formatted files used by the Biological Magnetic Resonance Data Bank (BM
 for archival of Nuclear Magnetic Resonance (NMR) data.
 
 The `nmrstarlib` package provides facilities to convert NMR-STAR formatted files into
-their equivalent JSONized (JavaScript Object Notation, an open-standard format that
-uses human-readable text to transmit data objects consisting of attribute-value pairs)
-representation and vice versa.
+their equivalent JSONized representation and vice versa. JSON stands for JavaScript
+Object Notation, an open-standard format that uses human-readable text to transmit
+data objects consisting of attribute-value pairs.
 
 The `nmrstarlib` package also provides facilities to create simulated peak lists for
 different types of standard solution and solid-state NMR experiments from chemical
@@ -78,8 +78,9 @@ Links
 Installation
 ~~~~~~~~~~~~
 
-The `nmrstarlib` package runs under Python 2.7 and Python 3.4+, use pip_ to install.
+The `nmrstarlib` package runs under Python 2.7 and Python 3.4+. Use pip_ to install.
 Starting with Python 3.4, pip_ is included by default.
+
 
 Install on Linux, Mac OS X
 --------------------------
