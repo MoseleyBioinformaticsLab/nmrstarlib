@@ -15,7 +15,8 @@ except ImportError:
 
 
 if sys.argv[-1] == 'publish':
-    os.system('python3 setup.py sdist upload')
+    os.system('python3 setup.py sdist')
+    os.system('twine upload dist/*')
     sys.exit()
 
 
