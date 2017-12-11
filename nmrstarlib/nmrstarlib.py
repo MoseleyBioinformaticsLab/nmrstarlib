@@ -316,7 +316,7 @@ class StarFile(OrderedDict):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if file_format is "nmrstar":
+        if file_format == "nmrstar":
             for saveframe in self.keys():
                 if saveframe == u"data":
                     print(u"{}_{}\n".format(saveframe, self[saveframe]), file=f)
@@ -328,7 +328,7 @@ class StarFile(OrderedDict):
                     print(u"\nsave_\n\n", file=f)
 
 
-        elif file_format is "json":
+        elif file_format == "json":
             print(self._to_json(), file=f)
 
     def print_saveframe(self, sf, f=sys.stdout, file_format="nmrstar", tw=3):
@@ -343,7 +343,7 @@ class StarFile(OrderedDict):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if file_format is "nmrstar":
+        if file_format == "nmrstar":
             for sftag in self[sf].keys():
                 # handle loops
                 if sftag[:5] == "loop_":
@@ -363,7 +363,7 @@ class StarFile(OrderedDict):
                 else:
                     print(u"{}_{}\t {}".format(tw * u" ", sftag, self[sf][sftag]), file=f)
 
-        elif file_format is "json":
+        elif file_format == "json":
             print(json.dumps(self[sf], sort_keys=False, indent=4), file=f)
 
     def print_loop(self, sf, sftag, f=sys.stdout, file_format="nmrstar", tw=3):
@@ -377,7 +377,7 @@ class StarFile(OrderedDict):
         :return: None
         :rtype: :py:obj:`None`
         """
-        if file_format is "nmrstar":
+        if file_format == "nmrstar":
             # First print the fields
             for field in self[sf][sftag][0]:
                 print(u"{}_{}".format(tw * u" ", field), file=f)
@@ -389,7 +389,7 @@ class StarFile(OrderedDict):
                 # need to escape value with quotes (i.e. u"'{}'".format()) if value consists of two or more words
                 print(u"{}{}".format(tw * u" ", u" ".join([u"'{}'".format(value) if len(value.split()) > 1 else value for value
                                                            in valuesdict.values()])), file=f)
-        elif file_format is "json":
+        elif file_format == "json":
             print(json.dumps(self[sf][sftag], sort_keys=False, indent=4), file=f)
 
     def _to_json(self):
