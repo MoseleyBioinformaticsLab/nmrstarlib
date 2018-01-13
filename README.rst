@@ -38,12 +38,13 @@ nmrstarlib
 
 The `nmrstarlib` package is a Python library that facilitates reading and writing
 NMR-STAR formatted files used by the Biological Magnetic Resonance Data Bank (BMRB_)
-for archival of Nuclear Magnetic Resonance (NMR) data.
+for archival of Nuclear Magnetic Resonance (NMR) data and CIF formatted files used
+by Protein Data Bank (PDB_).
 
-The `nmrstarlib` package provides facilities to convert NMR-STAR formatted files into
-their equivalent JSONized representation and vice versa. JSON stands for JavaScript
-Object Notation, an open-standard format that uses human-readable text to transmit
-data objects consisting of attribute-value pairs.
+The `nmrstarlib` package provides facilities to convert NMR-STAR and CIF formatted
+files into their equivalent JSONized representation and vice versa. JSON stands
+for JavaScript Object Notation, an open-standard format that uses human-readable
+text to transmit data objects consisting of attribute-value pairs.
 
 The `nmrstarlib` package also provides facilities to create simulated peak lists for
 different types of standard solution and solid-state NMR experiments from chemical
@@ -53,9 +54,9 @@ In addition, the `nmrstarlib` package provides methods to visualize chemical shi
 
 The `nmrstarlib` package can be used in several ways:
 
-   * As a library for accessing and manipulating data stored in NMR-STAR format files.
-   * As a command-line tool to convert between NMR-STAR format and its equivalent JSONized
-     NMR-STAR format, to create a large number of simulated peak lists,
+   * As a library for accessing and manipulating data stored in NMR-STAR and CIF formatted files.
+   * As a command-line tool to convert between NMR-STAR/CIF format and its equivalent JSONized
+     NMR-STAR/CIF format, to create a large number of simulated peak lists,
      and also to visualize chemical shift data.
 
 Citation
@@ -106,11 +107,11 @@ Import `nmrstarlib` library and create generator function that will yield
 
    >>> import nmrstarlib
    >>>
-   >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / file_url
+   >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / pdb_id / file_url
    >>> for starfile in nmrstarlib.read_files("path"):
-   ...     print(starfile.bmrbid)         # print BMRB id of StarFile
-   ...     print(starfile.source)         # print source of StarFile
-   ...     print(list(starfile.keys()))   # print StarFile saveframe categories
+   ...     print(starfile.id)      # print BMRB id of StarFile
+   ...     print(starfile.source)  # print source of StarFile
+   ...     print(starfile.keys())  # print StarFile saveframe categories
    >>>
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_demo.gif
@@ -126,18 +127,19 @@ License
 
 This package is distributed under the MIT_ `license`.
 
-.. _pip: https://pip.pypa.io/
-.. _docopt: http://docopt.readthedocs.io/
-.. _graphviz: http://graphviz.readthedocs.io/
+.. _pip: https://pip.pypa.io
+.. _docopt: http://docopt.readthedocs.io
+.. _graphviz: http://graphviz.readthedocs.io
 .. _BMRB: http://www.bmrb.wisc.edu
+.. _PDB: https://www.rcsb.org
 .. _Graphviz download page: http://www.graphviz.org/Download.php
 
 .. _GitHub: https://github.com/MoseleyBioinformaticsLab/nmrstarlib
-.. _ReadTheDocs: http://nmrstarlib.readthedocs.io/
+.. _ReadTheDocs: http://nmrstarlib.readthedocs.io
 .. _User Guide: http://nmrstarlib.readthedocs.io/en/latest/guide.html
 .. _The nmrstarlib Tutorial: http://nmrstarlib.readthedocs.io/en/latest/tutorial.html
-.. _PyPI: https://pypi.org/project/nmrstarlib/
+.. _PyPI: https://pypi.org/project/nmrstarlib
 
-.. _MIT: https://choosealicense.com/licenses/mit/
+.. _MIT: https://choosealicense.com/licenses/mit
 
 .. _10.1186/s12859-017-1580-5: http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1580-5
