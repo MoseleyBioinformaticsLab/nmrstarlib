@@ -69,7 +69,8 @@ def transform_text(input_txt):
                 outputq.append(character)
 
         elif line.startswith(u";"):
-            multiline = u"\n;\n"
+            multiline = u""
+            multiline += line + u"\n"
             line = inputq.popleft()
 
             while not line.startswith(u";"):
@@ -77,7 +78,7 @@ def transform_text(input_txt):
                 line = inputq.popleft()
 
             multiline += line[:1]
-            outputq.append(multiline[3:-1])  # remove NMR-STAR syntax from multiline string
+            outputq.append(multiline[1:-1])  # remove STAR syntax from multiline string
 
             for character in line[1:]:
                 outputq.append(character)
