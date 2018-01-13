@@ -29,6 +29,7 @@ Simplified description of parsing rules:
      http://www.bmrb.wisc.edu/dictionary/
    * For a concise description of the NMR-STAR file format grammar see:
      https://github.com/mattfenwick/NMRPyStar#nmr-star-grammar
+   * To build this extension run the following from root directory: ``python3 setup.py build_ext --inplace``
 """
 
 from collections import deque
@@ -74,7 +75,8 @@ def transform_text(input_txt):
                 outputq.append(character)
 
         elif line.startswith(u";"):
-            multiline = u"\n;\n"
+            multiline = u""
+            multiline += line + u"\n"
             line = inputq.popleft()
 
             while not line.startswith(u";"):
@@ -82,7 +84,7 @@ def transform_text(input_txt):
                 line = inputq.popleft()
 
             multiline += line[:1]
-            outputq.append(multiline[3:-1])  # remove NMR-STAR syntax from multiline string
+            outputq.append(multiline[1:-1])  # remove STAR syntax from multiline string
 
             for character in line[1:]:
                 outputq.append(character)
