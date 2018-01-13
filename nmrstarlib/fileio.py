@@ -5,14 +5,14 @@
 nmrstarlib.fileio
 ~~~~~~~~~~~~~~~~~
 
-This module provides routines for reading ``NMR-STAR`` formatted files
-from difference kinds of sources:
+This module provides routines for reading ``NMR-STAR`` and ``CIF`` 
+formatted files from difference kinds of sources:
 
-   * Single ``NMR-STAR`` formatted file on a local machine.
-   * Directory containing multiple ``NMR-STAR`` formatted files.
-   * Compressed zip/tar archive of ``NMR-STAR`` formatted files.
-   * URL address of ``NMR-STAR`` formatted file.
-   * ``BMRB ID`` of ``NMR-STAR`` formatted file. 
+   * Single ``NMR-STAR`` or ``CIF`` formatted file on a local machine.
+   * Directory containing multiple ``NMR-STAR`` or ``CIF`` formatted files.
+   * Compressed zip/tar archive of ``NMR-STAR`` or ``CIF`` formatted files.
+   * URL address of ``NMR-STAR`` or ``CIF`` formatted file.
+   * ``BMRB ID`` of ``NMR-STAR`` or ``PDB ID`` of ``CIF`` formatted file. 
 """
 
 import os
@@ -22,15 +22,18 @@ import zipfile
 import tarfile
 import bz2
 import gzip
+import re
 
 from . import nmrstarlib
 
 if sys.version_info.major == 3:
     from urllib.request import urlopen
     from urllib.parse import urlparse
+    from urllib.error import HTTPError
 else:
     from urllib2 import urlopen
     from urlparse import urlparse
+    from urllib2 import HTTPError
 
 
 def _generate_filenames(sources):
@@ -40,6 +43,7 @@ def _generate_filenames(sources):
     :return: Path to file(s).
     :rtype: :py:class:`str`
     """
+
     for source in sources:
         if os.path.isdir(source):
             for path, dirlist, filelist in os.walk(source):
@@ -55,7 +59,14 @@ def _generate_filenames(sources):
         elif os.path.isfile(source):
             yield source
         elif source.isdigit():
-            yield nmrstarlib.BMRB_REST + source
+            try:
+                urlopen(nmrstarlib.BMRB_REST + source)
+                yield nmrstarlib.BMRB_REST + source
+            except HTTPError:
+                urlopen(nmrstarlib.PDB_REST + source + ".cif")
+                yield nmrstarlib.PDB_REST + source + ".cif"
+        elif re.match("[\w\d]{4}", source):
+            yield nmrstarlib.PDB_REST + source + ".cif"
         elif GenericFilePath.is_url(source):
             yield source
         else:
@@ -88,8 +99,7 @@ def read_files(*sources):
     filenames = _generate_filenames(sources)
     filehandles = _generate_handles(filenames)
     for fh, source in filehandles:
-        starfile = nmrstarlib.StarFile(source)
-        starfile.read(fh)
+        starfile = nmrstarlib.StarFile.read(fh, source)
         yield starfile
 
 
@@ -111,9 +121,9 @@ class GenericFilePath(object):
         :return: Filehandle to be processed into a :class:`~nmrstarlib.nmrstarlib.StarFile` instance.
         """
         is_url = self.is_url(self.path)
-        compressiontype = self.is_compressed(self.path)
+        compression_type = self.is_compressed(self.path)
 
-        if not compressiontype:
+        if not compression_type:
             if is_url:
                 filehandle = urlopen(self.path)
             else:
@@ -122,7 +132,7 @@ class GenericFilePath(object):
             yield filehandle, source
             filehandle.close()
 
-        elif compressiontype:
+        elif compression_type:
             if is_url:
                 response = urlopen(self.path)
                 path = response.read()
@@ -130,7 +140,7 @@ class GenericFilePath(object):
             else:
                 path = self.path
 
-            if compressiontype == "zip":
+            if compression_type == "zip":
                 ziparchive = zipfile.ZipFile(io.BytesIO(path), "r") if is_url else zipfile.ZipFile(path)
                 for name in ziparchive.infolist():
                     if not name.filename.endswith("/"):
@@ -139,7 +149,7 @@ class GenericFilePath(object):
                         yield filehandle, source
                         filehandle.close()
 
-            elif compressiontype in ("tar", "tar.bz2", "tar.gz"):
+            elif compression_type in ("tar", "tar.bz2", "tar.gz"):
                 tararchive = tarfile.open(fileobj=io.BytesIO(path)) if is_url else tarfile.open(path)
                 for name in tararchive:
                     if name.isfile():
@@ -148,13 +158,13 @@ class GenericFilePath(object):
                         yield filehandle, source
                         filehandle.close()
 
-            elif compressiontype == "bz2":
+            elif compression_type == "bz2":
                 filehandle = bz2.BZ2File(io.BytesIO(path)) if is_url else bz2.BZ2File(path)
                 source = self.path
                 yield filehandle, source
                 filehandle.close()
 
-            elif compressiontype == "gz":
+            elif compression_type == "gz":
                 filehandle = gzip.open(io.BytesIO(path)) if is_url else gzip.open(path)
                 source = self.path
                 yield filehandle, source

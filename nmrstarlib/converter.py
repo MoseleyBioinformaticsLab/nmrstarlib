@@ -6,7 +6,7 @@ nmrstarlib.converter
 ~~~~~~~~~~~~~~~~~~~~
 
 This module provides functionality for converting between the BMRB
-NMR-STAR format and its equivalent JSONized NMR-STAR format.
+NMR-STAR/CIF format and its equivalent JSONized NMR-STAR/CIF format.
 
 The following conversions are possible:
 
@@ -58,10 +58,10 @@ Local files:
          * tarfile.tar.bz2 - to - directory.gz / directory.bz2 (TypeError: Many-to-one conversion)
 URL files:
    * One-to-one file conversions:
-      * bmrbid - to - textfile
-      * bmrbid - to - textfile.gz
-      * bmrbid - to - textfile.bz2
-      * bmrbid - to - textfile.zip / textfile.tar / textfile.tar.gz / textfile.tar.bz2 (TypeError: One-to-many conversion)
+      * id - to - textfile
+      * id - to - textfile.gz
+      * id - to - textfile.bz2
+      * id - to - textfile.zip / textfile.tar / textfile.tar.gz / textfile.tar.bz2 (TypeError: One-to-many conversion)
       * textfileurl - to - textfile
       * textfileurl - to - textfile.gz
       * textfileurl - to - textfile.bz2
@@ -111,7 +111,7 @@ import gzip
 from . import fileio
 
 class Converter(object):
-    """Converter class to convert BMRB NMR-STAR files from NMR-STAR to JSON or from JSON to NMR-STAR format."""
+    """Converter class to convert NMR-STAR/CIF files from NMR-STAR/CIF to JSON or from JSON to NMR-STAR/CIF format."""
 
     def __init__(self, file_generator):
         """Converter initializer.
@@ -122,7 +122,7 @@ class Converter(object):
         self.file_generator = file_generator
 
     def convert(self):
-        """Convert file(s) from NMR-STAR format to JSON format or from JSON format to NMR-STAR format.
+        """Convert file(s) from NMR-STAR/CIF format to JSON format or from JSON format to NMR-STAR/CIF format.
 
         :return: None
         :rtype: :py:obj:`None`

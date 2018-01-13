@@ -7,9 +7,9 @@ nmrstarlib command-line interface
 Usage:
     nmrstarlib -h | --help
     nmrstarlib --version
-    nmrstarlib convert (<from-path> <to-path>) [--from-format=<format>] [--to-format=<format>] [--bmrb-url=<url>] [--nmrstar-version=<version>] [--verbose]
-    nmrstarlib csview <starfile-path> [--aa=<aa>] [--at=<at>] [--aa-at=<aa-at>] [--csview-outfile=<path>] [--csview-format=<format>] [--bmrb-url=<url>] [--nmrstar-version=<version>] [--verbose] [--show]
-    nmrstarlib plsimulate (<from-path> <to-path> <spectrum>) [--from-format=<format>] [--to-format=<format>] [--plsplit=<%>] [--distribution=<func>] [--seed=<value>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb-url=<url>] [--nmrstar-version=<version>] [--spectrum-descriptions=<path>] [--verbose]
+    nmrstarlib convert (<from-path> <to-path>) [--from-format=<format>] [--to-format=<format>] [--bmrb-url=<url> | --pdb-url=<url>] [--nmrstar-version=<version>] [--verbose]
+    nmrstarlib csview <starfile-path> [--aa=<aa>] [--at=<at>] [--aa-at=<aa-at>] [--csview-outfile=<path>] [--csview-format=<format>] [--bmrb-url=<url> | --pdb-url=<url>] [--nmrstar-version=<version>] [--verbose] [--show]
+    nmrstarlib plsimulate (<from-path> <to-path> <spectrum>) [--from-format=<format>] [--to-format=<format>] [--plsplit=<%>] [--distribution=<func>] [--seed=<value>] [--H=<value>] [--C=<value>] [--N=<value>] [--bmrb-url=<url> | --pdb-url=<url>] [--nmrstar-version=<version>] [--spectrum-descriptions=<path>] [--verbose]
 
 Options:
     -h, --help                      Show this screen.
@@ -19,7 +19,8 @@ Options:
     --from-format=<format>          Input file format, available formats: nmrstar, json [default: nmrstar].
     --to-format=<format>            Output file format, available formats: nmrstar, json [default: json].
     --nmrstar-version=<version>     Version of NMR-STAR format to use, available: 2, 3 [default: 3].
-    --bmrb-url=<url>                URL to BMRB REST interface [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
+    --bmrb-url=<url>                URL to BMRB interface [default: http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/].
+    --pdb-url=<url>                 URL to PDB interface [default: https://files.rcsb.org/view/].
     --aa=<aa>                       Comma-separated amino acid three-letter codes (e.g. --aa=ALA,SER).
     --at=<at>                       Comma-separated BMRB atom codes (e.g. --at=CA,CB).
     --aa-at=<aa-at>                 Amino acid three-letter codes (keys) and corresponding atoms (values) (e.g. --aa-at=ALA-CA,CB:LYS-CB,CG,CD).
