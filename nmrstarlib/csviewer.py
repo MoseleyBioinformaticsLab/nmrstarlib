@@ -13,7 +13,7 @@ from graphviz import Source
 from . import fileio
 
 class CSViewer(object):
-    """Chemical Shifts Viewer uses :meth:`~nmrstarlib.nmrstarlib.StarFile.chem_shifts_by_residue`
+    """Chemical Shifts Viewer uses :meth:`~nmrstarlib.nmrstarlib.NMRStarFile.chem_shifts_by_residue`
     method to get chemical shifts organized by residue and visualizes chemical shifts values using the
     Graphviz (http://www.graphviz.org/) DOT Languge description.
     """
@@ -114,7 +114,7 @@ class CSViewer(object):
                             currnodename = nextnodename
 
                 if self.filename is None:
-                    filename = "{}_{}".format(starfile.bmrbid, idx)
+                    filename = "{}_{}".format(starfile.id, idx)
                 else:
                     filename = "{}_{}".format(self.filename, idx)
 

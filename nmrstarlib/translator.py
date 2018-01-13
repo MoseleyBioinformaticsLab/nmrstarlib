@@ -7,7 +7,7 @@ nmrstarlib.translator
 
 This module provides the :class:`~nmrstarlib.translator.Translator` abstract class
 and concrete classes: :class:`~nmrstarlib.translator.StarFileToStarFile` for converting between
-NMR-STAR and JSONized NMR-STAR formats and :class:`~nmrstarlib.translator.StarFileToPeakList`
+NMR-STAR/CIF and JSONized NMR-STAR/CIF formats and :class:`~nmrstarlib.translator.StarFileToPeakList`
 for converting NMR-STAR formatted file into simulated peak list file.
 """
 
@@ -42,18 +42,19 @@ class Translator(object):
 
 
 class StarFileToStarFile(Translator):
-    """Translator concrete class that can convert between NMR-STAR and JSONized NMR-STAR formats."""
+    """Translator concrete class that can convert between NMR-STAR/CIF and JSONized NMR-STAR/CIF formats."""
 
     file_extension = {"json": ".json",
-                      "nmrstar": ".str"}
+                      "nmrstar": ".str",
+                      "cif": ".cif"}
 
     def __init__(self, from_path, to_path, from_format=None, to_format=None):
         """StarFileToStarFile translator initializer.
 
         :param str from_path: Path to input file(s).
         :param str to_path: Path to output file(s).
-        :param str from_format: Input format: `nmrstar` or `json`.
-        :param str to_format: Output format: `nmrstar` or `json`.
+        :param str from_format: Input format: `nmrstar`, `cif`, or `json`.
+        :param str to_format: Output format: `nmrstar`, `cif`, or `json`.
         """
         super(StarFileToStarFile, self).__init__(from_path, to_path, from_format, to_format)
 

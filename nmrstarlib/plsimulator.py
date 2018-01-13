@@ -107,8 +107,8 @@ class PeakList(list):
 
         :param str spectrum_name: Spectrum name from which peak list will be simulated.
         :param list labels: Sequence of labels as they appear in a peak.
-        :param str source: :class:`~nmrstarlib.nmrstarlib.StarFile` source.
-        :param int chain_idx: :class:`~nmrstarlib.nmrstarlib.StarFile` chain index.
+        :param str source: :class:`~nmrstarlib.nmrstarlib.NMRStarFile` source.
+        :param int chain_idx: :class:`~nmrstarlib.nmrstarlib.NMRStarFile` chain index.
         """
         super(PeakList, self).__init__()
         self.spectrum_name = spectrum_name
@@ -155,7 +155,7 @@ class PeakList(list):
 
         :param filehandle: file-like object.
         :type filehandle: :py:class:`io.TextIOWrapper`
-        :param str fileformat: Format to use to write data: `nmrstar` or `json`.
+        :param str fileformat: Format to use to write data: `sparky`, `autoassign`, or `json`.
         :return: None
         :rtype: :py:obj:`None`
         """
@@ -178,7 +178,7 @@ class PeakList(list):
     def writestr(self, fileformat):
         """Write :class:`~nmrstarlib.plsimulator.PeakList` data into string.
 
-        :param str fileformat: Format to use to write data: `nmrstar` or `json`.
+        :param str fileformat: Format to use to write data: `sparky`, `autoassign`, or `json`.
         :return: String representing the :class:`~nmrstarlib.plsimulator.PeakList` instance.
         :rtype: :py:class:`str`
         """
