@@ -3,6 +3,19 @@
 Release History
 ===============
 
+2.1.0 (2018-01-13)
+~~~~~~~~~~~~~~~~~~
+
+**New features**
+
+- Added support to read CIF formatted files used by Protein Data Bank (PDB).
+
+**Improvements**
+- Updated API documentation.
+- Updated Tutorial documentation to include access data from CIF formatted files.
+- Additional unit tests for CIF formatted files.
+
+
 2.0.6 (2017-11-08)
 ~~~~~~~~~~~~~~~~~~
 
