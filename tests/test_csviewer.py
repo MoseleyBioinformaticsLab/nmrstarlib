@@ -5,11 +5,11 @@ import pytest
 from nmrstarlib.csviewer import CSViewer
 
 
-def teardown_module(module):
-    if os.path.exists("tests/example_data/NMRSTAR3/tmp"):
-        shutil.rmtree("tests/example_data/NMRSTAR3/tmp")
-    if os.path.exists("tests/example_data/NMRSTAR2/tmp"):
-        shutil.rmtree("tests/example_data/NMRSTAR2/tmp")
+def teardown_module(module, paths=("tests/example_data/NMRSTAR3/tmp",
+                                   "tests/example_data/NMRSTAR2/tmp")):
+    for path in paths:
+        if os.path.exists(path):
+            shutil.rmtree(path)
 
 
 @pytest.mark.parametrize("amino_acids,atoms", [
