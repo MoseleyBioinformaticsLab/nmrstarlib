@@ -57,7 +57,7 @@ The `nmrstarlib` package can be used in several ways:
    * As a library for accessing and manipulating data stored in NMR-STAR and CIF formatted files.
    * As a command-line tool to convert between NMR-STAR/CIF format and its equivalent JSONized
      NMR-STAR/CIF format, to create a large number of simulated peak lists,
-     and also to visualize chemical shift data.
+     and also to visualize chemical shift data from NMR-STAR formatted files.
 
 Citation
 ~~~~~~~~
@@ -108,10 +108,10 @@ Import `nmrstarlib` library and create generator function that will yield
    >>> import nmrstarlib
    >>>
    >>> # "path": path_to_file / path_to_dir / path_to_archive / bmrb_id / pdb_id / file_url
-   >>> for starfile in nmrstarlib.read_files("path"):
-   ...     print(starfile.id)      # print BMRB id of StarFile
-   ...     print(starfile.source)  # print source of StarFile
-   ...     print(starfile.keys())  # print StarFile saveframe categories
+   >>> for file in nmrstarlib.read_files("path"):
+   ...     print(file.id)      # print BMRB/PDB id of a file
+   ...     print(file.source)  # print source of a file
+   ...     print(file.keys())  # print top-level keys
    >>>
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_demo.gif
