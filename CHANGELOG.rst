@@ -11,6 +11,7 @@ Release History
 - Added support to read CIF formatted files used by Protein Data Bank (PDB).
 
 **Improvements**
+
 - Updated API documentation.
 - Updated Tutorial documentation to include access data from CIF formatted files.
 - Additional unit tests for CIF formatted files.
