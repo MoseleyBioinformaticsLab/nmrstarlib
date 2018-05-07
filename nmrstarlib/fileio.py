@@ -45,6 +45,7 @@ def _generate_filenames(sources):
     """
 
     for source in sources:
+
         if os.path.isdir(source):
             for path, dirlist, filelist in os.walk(source):
                 for fname in filelist:
@@ -56,8 +57,13 @@ def _generate_filenames(sources):
                         continue
                     else:
                         yield os.path.join(path, fname)
+
         elif os.path.isfile(source):
             yield source
+
+        elif GenericFilePath.is_url(source):
+            yield source
+
         elif source.isdigit():
             try:
                 urlopen(nmrstarlib.BMRB_REST + source)
@@ -65,10 +71,10 @@ def _generate_filenames(sources):
             except HTTPError:
                 urlopen(nmrstarlib.PDB_REST + source + ".cif")
                 yield nmrstarlib.PDB_REST + source + ".cif"
+
         elif re.match("[\w\d]{4}", source):
             yield nmrstarlib.PDB_REST + source + ".cif"
-        elif GenericFilePath.is_url(source):
-            yield source
+
         else:
             raise TypeError("Unknown file source.")
 
