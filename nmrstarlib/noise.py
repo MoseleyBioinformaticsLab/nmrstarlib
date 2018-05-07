@@ -36,7 +36,6 @@ distributions = {"uniform": {"function": random.uniform,
 
 try:
     import numpy as np
-
     NUMPY_AVAILABLE = True
 
     np_distributions = {"normal": {"function": np.random.normal,
@@ -97,7 +96,7 @@ try:
     distributions.update(np_distributions)
 
 except ImportError:
-    pass
+    NUMPY_AVAILABLE = False
 
 
 class NoiseGenerator(object):
