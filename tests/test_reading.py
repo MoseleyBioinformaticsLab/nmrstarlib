@@ -27,7 +27,8 @@ def test_from_bmrbid(source):
 
 @pytest.mark.parametrize("source", [
     ("http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/15000",
-     "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/18569")
+     "http://rest.bmrb.wisc.edu/bmrb/NMR-STAR3/18569",
+     "https://files.rcsb.org/view/2rpv.cif")
 ])
 def test_from_url(source):
     starfile_generator = nmrstarlib.read_files(*source)
