@@ -3,6 +3,15 @@
 Release History
 ===============
 
+2.1.1 (2018-05-07)
+~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Fixed bug: incorrect reading file from URL caused by regex check.
+- Fixed bug: reference before assignment if numpy is not present.
+
+
 2.1.0 (2018-01-13)
 ~~~~~~~~~~~~~~~~~~
 
@@ -27,7 +36,7 @@ Release History
 
 **Bugfixes**
 
-- Fixed bug for '--seed' option converting `None` to `int`.
+- Fixed bug: '--seed' option converting `None` to `int`.
 
 
 2.0.5 (2017-10-27)
@@ -35,7 +44,7 @@ Release History
 
 **Bugfixes**
 
-- Fixed bug for files that does not end with '\n'.
+- Fixed bug: files that does not end with '\n'.
 - Cleaned up file printing functionality.
 
 
@@ -78,7 +87,7 @@ Release History
 
 **Bugfixes**
 
-- Fixed bug related to sorting of the sequence ids which caused
+- Fixed bug: related to sorting of the sequence ids which caused
   problems during sequence sites creation in peak list simulation.
   Sorting is based on integer sequence id value instead of its string
   representation.
@@ -127,7 +136,7 @@ Release History
 
 **Bugfixes**
 
-- Fixed broken configuration file path.
+- Fixed bug: broken configuration file path.
 
 
 1.0.0 (2016-05-25)
