@@ -29,6 +29,10 @@ nmrstarlib
    :target: http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1580-5
    :alt: Citation link
 
+.. image:: https://pepy.tech/badge/nmrstarlib
+   :target: https://pepy.tech/project/nmrstarlib
+   :alt: Downloads
+
 |
 
 .. image:: https://raw.githubusercontent.com/MoseleyBioinformaticsLab/nmrstarlib/master/docs/_static/images/nmrstarlib_logo.png
