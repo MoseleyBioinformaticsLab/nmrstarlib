@@ -3811,7 +3811,7 @@ static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, P
        because it may clear it (directly or indirectly) and so the
        caller loses its exception */
     assert(!PyErr_Occurred());
-    return (*((__Pyx_PyCFunctionFast)meth)) (self, args, nargs, NULL);
+    return (*((__Pyx_PyCFunctionFast)meth)) (self, args, nargs);
 }
 #endif  // CYTHON_FAST_PYCCALL
 
@@ -5216,12 +5216,12 @@ bad:
         #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
     PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = *type;
-    tstate->exc_value = *value;
-    tstate->exc_traceback = *tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = *type;
+    tstate->curexc_value = *value;
+    tstate->curexc_traceback = *tb;
     *type = tmp_type;
     *value = tmp_value;
     *tb = tmp_tb;
